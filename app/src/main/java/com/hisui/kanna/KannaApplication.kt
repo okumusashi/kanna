@@ -17,5 +17,7 @@
 package com.hisui.kanna
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class KannaApplication : Application()

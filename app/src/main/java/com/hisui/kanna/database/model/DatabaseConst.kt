@@ -21,4 +21,3 @@ object DatabaseConst {
         const val KANNA = "kannas"
     }
 }
-

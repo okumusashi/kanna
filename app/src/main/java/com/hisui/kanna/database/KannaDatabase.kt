@@ -23,6 +23,6 @@ import androidx.room.RoomDatabase
     entities = [
         Kanna::class
     ],
-    version = 1,
+    version = 1
 )
 abstract class KannaDatabase : RoomDatabase()

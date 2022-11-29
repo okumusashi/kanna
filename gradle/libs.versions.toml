@@ -18,6 +18,7 @@ junit5 = "5.8.2"
 
 kotlin = "1.7.20"
 ksp = "1.7.20-1.0.8"
+ktlint = "0.47.1"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
@@ -46,6 +47,8 @@ junit5 = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref 
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlin" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlin" }
+
+ktlint = { group = "com.pinterest", name = "ktlint", version.ref = "ktlint" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

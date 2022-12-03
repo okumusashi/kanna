@@ -26,6 +26,10 @@ ktlint = "0.47.1"
 protobuf = "3.21.9"
 protobufPlugin = "0.8.19"
 
+retrofit = "2.9.0"
+# TODO: Uncomment after installing kotlinx.serialization
+# retrofitKotlinxSerializationJson = "0.8.0"
+
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }
@@ -63,6 +67,10 @@ ktlint = { group = "com.pinterest", name = "ktlint", version.ref = "ktlint" }
 
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
+
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+# TODO: Uncomment after installing kotlinx.serialization
+# retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

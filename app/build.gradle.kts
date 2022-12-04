@@ -121,6 +121,7 @@ dependencies {
     implementation(libs.protobuf.kotlin.lite)
 
     implementation(libs.retrofit.core)
+    implementation(libs.retrofit.kotlin.serialization)
 
     testImplementation(libs.junit4)
     testImplementation(libs.junit5)

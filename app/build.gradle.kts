@@ -25,6 +25,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.protobuf)
+    alias(libs.plugins.kotlin.serialization)
     kotlin("kapt")
 }
 
@@ -114,6 +115,8 @@ dependencies {
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.protobuf.kotlin.lite)
 

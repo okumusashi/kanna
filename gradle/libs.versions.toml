@@ -20,6 +20,7 @@ junit4 = "4.13.2"
 junit5 = "5.8.2"
 
 kotlin = "1.7.20"
+kotlinxSerializationJson = "1.4.1"
 ksp = "1.7.20-1.0.8"
 ktlint = "0.47.1"
 
@@ -62,6 +63,7 @@ junit5 = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref 
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlin" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlin" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 ktlint = { group = "com.pinterest", name = "ktlint", version.ref = "ktlint" }
 
@@ -78,5 +80,6 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }

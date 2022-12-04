@@ -17,5 +17,51 @@
 package com.hisui.kanna
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.coroutines.launch
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.http.GET
+import retrofit2.http.Path
 
-class MainActivityViewModel : ViewModel()
+@Serializable
+data class NewsItemResponse(
+    val id: Long,
+    val title: String,
+    val time: Long,
+    val url: String
+)
+
+interface HackerNewsService {
+    @GET("item/{id}.json")
+    suspend fun getItem(
+        @Path("id") id: Int
+    ): Response<NewsItemResponse>
+}
+
+class MainActivityViewModel : ViewModel() {
+
+    fun testApiCall() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://hacker-news.firebaseio.com/v0/")
+            .addConverterFactory(
+                @OptIn(ExperimentalSerializationApi::class)
+                Json {
+                    ignoreUnknownKeys = true
+                }.asConverterFactory("application/json".toMediaType())
+            )
+            .build()
+
+        val service = retrofit.create(HackerNewsService::class.java)
+
+        viewModelScope.launch {
+            val response = service.getItem(1)
+            println(response.body())
+        }
+    }
+}

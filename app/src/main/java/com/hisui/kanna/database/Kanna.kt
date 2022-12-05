@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-plugins {
-    alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.serialization) apply false
-    alias(libs.plugins.hilt) apply false
-}
+package com.hisui.kanna.database
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.hisui.kanna.database.model.DatabaseConst
+
+@Entity(tableName = DatabaseConst.Table.KANNA)
+data class Kanna(
+    @PrimaryKey
+    val id: Long,
+    val name: String
+)

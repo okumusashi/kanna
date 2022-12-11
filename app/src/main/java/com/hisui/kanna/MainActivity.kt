@@ -19,17 +19,16 @@ package com.hisui.kanna
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.hisui.kanna.ui.theme.ShikiTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.hisui.kanna.ui.theme.KannaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,13 +36,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ShikiTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
+            val systemUiController = rememberSystemUiController()
+            val darkTheme = shouldUseDarkTheme()
+
+            // Update the dark content of the system bars to match the theme
+            DisposableEffect(systemUiController, darkTheme) {
+                systemUiController.systemBarsDarkContentEnabled = !darkTheme
+                onDispose { }
+            }
+
+            KannaTheme(darkTheme = darkTheme) {
+                Box(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    contentAlignment = Alignment.Center
                 ) {
-                    Greeting(text = "This is Kanna")
+                    Text(text = "This is Kanna.")
                 }
             }
         }
@@ -51,24 +58,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(
-    text: String,
-    viewModel: MainActivityViewModel = hiltViewModel()
-) {
-    viewModel.testApiCall()
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = text
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ShikiTheme {
-        Greeting("Android")
-    }
+fun shouldUseDarkTheme(): Boolean {
+    // TODO: Check the user settings to see if they choose dark theme
+    return isSystemInDarkTheme()
 }

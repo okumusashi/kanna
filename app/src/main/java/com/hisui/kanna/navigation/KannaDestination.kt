@@ -16,24 +16,35 @@
 
 package com.hisui.kanna.navigation
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.hisui.kanna.R
 
 enum class KannaDestination(
-    @DrawableRes val iconRes: Int,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
     @StringRes val titleRes: Int
 ) {
     HOME(
-        iconRes = R.drawable.ic_home,
+        selectedIcon = Icons.Filled.Home,
+        unselectedIcon = Icons.Outlined.Home,
         titleRes = R.string.home
     ),
     HISTORY(
-        iconRes = R.drawable.ic_history,
+        selectedIcon = Icons.Filled.History,
+        unselectedIcon = Icons.Outlined.History,
         titleRes = R.string.history
     ),
     MY_PAGE(
-        iconRes = R.drawable.ic_my_page,
+        selectedIcon = Icons.Filled.Person,
+        unselectedIcon = Icons.Outlined.Person,
         titleRes = R.string.my_page
     )
 }

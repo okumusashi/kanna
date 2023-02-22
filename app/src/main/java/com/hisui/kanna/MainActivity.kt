@@ -27,6 +27,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.hisui.kanna.ui.theme.KannaTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +37,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             val systemUiController = rememberSystemUiController()
             val darkTheme = shouldUseDarkTheme()
@@ -61,4 +64,11 @@ class MainActivity : ComponentActivity() {
 fun shouldUseDarkTheme(): Boolean {
     // TODO: Check the user settings to see if they choose dark theme
     return isSystemInDarkTheme()
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    KannaTheme {
+        Greeting("Android")
+    }
 }

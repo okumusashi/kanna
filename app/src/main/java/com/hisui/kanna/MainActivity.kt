@@ -20,21 +20,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.hisui.kanna.ui.KannaApp
 import com.hisui.kanna.ui.theme.KannaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             val systemUiController = rememberSystemUiController()
             val darkTheme = shouldUseDarkTheme()
@@ -46,19 +46,13 @@ class MainActivity : ComponentActivity() {
             }
 
             KannaTheme(darkTheme = darkTheme) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "This is Kanna.")
-                }
+                KannaApp(windowSizeClass = calculateWindowSizeClass(activity = this))
             }
         }
     }
 }
 
 @Composable
-fun shouldUseDarkTheme(): Boolean {
+fun shouldUseDarkTheme(): Boolean =
     // TODO: Check the user settings to see if they choose dark theme
-    return isSystemInDarkTheme()
-}
+    isSystemInDarkTheme()

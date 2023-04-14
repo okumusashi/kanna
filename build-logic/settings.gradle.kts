@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    includeBuild("build-logic")
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
-}
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }
-rootProject.name = "kanna"
-include(":app")
-include(":core:data")
-include(":core:database")
-include(":core:datastore")
-include(":core:model")
-include(":core:ui")
+
+rootProject.name = "build-logic"
+include(":convention")

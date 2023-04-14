@@ -14,39 +14,21 @@
  * limitations under the License.
  */
 
-import com.google.protobuf.gradle.builtins
-import com.google.protobuf.gradle.generateProtoTasks
-import com.google.protobuf.gradle.protobuf
-import com.google.protobuf.gradle.protoc
-
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.protobuf)
-    alias(libs.plugins.kotlin.serialization)
-    kotlin("kapt")
+    id("kanna.android.application")
+    id("kanna.android.application.compose")
+    id("kanna.android.hilt")
 }
 
 android {
-    namespace = "com.hisui.kanna"
-    compileSdk = 33
-
     defaultConfig {
         applicationId = "com.hisui.kanna"
-        minSdk = 28
-        targetSdk = 33
         versionCode = 1
-        versionName = "0.0.0"
+        versionName = "0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
-        }
-
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
 
@@ -56,46 +38,13 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
-    }
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    namespace = "com.hisui.kanna"
 }
-
-// Setup protobuf configuration, generating lite Java and Kotlin classes
-protobuf {
-    protoc {
-        artifact = libs.protobuf.protoc.get().toString()
-    }
-    generateProtoTasks {
-        all().forEach { task ->
-            task.builtins {
-                val java by registering {
-                    option("lite")
-                }
-                val kotlin by registering {
-                    option("lite")
-                }
-            }
-        }
-    }
-}
-
-val ktlint: Configuration by configurations.creating
 
 dependencies {
     val composeBom = platform(libs.androidx.compose.bom)
@@ -106,7 +55,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.copmose.material3)
+    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.windowSizeClass)
     implementation(libs.androidx.compose.material.iconsExtended)
     implementation(libs.androidx.core.ktx)
@@ -114,9 +63,6 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
 
     implementation(libs.coil)
     implementation(libs.coil.compose)
@@ -140,39 +86,6 @@ dependencies {
 
     implementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    ktlint(libs.ktlint) {
-        attributes {
-            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
-        }
-    }
-}
-
-val outputDir = "${project.buildDir}/reports/ktlint/"
-val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
-
-val ktlintCheck by tasks.creating(JavaExec::class) {
-    inputs.files(inputFiles)
-    outputs.dir(outputDir)
-
-    description = "Check Kotlin code style."
-    classpath = ktlint
-    mainClass.set("com.pinterest.ktlint.Main")
-    // see https://pinterest.github.io/ktlint/install/cli/#command-line-usage for more information
-    args = listOf("src/**/*.kt")
-}
-
-val ktlintFormat by tasks.creating(JavaExec::class) {
-    group = "formatting"
-    description = "Format Kotlin code according to ktlint rules."
-
-    classpath = ktlint
-    main = "com.pinterest.ktlint.Main"
-    args = listOf(
-        "-F",
-        "**/*.kt",
-        "**/*.kts"
-    )
 }
 
 val installGitHook by tasks.creating(Copy::class) {
@@ -180,5 +93,3 @@ val installGitHook by tasks.creating(Copy::class) {
     into(File(rootProject.rootDir, ".git/hooks"))
     fileMode = 0b111101101
 }
-
-tasks.getByPath(":app:preBuild").dependsOn(installGitHook)

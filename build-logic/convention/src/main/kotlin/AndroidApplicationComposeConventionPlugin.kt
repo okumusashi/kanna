@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    includeBuild("build-logic")
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
+import com.android.build.api.dsl.ApplicationExtension
+import com.hisui.kanna.configureAndroidCompose
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
+
+class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
+    override fun apply(target: Project) {
+        with(target) {
+            pluginManager.apply("com.android.application")
+            val extension = extensions.getByType<ApplicationExtension>()
+            configureAndroidCompose(extension)
+        }
     }
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-rootProject.name = "kanna"
-include(":app")
-include(":core:data")
-include(":core:database")
-include(":core:datastore")
-include(":core:model")
-include(":core:ui")

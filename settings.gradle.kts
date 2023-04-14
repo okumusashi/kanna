@@ -32,3 +32,4 @@ dependencyResolutionManagement {
 rootProject.name = "kanna"
 include(":app")
 include(":core:data")
+include(":core:database")

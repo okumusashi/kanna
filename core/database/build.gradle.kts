@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.database
+plugins {
+    id("kanna.android.library")
+//    id("kanna.android.room")
+}
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.hisui.kanna.database.model.DatabaseConst
+android {
+    namespace = "com.hisui.kanna.core.database"
+}
 
-@Entity(tableName = DatabaseConst.Table.KANNA)
-data class Kanna(
-    @PrimaryKey
-    val id: Long,
-    val name: String
-)
+dependencies {
+    implementation(libs.kotlinx.coroutines.android)
+}

@@ -33,3 +33,4 @@ rootProject.name = "kanna"
 include(":app")
 include(":core:data")
 include(":core:database")
+include(":core:datastore")

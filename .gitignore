@@ -7,9 +7,14 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+
+# Mac
 .DS_Store
-/build
+
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+
+# Generated files
+build/

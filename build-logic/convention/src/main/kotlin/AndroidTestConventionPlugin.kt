@@ -1,10 +1,3 @@
-import com.android.build.gradle.TestExtension
-import com.hisui.kanna.configureGradleManagedDevices
-import com.hisui.kanna.configureKotlinAndroid
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-
 /*
  * Copyright 2022 Lynn Sakashita
  *
@@ -20,6 +13,13 @@ import org.gradle.kotlin.dsl.configure
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import com.android.build.gradle.TestExtension
+import com.hisui.kanna.configureGradleManagedDevices
+import com.hisui.kanna.configureKotlinAndroid
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 
 class AndroidTestConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

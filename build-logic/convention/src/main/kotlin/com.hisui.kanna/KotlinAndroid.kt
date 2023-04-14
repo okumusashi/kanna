@@ -62,6 +62,12 @@ internal fun Project.configureKotlinAndroid(
             // Set JVM target to 11
             jvmTarget = JavaVersion.VERSION_11.toString()
         }
+
+        val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+        dependencies {
+            add("coreLibraryDesugaring", libs.findLibrary("android.desugarJdkLibs").get())
+        }
     }
 }
 

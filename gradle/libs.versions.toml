@@ -1,9 +1,11 @@
 [versions]
 accompanist = "0.27.0"
 
+androidDesugarJdkLibs = "1.2.2"
 androidGradlePlugin = "7.4.1"
 androidxActivityCompose = "1.6.1"
 androidxComposeBom = "2023.01.00"
+androidxComposeCompiler = "1.4.4"
 androidxCore = "1.9.0"
 androidxDataStore = "1.0.0"
 androidxHiltNavigationCompose = "1.0.0"
@@ -21,7 +23,7 @@ hilt = "2.44"
 junit4 = "4.13.2"
 junit5 = "5.8.2"
 
-kotlin = "1.7.20"
+kotlin = "1.8.10"
 kotlinxSerializationJson = "1.4.1"
 ksp = "1.7.20-1.0.8"
 ktlint = "0.47.1"
@@ -37,6 +39,8 @@ retrofitKotlinxSerializationJson = "0.8.0"
 
 [libraries]
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
+
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
 

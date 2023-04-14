@@ -41,7 +41,7 @@ gradlePlugin {
         }
         register("androidApplication") {
             id = "kanna.android.application"
-            implementationClass = "AndroidApplicationConventionPlugin.kt.kt"
+            implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidLibraryCompose") {
             id = "kanna.android.library.compose"

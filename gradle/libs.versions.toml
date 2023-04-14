@@ -4,8 +4,9 @@ accompanist = "0.27.0"
 androidDesugarJdkLibs = "1.2.2"
 androidGradlePlugin = "7.4.1"
 androidxActivityCompose = "1.6.1"
-androidxComposeBom = "2023.01.00"
+androidxComposeBom = "2023.03.00"
 androidxComposeCompiler = "1.4.4"
+androidxComposeMaterial3 = "1.0.1"
 androidxCore = "1.9.0"
 androidxDataStore = "1.0.0"
 androidxHiltNavigationCompose = "1.0.0"
@@ -51,8 +52,9 @@ androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
-androidx-copmose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
+androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "androidxComposeMaterial3" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-dataStore-core = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }

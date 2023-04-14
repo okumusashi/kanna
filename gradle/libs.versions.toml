@@ -25,6 +25,7 @@ kotlin = "1.7.20"
 kotlinxSerializationJson = "1.4.1"
 ksp = "1.7.20-1.0.8"
 ktlint = "0.47.1"
+ktlintGradle = "11.0.0"
 
 protobuf = "3.21.9"
 protobufPlugin = "0.8.19"
@@ -98,4 +99,5 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }

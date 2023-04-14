@@ -95,8 +95,6 @@ protobuf {
     }
 }
 
-val ktlint: Configuration by configurations.creating
-
 dependencies {
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
@@ -140,39 +138,6 @@ dependencies {
 
     implementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    ktlint(libs.ktlint) {
-        attributes {
-            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
-        }
-    }
-}
-
-val outputDir = "${project.buildDir}/reports/ktlint/"
-val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
-
-val ktlintCheck by tasks.creating(JavaExec::class) {
-    inputs.files(inputFiles)
-    outputs.dir(outputDir)
-
-    description = "Check Kotlin code style."
-    classpath = ktlint
-    mainClass.set("com.pinterest.ktlint.Main")
-    // see https://pinterest.github.io/ktlint/install/cli/#command-line-usage for more information
-    args = listOf("src/**/*.kt")
-}
-
-val ktlintFormat by tasks.creating(JavaExec::class) {
-    group = "formatting"
-    description = "Format Kotlin code according to ktlint rules."
-
-    classpath = ktlint
-    main = "com.pinterest.ktlint.Main"
-    args = listOf(
-        "-F",
-        "**/*.kt",
-        "**/*.kts"
-    )
 }
 
 val installGitHook by tasks.creating(Copy::class) {
@@ -180,5 +145,3 @@ val installGitHook by tasks.creating(Copy::class) {
     into(File(rootProject.rootDir, ".git/hooks"))
     fileMode = 0b111101101
 }
-
-tasks.getByPath(":app:preBuild").dependsOn(installGitHook)

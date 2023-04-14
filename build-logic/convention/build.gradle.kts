@@ -59,10 +59,10 @@ gradlePlugin {
             id = "kanna.android.test"
             implementationClass = "AndroidTestConventionPlugin"
         }
-//        register("androidHilt") {
-//            id = "kanna.android.hilt"
-//            implementationClass = "AndroidHiltConventionPlugin"
-//        }
+        register("androidHilt") {
+            id = "kanna.android.hilt"
+            implementationClass = "AndroidHiltConventionPlugin"
+        }
 //        register("androidRoom") {
 //            id = "kanna.android.room"
 //            implementationClass = "AndroidRoomConventionPlugin"

@@ -63,9 +63,9 @@ gradlePlugin {
             id = "kanna.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
-//        register("androidRoom") {
-//            id = "kanna.android.room"
-//            implementationClass = "AndroidRoomConventionPlugin"
-//        }
+        register("androidRoom") {
+            id = "kanna.android.room"
+            implementationClass = "AndroidRoomConventionPlugin"
+        }
     }
 }

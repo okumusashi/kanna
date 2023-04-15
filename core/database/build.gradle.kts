@@ -16,7 +16,8 @@
 
 plugins {
     id("kanna.android.library")
-//    id("kanna.android.room")
+    id("kanna.android.hilt")
+    id("kanna.android.room")
 }
 
 android {

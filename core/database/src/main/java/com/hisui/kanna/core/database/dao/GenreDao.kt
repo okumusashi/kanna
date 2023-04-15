@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.library")
-    id("kanna.android.hilt")
-    id("kanna.android.room")
-}
+package com.hisui.kanna.core.database.dao
 
-android {
-    namespace = "com.hisui.kanna.core.database"
-}
+import androidx.room.Dao
+import androidx.room.Insert
+import com.hisui.kanna.core.database.entity.GenreEntity
 
-dependencies {
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.datetime)
+@Dao
+interface GenreDao {
+    @Insert
+    suspend fun insert(vararg genres: GenreEntity)
 }

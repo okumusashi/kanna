@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.library")
-    id("kanna.android.hilt")
-    id("kanna.android.room")
-}
+package com.hisui.kanna.core.database.entity
 
-android {
-    namespace = "com.hisui.kanna.core.database"
-}
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-dependencies {
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.datetime)
-}
+@Entity(tableName = "genres")
+data class GenreEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long,
+    val name: String,
+    @ColumnInfo(name = "is_favorite")
+    val isFavorite: Boolean
+)

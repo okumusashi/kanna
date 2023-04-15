@@ -1,3 +1,5 @@
+// ktlint-disable filename
+
 /*
  * Copyright 2022 Lynn Sakashita
  *
@@ -14,17 +16,15 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.library")
-    id("kanna.android.hilt")
-    id("kanna.android.room")
-}
+package com.hisui.kanna.core.database
 
-android {
-    namespace = "com.hisui.kanna.core.database"
-}
+import androidx.room.TypeConverter
+import kotlinx.datetime.Instant
 
-dependencies {
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.datetime)
+class InstantTypeConverter {
+    @TypeConverter
+    fun fromInstant(value: Instant?): Long? = value?.toEpochMilliseconds()
+
+    @TypeConverter
+    fun toInstant(value: Long?): Instant? = value?.let(Instant::fromEpochMilliseconds)
 }

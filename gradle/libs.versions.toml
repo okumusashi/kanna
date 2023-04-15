@@ -26,6 +26,7 @@ junit5 = "5.8.2"
 
 kotlin = "1.8.10"
 kotlinxCoroutines = "1.6.4"
+kotlinxDatetime = "0.4.0"
 kotlinxSerializationJson = "1.4.1"
 ksp = "1.8.10-1.0.9"
 ktlint = "0.47.1"
@@ -82,6 +83,7 @@ junit5 = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref 
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 ktlint = { group = "com.pinterest", name = "ktlint", version.ref = "ktlint" }

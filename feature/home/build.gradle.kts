@@ -14,27 +14,15 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    includeBuild("build-logic")
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
+plugins {
+    id("kanna.android.feature")
+    id("kanna.android.library.compose")
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
+
+android {
+    namespace = "com.hisui.kanna.feature.home"
 }
-rootProject.name = "kanna"
-include(":app")
-include(":core:data")
-include(":core:database")
-include(":core:datastore")
-include(":core:domain")
-include(":core:model")
-include(":core:ui")
-include(":feature:home")
+
+dependencies {
+    implementation(libs.androidx.activity.compose)
+}

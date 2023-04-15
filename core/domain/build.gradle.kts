@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    includeBuild("build-logic")
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
+plugins {
+    id("kanna.android.library")
+    kotlin("kapt")
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
+
+android {
+    namespace = "com.hisui.kanna.core.domain"
 }
-rootProject.name = "kanna"
-include(":app")
-include(":core:data")
-include(":core:database")
-include(":core:datastore")
-include(":core:domain")
-include(":core:model")
-include(":core:ui")
+
+dependencies {
+    implementation(project(":core:data"))
+    implementation(project(":core:model"))
+    implementation(libs.hilt.android)
+
+    kapt(libs.hilt.compiler)
+}

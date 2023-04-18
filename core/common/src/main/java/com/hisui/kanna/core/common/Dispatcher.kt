@@ -14,28 +14,14 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    includeBuild("build-logic")
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
+package com.hisui.kanna.core.common
+
+import javax.inject.Qualifier
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Dispatcher(val dispatcher: KannaDispatchers)
+
+enum class KannaDispatchers {
+    IO, DEFAULT
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-rootProject.name = "kanna"
-include(":app")
-include(":core:data")
-include(":core:database")
-include(":core:datastore")
-include(":core:domain")
-include(":core:model")
-include(":core:ui")
-include(":feature:home")
-include(":core:common")

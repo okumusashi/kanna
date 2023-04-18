@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    includeBuild("build-logic")
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-rootProject.name = "kanna"
-include(":app")
-include(":core:data")
-include(":core:database")
-include(":core:datastore")
-include(":core:domain")
-include(":core:model")
-include(":core:ui")
-include(":feature:home")
-include(":core:common")
-include(":core:testing")
+package com.hisui.kanna.core.testing.data
+
+import com.hisui.kanna.core.model.Book
+import kotlinx.datetime.Clock
+
+val defaultBook: Book =
+    Book(
+        id = 1,
+        title = "title",
+        readDate = Clock.System.now(),
+        memo = "memo",
+        rating = 5,
+        author = "author1",
+        authorId = "author1",
+        authorMemo = null,
+        genre = "genre1"
+    )

@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    includeBuild("build-logic")
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
+plugins {
+    id("kanna.android.library")
+    id("kanna.android.hilt")
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
+
+android {
+    namespace = "com.hisui.kanna.core.testing"
 }
-rootProject.name = "kanna"
-include(":app")
-include(":core:data")
-include(":core:database")
-include(":core:datastore")
-include(":core:domain")
-include(":core:model")
-include(":core:ui")
-include(":feature:home")
-include(":core:common")
-include(":core:testing")
+
+dependencies {
+    api(libs.junit5)
+    api(libs.google.truth)
+    api(libs.androidx.arch.core.testing)
+    api(libs.kotlinx.coroutines.test)
+
+    implementation(project(":core:common"))
+    implementation(project(":core:data"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
+    implementation(libs.kotlinx.datetime)
+}

@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kotlin")
-}
+package com.hisui.kanna.core.model
 
-dependencies {
-    implementation(libs.kotlinx.datetime)
-}
+data class Genre(val name: String, val isFavorite: Boolean)

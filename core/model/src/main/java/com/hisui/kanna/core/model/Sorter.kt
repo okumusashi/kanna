@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kotlin")
-}
+package com.hisui.kanna.core.model
 
-dependencies {
-    implementation(libs.kotlinx.datetime)
+data class Sort(val by: Sorter, val direction: SortDirection)
+
+interface Sorter
+
+enum class SortDirection {
+    ASC, DESC;
+
+    val isAsc: Boolean
+        get() = this == ASC
 }

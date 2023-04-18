@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kotlin")
-}
+package com.hisui.kanna.core.model
 
-dependencies {
-    implementation(libs.kotlinx.datetime)
+import kotlinx.datetime.Instant
+
+data class Book(
+    val id: Long,
+    val title: String,
+    val readDate: Instant,
+    val memo: String,
+    val rating: Int,
+    val author: String,
+    val authorId: String,
+    val authorMemo: String?,
+    val genre: String,
+)
+
+enum class BookSorter : Sorter {
+    TITLE, READ_DATE
 }

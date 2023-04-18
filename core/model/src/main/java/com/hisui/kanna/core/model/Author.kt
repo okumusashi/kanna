@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kotlin")
-}
+package com.hisui.kanna.core.model
 
-dependencies {
-    implementation(libs.kotlinx.datetime)
-}
+data class Author(
+    val id: String,
+    val name: String,
+    val memo: String?,
+    val isFavorite: Boolean
+)

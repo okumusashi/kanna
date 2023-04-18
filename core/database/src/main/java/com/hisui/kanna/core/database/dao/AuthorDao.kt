@@ -23,5 +23,5 @@ import com.hisui.kanna.core.database.entity.AuthorEntity
 @Dao
 interface AuthorDao {
     @Insert
-    suspend fun insert(vararg authors: AuthorEntity)
+    suspend fun insert(author: AuthorEntity)
 }

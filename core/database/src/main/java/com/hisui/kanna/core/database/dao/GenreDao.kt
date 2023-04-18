@@ -23,5 +23,5 @@ import com.hisui.kanna.core.database.entity.GenreEntity
 @Dao
 interface GenreDao {
     @Insert
-    suspend fun insert(vararg genres: GenreEntity)
+    suspend fun insert(genre: GenreEntity)
 }

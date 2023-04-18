@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0924143a29ae17cb67f547a8b1c274e5",
+    "identityHash": "bdbf44845cc12dac0be6d402538ff897",
     "entities": [
       {
         "tableName": "books",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `author_id` INTEGER, `genre_id` INTEGER, `readDate` INTEGER NOT NULL, `memo` TEXT NOT NULL, `rating` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`author_id`) REFERENCES `authors`(`id`) ON UPDATE CASCADE ON DELETE SET NULL , FOREIGN KEY(`genre_id`) REFERENCES `genres`(`id`) ON UPDATE CASCADE ON DELETE SET NULL )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `author_id` TEXT, `genre` TEXT, `read_date` INTEGER NOT NULL, `memo` TEXT NOT NULL, `rating` INTEGER NOT NULL, FOREIGN KEY(`author_id`) REFERENCES `authors`(`id`) ON UPDATE CASCADE ON DELETE SET NULL , FOREIGN KEY(`genre`) REFERENCES `genres`(`name`) ON UPDATE CASCADE ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
@@ -23,18 +23,18 @@
           {
             "fieldPath": "authorId",
             "columnName": "author_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "genreId",
-            "columnName": "genre_id",
-            "affinity": "INTEGER",
+            "fieldPath": "genre",
+            "columnName": "genre",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "readDate",
-            "columnName": "readDate",
+            "columnName": "read_date",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -52,12 +52,31 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
+          "autoGenerate": true,
           "columnNames": [
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_books_author_id",
+            "unique": false,
+            "columnNames": [
+              "author_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_books_author_id` ON `${TABLE_NAME}` (`author_id`)"
+          },
+          {
+            "name": "index_books_genre",
+            "unique": false,
+            "columnNames": [
+              "genre"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_books_genre` ON `${TABLE_NAME}` (`genre`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "authors",
@@ -75,22 +94,22 @@
             "onDelete": "SET NULL",
             "onUpdate": "CASCADE",
             "columns": [
-              "genre_id"
+              "genre"
             ],
             "referencedColumns": [
-              "id"
+              "name"
             ]
           }
         ]
       },
       {
         "tableName": "authors",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `memo` TEXT, `is_favorite` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -100,6 +119,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "memo",
+            "columnName": "memo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "isFavorite",
             "columnName": "is_favorite",
             "affinity": "INTEGER",
@@ -107,7 +132,7 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
+          "autoGenerate": false,
           "columnNames": [
             "id"
           ]
@@ -117,14 +142,8 @@
       },
       {
         "tableName": "genres",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL, PRIMARY KEY(`name`))",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "name",
             "columnName": "name",
@@ -139,9 +158,9 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
+          "autoGenerate": false,
           "columnNames": [
-            "id"
+            "name"
           ]
         },
         "indices": [],
@@ -176,7 +195,17 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_favorite_lines_book_id",
+            "unique": false,
+            "columnNames": [
+              "book_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_favorite_lines_book_id` ON `${TABLE_NAME}` (`book_id`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "books",
@@ -195,7 +224,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0924143a29ae17cb67f547a8b1c274e5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bdbf44845cc12dac0be6d402538ff897')"
     ]
   }
 }

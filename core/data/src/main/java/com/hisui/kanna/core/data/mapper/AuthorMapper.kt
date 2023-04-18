@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.library")
-    id("kanna.android.hilt")
-}
+package com.hisui.kanna.core.data.mapper
 
-android {
-    namespace = "com.hisui.kanna.core.data"
-}
+import com.hisui.kanna.core.database.entity.AuthorEntity
+import com.hisui.kanna.core.model.Author
 
-dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:database"))
-    implementation(project(":core:model"))
+internal fun Author.asEntity(): AuthorEntity =
+    AuthorEntity(
+        id = memo?.let { "$name-$memo" } ?: name,
+        name = name,
+        isFavorite = isFavorite
+    )
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.datetime)
-}
+internal fun AuthorEntity.asExternalModel(): Author =
+    Author(
+        id = id,
+        name = name,
+        memo = memo,
+        isFavorite = isFavorite
+    )

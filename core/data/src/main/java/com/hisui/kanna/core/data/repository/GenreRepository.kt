@@ -14,21 +14,10 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.library")
-    id("kanna.android.hilt")
-}
+package com.hisui.kanna.core.data.repository
 
-android {
-    namespace = "com.hisui.kanna.core.data"
-}
+import com.hisui.kanna.core.model.Genre
 
-dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:database"))
-    implementation(project(":core:model"))
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.datetime)
+interface GenreRepository {
+    suspend fun save(genre: Genre): Result<Unit>
 }

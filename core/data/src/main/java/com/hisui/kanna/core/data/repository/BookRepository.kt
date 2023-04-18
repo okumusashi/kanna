@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.library")
-    id("kanna.android.hilt")
-}
+package com.hisui.kanna.core.data.repository
 
-android {
-    namespace = "com.hisui.kanna.core.data"
-}
+import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.Sort
+import kotlinx.coroutines.flow.Flow
 
-dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:database"))
-    implementation(project(":core:model"))
+interface BookRepository {
+    suspend fun save(book: Book): Result<Unit>
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.datetime)
+    fun getAllStream(sort: Sort): Flow<List<Book>>
+
+    fun getStream(id: Long): Flow<Book?>
+
+    suspend fun update(book: Book): Result<Unit>
 }

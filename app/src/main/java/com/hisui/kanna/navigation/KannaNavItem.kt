@@ -27,7 +27,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.hisui.kanna.R
 
-enum class KannaDestination(
+enum class KannaNavItem(
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
     @StringRes val titleRes: Int

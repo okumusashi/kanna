@@ -32,7 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import com.hisui.kanna.navigation.KannaDestination
+import com.hisui.kanna.navigation.KannaNavItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +63,6 @@ fun KannaApp(
             }
 
             Box(modifier = Modifier.fillMaxSize()) {
-                // TODO
             }
         }
     }
@@ -72,7 +71,7 @@ fun KannaApp(
 @Composable
 private fun KannaBottomBar(
     modifier: Modifier,
-    destinations: List<KannaDestination> = KannaDestination.values().toList(),
+    destinations: List<KannaNavItem> = KannaNavItem.values().toList(),
     currentDestination: NavDestination?
 ) {
     NavigationBar(modifier = modifier) {
@@ -92,7 +91,7 @@ private fun KannaBottomBar(
     }
 }
 
-private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: KannaDestination) =
+private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: KannaNavItem) =
     this?.hierarchy?.any {
         it.route?.contains(destination.name, true) ?: false
     } ?: false
@@ -100,7 +99,7 @@ private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: KannaD
 @Composable
 private fun KannaNavRail(
     modifier: Modifier,
-    destinations: List<KannaDestination> = KannaDestination.values().toList(),
+    destinations: List<KannaNavItem> = KannaNavItem.values().toList(),
     currentDestination: NavDestination?
 ) {
     NavigationRail(modifier = modifier) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.ui.theme
+package com.hisui.kanna.core.designsystem.theme
 
 enum class DarkThemeConfig {
     FOLLOW_SYSTEM, LIGHT, DARK

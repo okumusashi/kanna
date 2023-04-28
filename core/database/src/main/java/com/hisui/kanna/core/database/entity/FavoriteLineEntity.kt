@@ -19,6 +19,7 @@ package com.hisui.kanna.core.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -31,7 +32,8 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
         )
-    ]
+    ],
+    indices = [Index(value = ["book_id"])]
 )
 data class FavoriteLineEntity(
     @PrimaryKey val id: Long,

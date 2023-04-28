@@ -19,6 +19,7 @@ package com.hisui.kanna.core.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.datetime.Instant
 
@@ -34,21 +35,25 @@ import kotlinx.datetime.Instant
         ),
         ForeignKey(
             entity = GenreEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["genre_id"],
+            parentColumns = ["name"],
+            childColumns = ["genre"],
             onDelete = ForeignKey.SET_NULL,
             onUpdate = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["author_id"]),
+        Index(value = ["genre"]),
     ]
 )
 data class BookEntity(
-    @PrimaryKey val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long,
     val title: String,
     @ColumnInfo(name = "author_id")
-    val authorId: Long?,
-    @ColumnInfo(name = "genre_id")
-    val genreId: Long?,
-    @ColumnInfo(name = "readDate")
+    val authorId: String?,
+    @ColumnInfo(name = "genre")
+    val genre: String?,
+    @ColumnInfo(name = "read_date")
     val readDate: Instant,
     val memo: String,
     val rating: Int

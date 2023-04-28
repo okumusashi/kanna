@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.ui.theme
+package com.hisui.kanna.core.testing.data
 
-import androidx.compose.ui.graphics.Color
+import com.hisui.kanna.core.model.Book
+import kotlinx.datetime.Clock
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val defaultBook: Book =
+    Book(
+        id = 1,
+        title = "title",
+        readDate = Clock.System.now(),
+        memo = "memo",
+        rating = 5,
+        author = "author1",
+        authorId = "author1",
+        authorMemo = null,
+        genre = "genre1"
+    )

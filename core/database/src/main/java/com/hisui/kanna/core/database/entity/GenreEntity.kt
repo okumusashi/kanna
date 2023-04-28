@@ -22,8 +22,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "genres")
 data class GenreEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long,
-    val name: String,
-    @ColumnInfo(name = "is_favorite")
-    val isFavorite: Boolean
+    @PrimaryKey val name: String,
+    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean
 )

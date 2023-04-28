@@ -25,8 +25,8 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.ui.KannaApp
-import com.hisui.kanna.ui.theme.KannaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)

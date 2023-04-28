@@ -47,5 +47,8 @@ class KannaAppState(
     val shouldShowBottomBar: Boolean
         get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
 
+    val shouldShowTwoPane: Boolean
+        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
+
     val shouldShowNavRail: Boolean get() = !shouldShowBottomBar
 }

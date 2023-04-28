@@ -51,10 +51,10 @@ gradlePlugin {
             id = "kanna.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
-//        register("androidFeature") {
-//            id = "kanna.android.feature"
-//            implementationClass = "AndroidFeatureConventionPlugin"
-//        }
+        register("androidFeature") {
+            id = "kanna.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
         register("androidTest") {
             id = "kanna.android.test"
             implementationClass = "AndroidTestConventionPlugin"

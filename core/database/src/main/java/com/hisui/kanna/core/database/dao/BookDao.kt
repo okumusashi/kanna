@@ -18,10 +18,30 @@ package com.hisui.kanna.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.Query
+import com.hisui.kanna.core.database.entity.AuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BookDao {
     @Insert
     suspend fun insert(vararg books: BookEntity)
+
+    @Query(
+        """
+            SELECT * FROM books
+            INNER JOIN authors ON books.author_id = authors.id
+            ORDER BY
+                CASE WHEN :sortByTitle AND :isAsc = 1 THEN books.title END ASC,
+                CASE WHEN :sortByTitle AND :isAsc = 0 THEN books.title END DESC,
+                CASE WHEN :sortByReadDate AND :isAsc = 1 THEN books.read_date END ASC,
+                CASE WHEN :sortByReadDate AND :isAsc = 1 THEN books.read_date END DESC
+        """
+    )
+    fun getAllBooksAndAuthors(
+        sortByTitle: Boolean,
+        sortByReadDate: Boolean,
+        isAsc: Boolean
+    ): Flow<Map<BookEntity, AuthorEntity>>
 }

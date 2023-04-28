@@ -20,10 +20,17 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * [id] is basically the [name].
+ *
+ * If there are multiple authors with the same name, they are distinguished by [id].
+ * In such case, the [id] would be [name] + [memo].
+ * [memo] can be anything that can distinguish the authors, which is edited by a user.
+ */
 @Entity(tableName = "authors")
 data class AuthorEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey val id: String,
     val name: String,
-    @ColumnInfo(name = "is_favorite")
-    val isFavorite: Boolean
+    val memo: String? = null,
+    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean
 )

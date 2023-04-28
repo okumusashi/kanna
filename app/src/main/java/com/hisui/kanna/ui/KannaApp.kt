@@ -16,7 +16,6 @@
 
 package com.hisui.kanna.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -32,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.hisui.kanna.navigation.KannaNavHost
 import com.hisui.kanna.navigation.KannaNavItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,8 +62,7 @@ fun KannaApp(
                 )
             }
 
-            Box(modifier = Modifier.fillMaxSize()) {
-            }
+            KannaNavHost(navController = appState.navController)
         }
     }
 }

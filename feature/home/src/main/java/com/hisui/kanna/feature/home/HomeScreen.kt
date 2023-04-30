@@ -78,15 +78,18 @@ private fun HomeScreen(homeUiState: HomeUiState) {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            // TODO: Filter dropdow
+            // TODO: Filter dropdown
 
             when (homeUiState) {
-                is HomeUiState.Loading -> { /* TODO */
+                is HomeUiState.Loading -> {
+                    // TODO: Add indicator
                 }
-                is HomeUiState.Empty -> { /* TODO */
+                is HomeUiState.Empty -> {
+                    // TODO: Add explanation and button (if not using fab) to add a new book
                 }
-                is HomeUiState.RecentBooks ->
+                is HomeUiState.RecentBooks -> {
                     bookList(books = homeUiState.books)
+                }
                 else -> {}
             }
         }

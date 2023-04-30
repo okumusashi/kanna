@@ -22,6 +22,8 @@ import com.hisui.kanna.core.data.repository.GenreRepository
 import com.hisui.kanna.core.data.repository.OfflineAuthorRepository
 import com.hisui.kanna.core.data.repository.OfflineBookRepository
 import com.hisui.kanna.core.data.repository.OfflineGenreRepository
+import com.hisui.kanna.core.data.repository.OfflineQuoteRepository
+import com.hisui.kanna.core.data.repository.QuoteRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -30,7 +32,6 @@ import dagger.hilt.android.components.ViewModelComponent
 @Module
 @InstallIn(ViewModelComponent::class)
 internal abstract class DataModule {
-
     @Binds
     abstract fun bindsBookRepository(
         impl: OfflineBookRepository
@@ -45,4 +46,9 @@ internal abstract class DataModule {
     abstract fun bindsGenreRepository(
         impl: OfflineGenreRepository
     ): GenreRepository
+
+    @Binds
+    abstract fun bindsQuoteRepository(
+        impl: OfflineQuoteRepository
+    ): QuoteRepository
 }

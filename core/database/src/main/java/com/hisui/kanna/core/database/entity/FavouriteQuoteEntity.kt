@@ -35,14 +35,22 @@ import kotlinx.datetime.Instant
             onUpdate = ForeignKey.CASCADE,
         )
     ],
-    indices = [Index(value = ["book_id"])]
+    indices = [
+        Index(value = ["book_id"])
+    ]
 )
 data class FavouriteQuoteEntity(
-    @ColumnInfo(name = "book_id") val bookId: Long,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private val _id: Long = 0,
+    @ColumnInfo(name = "book_id")
+    val bookId: Long,
     val page: Int,
     val quote: String,
     val thought: String,
+    @ColumnInfo(name = "created_at")
+    private val _createdAt: Instant = Clock.System.now()
 ) {
-    @PrimaryKey(autoGenerate = true) val id: Long = 0
-    @ColumnInfo(name = "created_at") val createdAt: Instant = Clock.System.now()
+    val id: Long get() = _id
+    val createdAt: Instant get() = _createdAt
 }

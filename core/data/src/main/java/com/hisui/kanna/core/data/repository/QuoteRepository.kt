@@ -14,26 +14,13 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.database.dao
+package com.hisui.kanna.core.data.repository
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
-import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
+import com.hisui.kanna.core.model.Quote
+import com.hisui.kanna.core.model.QuoteInput
 import kotlinx.coroutines.flow.Flow
 
-@Dao
-interface FavouriteQuoteDao {
-    @Insert
-    suspend fun insert(entity: FavouriteQuoteEntity)
-
-    @Query(
-        """
-            SELECT * FROM favourite_quotes
-            INNER JOIN books ON favourite_quotes.book_id = books.id
-            ORDER BY created_at DESC
-        """
-    )
-    fun getAll(): Flow<Map<FavouriteQuoteEntity, BookAndAuthorEntity>>
+interface QuoteRepository {
+    suspend fun save(quote: QuoteInput): Result<Unit>
+    fun getAllStream(): Flow<List<Quote>>
 }

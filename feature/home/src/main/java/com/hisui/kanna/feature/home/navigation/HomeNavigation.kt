@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.feature.navigation
+package com.hisui.kanna.feature.home.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable

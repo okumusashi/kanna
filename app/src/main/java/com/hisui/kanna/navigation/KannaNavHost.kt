@@ -19,8 +19,8 @@ package com.hisui.kanna.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.hisui.kanna.feature.navigation.homeNavigationRoute
-import com.hisui.kanna.feature.navigation.homeScreen
+import com.hisui.kanna.feature.home.navigation.homeNavigationRoute
+import com.hisui.kanna.feature.home.navigation.homeScreen
 
 @Composable
 fun KannaNavHost(

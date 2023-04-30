@@ -20,5 +20,5 @@ data class Author(
     val id: String,
     val name: String,
     val memo: String?,
-    val isFavorite: Boolean
+    val isFavourite: Boolean
 )

@@ -23,7 +23,7 @@ internal fun Author.asEntity(): AuthorEntity =
     AuthorEntity(
         id = memo?.let { "$name-$memo" } ?: name,
         name = name,
-        isFavorite = isFavorite
+        isFavourite = isFavourite
     )
 
 internal fun AuthorEntity.asExternalModel(): Author =
@@ -31,5 +31,5 @@ internal fun AuthorEntity.asExternalModel(): Author =
         id = id,
         name = name,
         memo = memo,
-        isFavorite = isFavorite
+        isFavourite = isFavourite
     )

@@ -32,5 +32,5 @@ data class AuthorEntity(
     @PrimaryKey val id: String,
     val name: String,
     val memo: String? = null,
-    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean
+    @ColumnInfo(name = "is_favourite") val isFavourite: Boolean
 )

@@ -23,7 +23,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "favorite_lines",
+    tableName = "favourite_quotes",
     foreignKeys = [
         ForeignKey(
             entity = BookEntity::class,
@@ -35,9 +35,8 @@ import androidx.room.PrimaryKey
     ],
     indices = [Index(value = ["book_id"])]
 )
-data class FavoriteLineEntity(
-    @PrimaryKey val id: Long,
-    @ColumnInfo(name = "book_id")
-    val bookId: Long,
-    val line: String
+data class FavouriteQuoteEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long,
+    @ColumnInfo(name = "book_id") val bookId: Long,
+    val quote: String
 )

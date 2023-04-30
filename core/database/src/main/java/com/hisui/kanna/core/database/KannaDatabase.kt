@@ -21,11 +21,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.hisui.kanna.core.database.dao.AuthorDao
 import com.hisui.kanna.core.database.dao.BookDao
-import com.hisui.kanna.core.database.dao.FavoriteLineDao
+import com.hisui.kanna.core.database.dao.FavouriteQuoteDao
 import com.hisui.kanna.core.database.dao.GenreDao
 import com.hisui.kanna.core.database.entity.AuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
-import com.hisui.kanna.core.database.entity.FavoriteLineEntity
+import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
 import com.hisui.kanna.core.database.entity.GenreEntity
 
 @Database(
@@ -33,7 +33,7 @@ import com.hisui.kanna.core.database.entity.GenreEntity
         BookEntity::class,
         AuthorEntity::class,
         GenreEntity::class,
-        FavoriteLineEntity::class
+        FavouriteQuoteEntity::class
     ],
     version = 1,
     exportSchema = true
@@ -43,5 +43,5 @@ abstract class KannaDatabase : RoomDatabase() {
     abstract fun bookDao(): BookDao
     abstract fun authorDao(): AuthorDao
     abstract fun genreDao(): GenreDao
-    abstract fun favoriteLineDao(): FavoriteLineDao
+    abstract fun favouriteQuoteDao(): FavouriteQuoteDao
 }

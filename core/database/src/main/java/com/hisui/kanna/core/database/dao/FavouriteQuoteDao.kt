@@ -18,10 +18,10 @@ package com.hisui.kanna.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import com.hisui.kanna.core.database.entity.FavoriteLineEntity
+import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
 
 @Dao
-interface FavoriteLineDao {
+interface FavouriteQuoteDao {
     @Insert
-    suspend fun insert(vararg favoriteLines: FavoriteLineEntity)
+    suspend fun insert(entity: FavouriteQuoteEntity)
 }

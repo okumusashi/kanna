@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bdbf44845cc12dac0be6d402538ff897",
+    "identityHash": "1008fa0887fb14aae37bfce8f4e3e3f5",
     "entities": [
       {
         "tableName": "books",
@@ -104,7 +104,7 @@
       },
       {
         "tableName": "authors",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `memo` TEXT, `is_favorite` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `memo` TEXT, `is_favourite` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -125,8 +125,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "isFavorite",
-            "columnName": "is_favorite",
+            "fieldPath": "isFavourite",
+            "columnName": "is_favourite",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -142,7 +142,7 @@
       },
       {
         "tableName": "genres",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL, PRIMARY KEY(`name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `is_favourite` INTEGER NOT NULL, PRIMARY KEY(`name`))",
         "fields": [
           {
             "fieldPath": "name",
@@ -151,8 +151,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "isFavorite",
-            "columnName": "is_favorite",
+            "fieldPath": "isFavourite",
+            "columnName": "is_favourite",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -167,8 +167,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "favorite_lines",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `book_id` INTEGER NOT NULL, `line` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`book_id`) REFERENCES `books`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "tableName": "favourite_quotes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `book_id` INTEGER NOT NULL, `quote` TEXT NOT NULL, FOREIGN KEY(`book_id`) REFERENCES `books`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -183,27 +183,27 @@
             "notNull": true
           },
           {
-            "fieldPath": "line",
-            "columnName": "line",
+            "fieldPath": "quote",
+            "columnName": "quote",
             "affinity": "TEXT",
             "notNull": true
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
+          "autoGenerate": true,
           "columnNames": [
             "id"
           ]
         },
         "indices": [
           {
-            "name": "index_favorite_lines_book_id",
+            "name": "index_favourite_quotes_book_id",
             "unique": false,
             "columnNames": [
               "book_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_favorite_lines_book_id` ON `${TABLE_NAME}` (`book_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_favourite_quotes_book_id` ON `${TABLE_NAME}` (`book_id`)"
           }
         ],
         "foreignKeys": [
@@ -224,7 +224,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bdbf44845cc12dac0be6d402538ff897')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1008fa0887fb14aae37bfce8f4e3e3f5')"
     ]
   }
 }

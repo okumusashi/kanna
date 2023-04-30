@@ -73,6 +73,7 @@ class KannaAppState(
         }
         when (destination) {
             KannaNavItem.HOME -> navController.navigateToHome(options = navOptions)
+            KannaNavItem.QUOTE -> navController.navigateToQuote(options = navOptions)
             else -> {}
         }
     }

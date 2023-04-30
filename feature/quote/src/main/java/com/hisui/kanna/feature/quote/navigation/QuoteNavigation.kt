@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.navigation
+package com.hisui.kanna.feature.quote.navigation
 
-import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import com.hisui.kanna.feature.home.navigation.homeNavigationRoute
-import com.hisui.kanna.feature.home.navigation.homeScreen
-import com.hisui.kanna.feature.quote.navigation.quoteScreen
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.compose.composable
+import com.hisui.kanna.feature.quote.QuoteScreen
 
-@Composable
-fun KannaNavHost(
-    navController: NavHostController
-) {
-    NavHost(
-        navController = navController,
-        startDestination = homeNavigationRoute
-    ) {
-        homeScreen()
-        quoteScreen()
+const val quoteNavigationRoute = "quote"
+
+fun NavController.navigateToQuote(options: NavOptions?) {
+    navigate(quoteNavigationRoute, options)
+}
+
+fun NavGraphBuilder.quoteScreen() {
+    composable(route = quoteNavigationRoute) {
+        QuoteScreen()
     }
 }

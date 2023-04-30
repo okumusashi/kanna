@@ -19,7 +19,7 @@
 
     <!-- region navigation -->
     <string name="home">home</string>
-    <string name="history">history</string>
+    <string name="quote">quote</string>
     <string name="my_page">my page</string>
     <!-- endregion  -->
 </resources>

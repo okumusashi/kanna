@@ -18,10 +18,10 @@ package com.hisui.kanna.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.FormatQuote
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.FormatQuote
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -37,10 +37,10 @@ enum class KannaNavItem(
         unselectedIcon = Icons.Outlined.Home,
         titleRes = R.string.home
     ),
-    HISTORY(
-        selectedIcon = Icons.Filled.History,
-        unselectedIcon = Icons.Outlined.History,
-        titleRes = R.string.history
+    QUOTE(
+        selectedIcon = Icons.Filled.FormatQuote,
+        unselectedIcon = Icons.Outlined.FormatQuote,
+        titleRes = R.string.quote
     ),
     MY_PAGE(
         selectedIcon = Icons.Filled.Person,

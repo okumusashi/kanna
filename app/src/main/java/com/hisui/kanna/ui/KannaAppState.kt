@@ -21,9 +21,14 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
+import com.hisui.kanna.feature.home.navigation.navigateToHome
+import com.hisui.kanna.feature.quote.navigation.navigateToQuote
+import com.hisui.kanna.navigation.KannaNavItem
 
 @Composable
 fun rememberKannaAppState(
@@ -51,4 +56,24 @@ class KannaAppState(
         get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
 
     val shouldShowNavRail: Boolean get() = !shouldShowBottomBar
+
+    fun navigateToTopLevelDestination(destination: KannaNavItem) {
+        val navOptions = navOptions {
+            // Pop up to the start destination of the graph to
+            // avoid building up a large stack of destinations
+            // on the back stack as users select items
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            // Avoid multiple copies of the same destination when
+            // reselecting the same item
+            launchSingleTop = true
+            // Restore state when reselecting a previously selected item
+            restoreState = true
+        }
+        when (destination) {
+            KannaNavItem.HOME -> navController.navigateToHome(options = navOptions)
+            else -> {}
+        }
+    }
 }

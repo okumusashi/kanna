@@ -16,11 +16,17 @@
 
 package com.hisui.kanna.feature.home.navigation
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.hisui.kanna.feature.home.HomeScreen
 
-val homeNavigationRoute = "home"
+const val homeNavigationRoute = "home"
+
+fun NavController.navigateToHome(options: NavOptions?) {
+    navigate(homeNavigationRoute, options)
+}
 
 fun NavGraphBuilder.homeScreen() {
     composable(route = homeNavigationRoute) {

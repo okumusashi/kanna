@@ -96,12 +96,6 @@ private fun HomeScreen(homeUiState: HomeUiState) {
     }
 }
 
-@Preview(device = Devices.TABLET)
-@Composable
-private fun HomeScreenPreviewTablet() {
-    HomeScreenPreview()
-}
-
 @Composable
 private fun HomeScreenPreview() {
     KannaTheme {
@@ -145,6 +139,15 @@ private fun HomeScreenPreview() {
         HomeScreen(homeUiState = state)
     }
 }
+
+@Preview @Composable
+private fun HomeScreenPreviewCompact() { HomeScreenPreview() }
+
+@Preview(device = Devices.TABLET) @Composable
+private fun HomeScreenPreviewMedium() { HomeScreenPreview() }
+
+@Preview(device = Devices.DESKTOP) @Composable
+private fun HomeScreenPreviewLarge() { HomeScreenPreview() }
 
 private fun LazyGridScope.bookList(books: List<Book>) {
     items(books) { book ->

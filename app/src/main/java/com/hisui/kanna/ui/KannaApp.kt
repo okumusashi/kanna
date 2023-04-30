@@ -26,9 +26,11 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.hisui.kanna.navigation.KannaNavHost
@@ -45,7 +47,8 @@ fun KannaApp(
             if (appState.shouldShowBottomBar) {
                 KannaBottomBar(
                     modifier = Modifier,
-                    currentDestination = appState.currentDestination
+                    currentDestination = appState.currentDestination,
+                    onNavigate = appState::navigateToTopLevelDestination
                 )
             }
         }
@@ -58,7 +61,8 @@ fun KannaApp(
             if (appState.shouldShowNavRail) {
                 KannaNavRail(
                     modifier = Modifier,
-                    currentDestination = appState.currentDestination
+                    currentDestination = appState.currentDestination,
+                    onNavigate = appState::navigateToTopLevelDestination
                 )
             }
 
@@ -71,6 +75,7 @@ fun KannaApp(
 private fun KannaBottomBar(
     modifier: Modifier,
     destinations: List<KannaNavItem> = KannaNavItem.values().toList(),
+    onNavigate: (KannaNavItem) -> Unit,
     currentDestination: NavDestination?
 ) {
     NavigationBar(modifier = modifier) {
@@ -78,13 +83,14 @@ private fun KannaBottomBar(
             val selected = currentDestination.isTopLevelDestinationInHierarchy(destination)
             NavigationBarItem(
                 selected = selected,
-                onClick = { /*TODO: Implement after each screen is added*/ },
+                onClick = { onNavigate(destination) },
                 icon = {
                     Icon(
                         imageVector = if (selected) destination.selectedIcon else destination.unselectedIcon,
                         contentDescription = null
                     )
-                }
+                },
+                label = { Text(stringResource(id = destination.titleRes)) }
             )
         }
     }
@@ -99,6 +105,7 @@ private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: KannaN
 private fun KannaNavRail(
     modifier: Modifier,
     destinations: List<KannaNavItem> = KannaNavItem.values().toList(),
+    onNavigate: (KannaNavItem) -> Unit,
     currentDestination: NavDestination?
 ) {
     NavigationRail(modifier = modifier) {
@@ -106,13 +113,14 @@ private fun KannaNavRail(
             val selected = currentDestination.isTopLevelDestinationInHierarchy(destination)
             NavigationRailItem(
                 selected = selected,
-                onClick = { /*TODO: Implement after each screen is added*/ },
+                onClick = { onNavigate(destination) },
                 icon = {
                     Icon(
                         imageVector = if (selected) destination.selectedIcon else destination.unselectedIcon,
                         contentDescription = null
                     )
-                }
+                },
+                label = { Text(stringResource(id = destination.titleRes)) }
             )
         }
     }

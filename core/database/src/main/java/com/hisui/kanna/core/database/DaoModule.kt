@@ -18,7 +18,7 @@ package com.hisui.kanna.core.database
 
 import com.hisui.kanna.core.database.dao.AuthorDao
 import com.hisui.kanna.core.database.dao.BookDao
-import com.hisui.kanna.core.database.dao.FavoriteLineDao
+import com.hisui.kanna.core.database.dao.FavouriteQuoteDao
 import com.hisui.kanna.core.database.dao.GenreDao
 import dagger.Module
 import dagger.Provides
@@ -46,6 +46,6 @@ object DaoModule {
 
     @Provides
     @Singleton
-    fun providesFavoriteLineDao(database: KannaDatabase): FavoriteLineDao =
-        database.favoriteLineDao()
+    fun providesFavouriteQuoteDao(database: KannaDatabase): FavouriteQuoteDao =
+        database.favouriteQuoteDao()
 }

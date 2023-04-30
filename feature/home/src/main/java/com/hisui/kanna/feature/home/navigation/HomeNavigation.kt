@@ -14,11 +14,22 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.model
+package com.hisui.kanna.feature.home.navigation
 
-data class Author(
-    val id: String,
-    val name: String,
-    val memo: String?,
-    val isFavourite: Boolean
-)
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.compose.composable
+import com.hisui.kanna.feature.home.HomeScreen
+
+const val homeNavigationRoute = "home"
+
+fun NavController.navigateToHome(options: NavOptions?) {
+    navigate(homeNavigationRoute, options)
+}
+
+fun NavGraphBuilder.homeScreen() {
+    composable(route = homeNavigationRoute) {
+        HomeScreen()
+    }
+}

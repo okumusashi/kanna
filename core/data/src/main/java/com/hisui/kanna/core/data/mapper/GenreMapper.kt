@@ -22,5 +22,5 @@ import com.hisui.kanna.core.model.Genre
 internal fun Genre.asEntity(): GenreEntity =
     GenreEntity(
         name = name,
-        isFavorite = isFavorite
+        isFavourite = isFavourite
     )

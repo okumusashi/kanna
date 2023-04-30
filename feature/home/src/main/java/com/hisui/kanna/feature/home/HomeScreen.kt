@@ -78,25 +78,22 @@ private fun HomeScreen(homeUiState: HomeUiState) {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            // TODO: Filter dropdow
+            // TODO: Filter dropdown
 
             when (homeUiState) {
-                is HomeUiState.Loading -> { /* TODO */
+                is HomeUiState.Loading -> {
+                    // TODO: Add indicator
                 }
-                is HomeUiState.Empty -> { /* TODO */
+                is HomeUiState.Empty -> {
+                    // TODO: Add explanation and button (if not using fab) to add a new book
                 }
-                is HomeUiState.RecentBooks ->
+                is HomeUiState.RecentBooks -> {
                     bookList(books = homeUiState.books)
+                }
                 else -> {}
             }
         }
     }
-}
-
-@Preview(device = Devices.TABLET)
-@Composable
-private fun HomeScreenPreviewTablet() {
-    HomeScreenPreview()
 }
 
 @Composable
@@ -142,6 +139,15 @@ private fun HomeScreenPreview() {
         HomeScreen(homeUiState = state)
     }
 }
+
+@Preview @Composable
+private fun HomeScreenPreviewCompact() { HomeScreenPreview() }
+
+@Preview(device = Devices.TABLET) @Composable
+private fun HomeScreenPreviewMedium() { HomeScreenPreview() }
+
+@Preview(device = Devices.DESKTOP) @Composable
+private fun HomeScreenPreviewLarge() { HomeScreenPreview() }
 
 private fun LazyGridScope.bookList(books: List<Book>) {
     items(books) { book ->

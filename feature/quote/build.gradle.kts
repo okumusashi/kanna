@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.database.dao
+plugins {
+    id("kanna.android.feature")
+    id("kanna.android.library.compose")
+}
 
-import androidx.room.Dao
-import androidx.room.Insert
-import com.hisui.kanna.core.database.entity.FavoriteLineEntity
+android {
+    namespace = "com.hisui.kanna.feature.quote"
+}
 
-@Dao
-interface FavoriteLineDao {
-    @Insert
-    suspend fun insert(vararg favoriteLines: FavoriteLineEntity)
+dependencies {
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.kotlinx.datetime)
 }

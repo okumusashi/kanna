@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.feature.navigation
+package com.hisui.kanna.core.data.repository
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import com.hisui.kanna.feature.home.HomeScreen
+import com.hisui.kanna.core.model.Quote
+import com.hisui.kanna.core.model.QuoteInput
+import kotlinx.coroutines.flow.Flow
 
-val homeNavigationRoute = "home"
-
-fun NavGraphBuilder.homeScreen() {
-    composable(route = homeNavigationRoute) {
-        HomeScreen()
-    }
+interface QuoteRepository {
+    suspend fun save(quote: QuoteInput): Result<Unit>
+    fun getAllStream(): Flow<List<Quote>>
 }

@@ -16,4 +16,4 @@
 
 package com.hisui.kanna.core.model
 
-data class Genre(val name: String, val isFavorite: Boolean)
+data class Genre(val name: String, val isFavourite: Boolean)

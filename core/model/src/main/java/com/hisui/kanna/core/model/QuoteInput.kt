@@ -16,9 +16,9 @@
 
 package com.hisui.kanna.core.model
 
-data class Author(
-    val id: String,
-    val name: String,
-    val memo: String?,
-    val isFavourite: Boolean
+data class QuoteInput(
+    val bookId: Long,
+    val page: Int,
+    val quote: String,
+    val thought: String?
 )

@@ -16,9 +16,16 @@
 
 package com.hisui.kanna.core.model
 
-data class Author(
-    val id: String,
-    val name: String,
-    val memo: String?,
-    val isFavourite: Boolean
+import kotlinx.datetime.Instant
+
+data class Quote(
+    val id: Long,
+    val page: Int,
+    val quote: String,
+    val thought: String,
+    val createdAt: Instant,
+    val bookId: Long,
+    val bookTitle: String,
+    val authorId: String,
+    val author: String,
 )

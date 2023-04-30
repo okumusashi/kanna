@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.model
+package com.hisui.kanna.core.database.entity
 
-data class Author(
-    val id: String,
-    val name: String,
-    val memo: String?,
-    val isFavourite: Boolean
+import androidx.room.Embedded
+import androidx.room.Relation
+
+data class BookAndAuthorEntity(
+    @Embedded
+    val book: BookEntity,
+
+    @Relation(
+        parentColumn = "author_id",
+        entityColumn = "id"
+    )
+    val author: AuthorEntity
 )

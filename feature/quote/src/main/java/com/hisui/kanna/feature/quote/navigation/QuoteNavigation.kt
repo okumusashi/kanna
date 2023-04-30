@@ -14,11 +14,22 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.model
+package com.hisui.kanna.feature.quote.navigation
 
-data class Author(
-    val id: String,
-    val name: String,
-    val memo: String?,
-    val isFavourite: Boolean
-)
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.compose.composable
+import com.hisui.kanna.feature.quote.QuoteScreen
+
+const val quoteNavigationRoute = "quote"
+
+fun NavController.navigateToQuote(options: NavOptions?) {
+    navigate(quoteNavigationRoute, options)
+}
+
+fun NavGraphBuilder.quoteScreen() {
+    composable(route = quoteNavigationRoute) {
+        QuoteScreen()
+    }
+}

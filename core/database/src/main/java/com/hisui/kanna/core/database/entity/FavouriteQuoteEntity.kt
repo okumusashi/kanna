@@ -21,9 +21,11 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 @Entity(
-    tableName = "favorite_lines",
+    tableName = "favourite_quotes",
     foreignKeys = [
         ForeignKey(
             entity = BookEntity::class,
@@ -33,11 +35,22 @@ import androidx.room.PrimaryKey
             onUpdate = ForeignKey.CASCADE,
         )
     ],
-    indices = [Index(value = ["book_id"])]
+    indices = [
+        Index(value = ["book_id"])
+    ]
 )
-data class FavoriteLineEntity(
-    @PrimaryKey val id: Long,
+data class FavouriteQuoteEntity(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private val _id: Long = 0,
     @ColumnInfo(name = "book_id")
     val bookId: Long,
-    val line: String
-)
+    val page: Int,
+    val quote: String,
+    val thought: String,
+    @ColumnInfo(name = "created_at")
+    private val _createdAt: Instant = Clock.System.now()
+) {
+    val id: Long get() = _id
+    val createdAt: Instant get() = _createdAt
+}

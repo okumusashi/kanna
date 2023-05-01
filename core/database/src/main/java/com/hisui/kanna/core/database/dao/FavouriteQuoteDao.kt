@@ -19,6 +19,7 @@ package com.hisui.kanna.core.database.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
 import kotlinx.coroutines.flow.Flow
@@ -28,6 +29,7 @@ interface FavouriteQuoteDao {
     @Insert
     suspend fun insert(entity: FavouriteQuoteEntity)
 
+    @Transaction
     @Query(
         """
             SELECT * FROM favourite_quotes

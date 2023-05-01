@@ -17,13 +17,13 @@
 package com.hisui.kanna.core.data.repository
 
 import com.hisui.kanna.core.model.Book
-import com.hisui.kanna.core.model.Sort
+import com.hisui.kanna.core.model.BookSorter
 import kotlinx.coroutines.flow.Flow
 
 interface BookRepository {
     suspend fun save(book: Book): Result<Unit>
 
-    fun getAllStream(sort: Sort): Flow<List<Book>>
+    fun getAllStream(sort: BookSorter, isAsc: Boolean): Flow<List<Book>>
 
     fun getStream(id: Long): Flow<Book?>
 

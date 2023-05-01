@@ -25,6 +25,17 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BookDao {
+
+    object BookColumn {
+        const val TITLE = "title"
+        const val READ_DATE = "read_date"
+    }
+
+    enum class SortBy(val columnName: String) {
+        TITLE(BookColumn.TITLE),
+        READ_DATE(BookColumn.READ_DATE)
+    }
+
     @Insert
     suspend fun insert(vararg books: BookEntity)
 
@@ -33,15 +44,20 @@ interface BookDao {
             SELECT * FROM books
             INNER JOIN authors ON books.author_id = authors.id
             ORDER BY
-                CASE WHEN :sortByTitle AND :isAsc = 1 THEN books.title END ASC,
-                CASE WHEN :sortByTitle AND :isAsc = 0 THEN books.title END DESC,
-                CASE WHEN :sortByReadDate AND :isAsc = 1 THEN books.read_date END ASC,
-                CASE WHEN :sortByReadDate AND :isAsc = 1 THEN books.read_date END DESC
+                CASE WHEN :isAsc = 1 THEN books.title END ASC,
+                CASE WHEN :isAsc = 0 THEN books.title END DESC;
         """
     )
-    fun getAllBooksAndAuthors(
-        sortByTitle: Boolean,
-        sortByReadDate: Boolean,
-        isAsc: Boolean
-    ): Flow<Map<BookEntity, AuthorEntity>>
+    fun getAllBooksAndAuthorsByTitle(isAsc: Boolean): Flow<Map<BookEntity, AuthorEntity>>
+
+    @Query(
+        """
+            SELECT * FROM books
+            INNER JOIN authors ON books.author_id = authors.id
+            ORDER BY
+                CASE WHEN :isAsc = 1 THEN books.read_date END ASC,
+                CASE WHEN :isAsc = 1 THEN books.read_date END DESC;
+        """
+    )
+    fun getAllBooksAndAuthorsByReadDate(isAsc: Boolean): Flow<Map<BookEntity, AuthorEntity>>
 }

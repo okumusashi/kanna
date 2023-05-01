@@ -19,8 +19,6 @@ package com.hisui.kanna.core.testing.repository
 import com.hisui.kanna.core.data.repository.BookRepository
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookSorter
-import com.hisui.kanna.core.model.Sort
-import com.hisui.kanna.core.model.SortDirection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -34,16 +32,16 @@ class TestBookRepository : BookRepository {
         return Result.success(Unit)
     }
 
-    override fun getAllStream(sort: Sort): Flow<List<Book>> =
+    override fun getAllStream(sort: BookSorter, isAsc: Boolean): Flow<List<Book>> =
         books.map { map ->
             map.values.toList().let { books ->
-                when (sort.by) {
+                when (sort) {
                     BookSorter.READ_DATE ->
-                        if (sort.direction == SortDirection.ASC) books.sortedBy { it.readDate }
+                        if (isAsc) books.sortedBy { it.readDate }
                         else books.sortedByDescending { it.readDate }
 
                     BookSorter.TITLE ->
-                        if (sort.direction == SortDirection.ASC) books.sortedBy { it.title }
+                        if (isAsc) books.sortedBy { it.title }
                         else books.sortedByDescending { it.title }
 
                     else -> books

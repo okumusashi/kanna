@@ -23,7 +23,6 @@ import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.database.dao.BookDao
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookSorter
-import com.hisui.kanna.core.model.Sort
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -40,12 +39,13 @@ class OfflineBookRepository @Inject constructor(
             Result.success(Unit)
         }
 
-    override fun getAllStream(sort: Sort): Flow<List<Book>> =
-        dao.getAllBooksAndAuthors(
-            sortByTitle = sort.by == BookSorter.TITLE,
-            sortByReadDate = sort.by == BookSorter.READ_DATE,
-            isAsc = sort.direction.isAsc
-        ).map(::asExternalModel)
+    override fun getAllStream(sort: BookSorter, isAsc: Boolean): Flow<List<Book>> =
+        when (sort) {
+            BookSorter.TITLE ->
+                dao.getAllBooksAndAuthorsByTitle(isAsc = isAsc)
+            BookSorter.READ_DATE ->
+                dao.getAllBooksAndAuthorsByReadDate(isAsc = isAsc)
+        }.map(::asExternalModel)
 
     override fun getStream(id: Long): Flow<Book?> {
         TODO("Not yet implemented")

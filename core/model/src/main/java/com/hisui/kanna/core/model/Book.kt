@@ -30,6 +30,6 @@ data class Book(
     val genre: String,
 )
 
-enum class BookSorter : Sorter {
+enum class BookSorter {
     TITLE, READ_DATE
 }

@@ -24,6 +24,10 @@ android {
 }
 
 dependencies {
+    api(libs.androidx.test.core)
+    api(libs.androidx.test.runner)
+    api(libs.hilt.android.testing)
+    api(libs.junit4)
     api(libs.junit5)
     api(libs.google.truth)
     api(libs.androidx.arch.core.testing)

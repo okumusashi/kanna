@@ -20,8 +20,6 @@ import com.google.common.truth.Truth.assertThat
 import com.hisui.kanna.core.testing.MainDispatcherExtension
 import com.hisui.kanna.core.testing.data.defaultBook
 import com.hisui.kanna.core.testing.repository.TestBookRepository
-import com.hisui.kanna.feature.home.home.HomeUiState
-import com.hisui.kanna.feature.home.home.HomeViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant

@@ -24,9 +24,7 @@ data class Book(
     val readDate: Instant,
     val memo: String,
     val rating: Int,
-    val author: String,
-    val authorId: String,
-    val authorMemo: String?,
+    val author: Author,
     val genre: String,
 )
 

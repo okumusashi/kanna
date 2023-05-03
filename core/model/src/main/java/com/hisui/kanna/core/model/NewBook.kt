@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.testing.data
+package com.hisui.kanna.core.model
 
-import com.hisui.kanna.core.model.Author
-import com.hisui.kanna.core.model.Book
-import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
-val defaultBook: Book =
-    Book(
-        id = 1,
-        title = "title",
-        readDate = Clock.System.now(),
-        memo = "memo",
-        rating = 5,
-        author = Author(
-            id = "author1",
-            name = "author1",
-            memo = null,
-            isFavourite = false
-        ),
-        genre = "genre1"
-    )
+data class NewBook(
+    val title: String,
+    val readDate: Instant,
+    val memo: String,
+    val rating: Int,
+    val authorId: String,
+    val genreId: String
+)

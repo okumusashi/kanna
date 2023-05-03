@@ -2,14 +2,14 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8871d143d8e10f92bc719547b4d2c47c",
+    "identityHash": "39dbd3c5c33bfcefa7a9a3b11e87426f",
     "entities": [
       {
         "tableName": "books",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `author_id` TEXT, `genre` TEXT, `read_date` INTEGER NOT NULL, `memo` TEXT NOT NULL, `rating` INTEGER NOT NULL, FOREIGN KEY(`author_id`) REFERENCES `authors`(`id`) ON UPDATE CASCADE ON DELETE SET NULL , FOREIGN KEY(`genre`) REFERENCES `genres`(`name`) ON UPDATE CASCADE ON DELETE SET NULL )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `author_id` TEXT, `genre_id` TEXT, `read_date` INTEGER NOT NULL, `memo` TEXT NOT NULL, `rating` INTEGER NOT NULL, FOREIGN KEY(`author_id`) REFERENCES `authors`(`id`) ON UPDATE CASCADE ON DELETE SET NULL , FOREIGN KEY(`genre_id`) REFERENCES `genres`(`name`) ON UPDATE CASCADE ON DELETE SET NULL )",
         "fields": [
           {
-            "fieldPath": "id",
+            "fieldPath": "_id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
@@ -27,8 +27,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "genre",
-            "columnName": "genre",
+            "fieldPath": "genreId",
+            "columnName": "genre_id",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -68,13 +68,13 @@
             "createSql": "CREATE INDEX IF NOT EXISTS `index_books_author_id` ON `${TABLE_NAME}` (`author_id`)"
           },
           {
-            "name": "index_books_genre",
+            "name": "index_books_genre_id",
             "unique": false,
             "columnNames": [
-              "genre"
+              "genre_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_books_genre` ON `${TABLE_NAME}` (`genre`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_books_genre_id` ON `${TABLE_NAME}` (`genre_id`)"
           }
         ],
         "foreignKeys": [
@@ -94,7 +94,7 @@
             "onDelete": "SET NULL",
             "onUpdate": "CASCADE",
             "columns": [
-              "genre"
+              "genre_id"
             ],
             "referencedColumns": [
               "name"
@@ -168,8 +168,14 @@
       },
       {
         "tableName": "favourite_quotes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`book_id` INTEGER NOT NULL, `page` INTEGER NOT NULL, `quote` TEXT NOT NULL, `thought` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `created_at` INTEGER NOT NULL, FOREIGN KEY(`book_id`) REFERENCES `books`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `book_id` INTEGER NOT NULL, `page` INTEGER NOT NULL, `quote` TEXT NOT NULL, `thought` TEXT NOT NULL, `created_at` INTEGER NOT NULL, FOREIGN KEY(`book_id`) REFERENCES `books`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
+          {
+            "fieldPath": "_id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "bookId",
             "columnName": "book_id",
@@ -195,13 +201,7 @@
             "notNull": true
           },
           {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "createdAt",
+            "fieldPath": "_createdAt",
             "columnName": "created_at",
             "affinity": "INTEGER",
             "notNull": true
@@ -242,7 +242,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8871d143d8e10f92bc719547b4d2c47c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '39dbd3c5c33bfcefa7a9a3b11e87426f')"
     ]
   }
 }

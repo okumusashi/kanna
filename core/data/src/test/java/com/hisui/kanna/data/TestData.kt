@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.library")
-    id("kanna.android.hilt")
-}
+package com.hisui.kanna.data
 
-android {
-    namespace = "com.hisui.kanna.core.data"
-}
+import com.hisui.kanna.core.database.entity.BookEntity
+import kotlinx.datetime.Instant
 
-dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:database"))
-    implementation(project(":core:model"))
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.datetime)
-
-    testImplementation(project(":core:testing"))
-}
+internal fun testBookEntity(
+    id: Long,
+    title: String = "title",
+    readDate: Instant = Instant.parse("2022-01-01T01:00:00Z")
+) =
+    BookEntity(
+        _id = id,
+        title = title,
+        authorId = "author",
+        genreId = "genre",
+        readDate = readDate,
+        memo = "memo",
+        rating = 1,
+    )

@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
+import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
@@ -88,7 +89,6 @@ private fun HomeScreen(homeUiState: HomeUiState) {
                 is HomeUiState.RecentBooks -> {
                     bookList(books = homeUiState.books)
                 }
-                else -> {}
             }
         }
     }
@@ -102,34 +102,43 @@ private fun HomeScreenPreview() {
                 Book(
                     id = 1,
                     title = "The Great Gatsby",
-                    author = "F. Scott Fitzgerald",
+                    author = Author(
+                        id = "",
+                        name = "F. Scott Fitzgerald",
+                        memo = "",
+                        isFavourite = false
+                    ),
                     readDate = Instant.parse("2023-03-01T00:00:00Z"),
                     memo = "",
                     rating = 5,
-                    authorId = "",
-                    authorMemo = "",
                     genre = "",
                 ),
                 Book(
                     id = 2,
                     title = "Nineteen Eighty-Four",
-                    author = "George Orwell",
+                    author = Author(
+                        id = "",
+                        name = "George Orwell",
+                        memo = "",
+                        isFavourite = false
+                    ),
                     readDate = Instant.parse("2023-02-01T00:00:00Z"),
                     memo = "",
                     rating = 5,
-                    authorId = "",
-                    authorMemo = "",
                     genre = "",
                 ),
                 Book(
                     id = 3,
                     title = "Silent Spring",
-                    author = "Rachel Carson",
+                    author = Author(
+                        id = "",
+                        name = "Rachel Carson",
+                        memo = "",
+                        isFavourite = false
+                    ),
                     readDate = Instant.parse("2023-01-01T00:00:00Z"),
                     memo = "",
                     rating = 5,
-                    authorId = "",
-                    authorMemo = "",
                     genre = "",
                 ),
             )
@@ -161,7 +170,7 @@ private fun LazyGridScope.bookList(books: List<Book>) {
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Text(
-                    text = book.author,
+                    text = book.author.name,
                     style = MaterialTheme.typography.labelMedium,
                 )
                 val dateTimeFormatter = DateTimeFormatter.ofPattern("MMM d yyyy").withZone(ZoneId.systemDefault())

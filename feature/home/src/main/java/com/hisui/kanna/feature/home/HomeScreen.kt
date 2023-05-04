@@ -27,12 +27,14 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,7 +49,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Composable
-internal fun HomeScreen(
+internal fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val homeUiState by viewModel.uiState.collectAsState()
@@ -56,7 +58,7 @@ internal fun HomeScreen(
 }
 
 @Composable
-private fun HomeScreen(homeUiState: HomeUiState) {
+internal fun HomeScreen(homeUiState: HomeUiState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -81,7 +83,11 @@ private fun HomeScreen(homeUiState: HomeUiState) {
 
             when (homeUiState) {
                 is HomeUiState.Loading -> {
-                    // TODO: Add indicator
+                    item {
+                        CircularProgressIndicator(
+                            modifier = Modifier.testTag(stringResource(id = R.string.loading_tag))
+                        )
+                    }
                 }
                 is HomeUiState.Empty -> {
                     // TODO: Add explanation and button (if not using fab) to add a new book

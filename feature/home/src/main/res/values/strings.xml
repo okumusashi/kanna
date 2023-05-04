@@ -17,4 +17,8 @@
 
 <resources>
     <string name="title">Your books</string>
+
+    <!-- region tags for testing -->
+    <string name="loading_tag">loading</string>
+    <!-- -->
 </resources>

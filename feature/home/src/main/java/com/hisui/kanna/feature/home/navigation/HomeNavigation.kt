@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.hisui.kanna.feature.home.HomeScreen
+import com.hisui.kanna.feature.home.HomeRoute
 
 const val homeNavigationRoute = "home"
 
@@ -30,6 +30,6 @@ fun NavController.navigateToHome(options: NavOptions?) {
 
 fun NavGraphBuilder.homeScreen() {
     composable(route = homeNavigationRoute) {
-        HomeScreen()
+        HomeRoute()
     }
 }

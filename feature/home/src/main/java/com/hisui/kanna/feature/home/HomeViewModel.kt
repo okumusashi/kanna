@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.feature.home.home
+package com.hisui.kanna.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hisui.kanna.core.data.repository.BookRepository
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookSorter
-import com.hisui.kanna.core.model.Sort
-import com.hisui.kanna.core.model.SortDirection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -68,8 +66,8 @@ internal class HomeViewModel @Inject constructor(
         sortByReadDateDesc()
     }
 
-    private suspend fun getRecentBooks(sort: Sort) {
-        bookRepository.getAllStream(sort = sort).collect { books ->
+    private suspend fun getRecentBooks(sort: BookSorter, isAsc: Boolean) {
+        bookRepository.getAllStream(sort = sort, isAsc = isAsc).collect { books ->
             _uiState.update {
                 it.copy(books = books, loading = false)
             }
@@ -78,41 +76,37 @@ internal class HomeViewModel @Inject constructor(
 
     fun sortByReadDateDesc() {
         viewModelScope.launch {
-            val sort = Sort(
-                by = BookSorter.READ_DATE,
-                direction = SortDirection.DESC
+            getRecentBooks(
+                sort = BookSorter.READ_DATE,
+                isAsc = false
             )
-            getRecentBooks(sort = sort)
         }
     }
 
     fun sortByReadDateAsc() {
         viewModelScope.launch {
-            val sort = Sort(
-                by = BookSorter.READ_DATE,
-                direction = SortDirection.ASC
+            getRecentBooks(
+                sort = BookSorter.READ_DATE,
+                isAsc = true
             )
-            getRecentBooks(sort = sort)
-        }
-    }
-
-    fun sortByTitleAsc() {
-        viewModelScope.launch {
-            val sort = Sort(
-                by = BookSorter.TITLE,
-                direction = SortDirection.ASC
-            )
-            getRecentBooks(sort = sort)
         }
     }
 
     fun sortByTitleDesc() {
         viewModelScope.launch {
-            val sort = Sort(
-                by = BookSorter.TITLE,
-                direction = SortDirection.DESC
+            getRecentBooks(
+                sort = BookSorter.TITLE,
+                isAsc = true
             )
-            getRecentBooks(sort = sort)
+        }
+    }
+
+    fun sortByTitleAsc() {
+        viewModelScope.launch {
+            getRecentBooks(
+                sort = BookSorter.TITLE,
+                isAsc = true
+            )
         }
     }
 }

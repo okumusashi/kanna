@@ -5,7 +5,7 @@ androidDesugarJdkLibs = "1.2.2"
 androidGradlePlugin = "7.4.1"
 androidxArchCore = "2.2.0"
 androidxActivityCompose = "1.6.1"
-androidxComposeBom = "2023.03.00"
+androidxComposeBom = "2023.04.01"
 androidxComposeCompiler = "1.4.4"
 androidxComposeMaterial3 = "1.0.1"
 androidxCore = "1.9.0"
@@ -15,6 +15,8 @@ androidxLifecycle = "2.5.1"
 androidxNavigation = "2.5.3"
 androidxRoom = "2.5.0"
 
+androidxTestCore = "1.5.0"
+androidxTestRunner = "1.5.1"
 androidxTestEspresso = "3.5.0"
 androidxTestExtJunit = "1.1.4"
 
@@ -71,6 +73,8 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidxRoom" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
 
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxTestEspresso" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJunit" }
 
@@ -79,6 +83,7 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 
 google-truth = { group = "com.google.truth", name = "truth", version.ref = "googleTruth" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }

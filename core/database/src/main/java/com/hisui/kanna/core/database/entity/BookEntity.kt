@@ -36,25 +36,29 @@ import kotlinx.datetime.Instant
         ForeignKey(
             entity = GenreEntity::class,
             parentColumns = ["name"],
-            childColumns = ["genre"],
+            childColumns = ["genre_id"],
             onDelete = ForeignKey.SET_NULL,
             onUpdate = ForeignKey.CASCADE
         )
     ],
     indices = [
         Index(value = ["author_id"]),
-        Index(value = ["genre"]),
+        Index(value = ["genre_id"]),
     ]
 )
 data class BookEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private val _id: Long = 0,
     val title: String,
     @ColumnInfo(name = "author_id")
     val authorId: String?,
-    @ColumnInfo(name = "genre")
-    val genre: String?,
+    @ColumnInfo(name = "genre_id")
+    val genreId: String?,
     @ColumnInfo(name = "read_date")
     val readDate: Instant,
     val memo: String,
     val rating: Int
-)
+) {
+    val id: Long get() = _id
+}

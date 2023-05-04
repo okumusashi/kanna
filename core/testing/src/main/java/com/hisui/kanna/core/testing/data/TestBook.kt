@@ -16,6 +16,7 @@
 
 package com.hisui.kanna.core.testing.data
 
+import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
 import kotlinx.datetime.Clock
 
@@ -26,8 +27,11 @@ val defaultBook: Book =
         readDate = Clock.System.now(),
         memo = "memo",
         rating = 5,
-        author = "author1",
-        authorId = "author1",
-        authorMemo = null,
+        author = Author(
+            id = "author1",
+            name = "author1",
+            memo = null,
+            isFavourite = false
+        ),
         genre = "genre1"
     )

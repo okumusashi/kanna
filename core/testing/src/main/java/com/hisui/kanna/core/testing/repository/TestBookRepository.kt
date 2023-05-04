@@ -17,33 +17,43 @@
 package com.hisui.kanna.core.testing.repository
 
 import com.hisui.kanna.core.data.repository.BookRepository
+import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookSorter
-import com.hisui.kanna.core.model.Sort
-import com.hisui.kanna.core.model.SortDirection
+import com.hisui.kanna.core.model.NewBook
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
 class TestBookRepository : BookRepository {
     private val books = MutableStateFlow<Map<Long, Book>>(emptyMap())
 
-    override suspend fun save(book: Book): Result<Unit> {
-        updateBook(book = book)
+    override suspend fun save(book: NewBook): Result<Unit> {
+        val newBook = Book(
+            id = books.first().keys.max() + 1,
+            title = book.title,
+            readDate = book.readDate,
+            memo = book.memo,
+            rating = book.rating,
+            author = Author(id = book.authorId, name = book.authorId, memo = "", isFavourite = false),
+            genre = book.genreId
+        )
+        updateBook(book = newBook)
         return Result.success(Unit)
     }
 
-    override fun getAllStream(sort: Sort): Flow<List<Book>> =
+    override fun getAllStream(sort: BookSorter, isAsc: Boolean): Flow<List<Book>> =
         books.map { map ->
             map.values.toList().let { books ->
-                when (sort.by) {
+                when (sort) {
                     BookSorter.READ_DATE ->
-                        if (sort.direction == SortDirection.ASC) books.sortedBy { it.readDate }
+                        if (isAsc) books.sortedBy { it.readDate }
                         else books.sortedByDescending { it.readDate }
 
                     BookSorter.TITLE ->
-                        if (sort.direction == SortDirection.ASC) books.sortedBy { it.title }
+                        if (isAsc) books.sortedBy { it.title }
                         else books.sortedByDescending { it.title }
 
                     else -> books
@@ -56,7 +66,10 @@ class TestBookRepository : BookRepository {
             books.getOrDefault(id, null)
         }
 
-    override suspend fun update(book: Book): Result<Unit> = save(book = book)
+    override suspend fun update(book: Book): Result<Unit> {
+        updateBook(book = book)
+        return Result.success(Unit)
+    }
 
     private fun updateBook(book: Book) {
         books.update {

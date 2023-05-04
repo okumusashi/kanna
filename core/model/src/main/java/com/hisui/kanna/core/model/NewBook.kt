@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.library")
-    id("kanna.android.hilt")
-    id("kanna.android.room")
-}
+package com.hisui.kanna.core.model
 
-android {
-    namespace = "com.hisui.kanna.core.database"
+import kotlinx.datetime.Instant
 
-    defaultConfig {
-        testInstrumentationRunner = "com.hisui.kanna.core.testing.KannaTestRunner"
-    }
-}
-
-dependencies {
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.datetime)
-
-    androidTestImplementation(project(":core:testing"))
-}
+data class NewBook(
+    val title: String,
+    val readDate: Instant,
+    val memo: String,
+    val rating: Int,
+    val authorId: String,
+    val genreId: String
+)

@@ -19,16 +19,16 @@ package com.hisui.kanna.core.data.mapper
 import com.hisui.kanna.core.database.entity.AuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
 import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.NewBook
 
-internal fun Book.asEntity(): BookEntity =
+internal fun NewBook.asEntity(): BookEntity =
     BookEntity(
-        id = id,
         title = title,
-        authorId = authorId,
-        genre = genre,
         readDate = readDate,
         memo = memo,
-        rating = rating
+        rating = rating,
+        authorId = authorId,
+        genreId = genreId,
     )
 
 internal fun asExternalModel(bookAndAuthor: Map<BookEntity, AuthorEntity>): List<Book> =
@@ -36,10 +36,8 @@ internal fun asExternalModel(bookAndAuthor: Map<BookEntity, AuthorEntity>): List
         Book(
             id = book.id,
             title = book.title,
-            author = author.name,
-            authorId = author.id,
-            authorMemo = author.memo,
-            genre = book.genre ?: "",
+            author = author.asExternalModel(),
+            genre = book.genreId ?: "",
             readDate = book.readDate,
             memo = book.memo,
             rating = book.rating

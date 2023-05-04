@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.library")
-    id("kanna.android.hilt")
-    id("kanna.android.room")
-}
+package com.hisui.kanna.core.testing
 
-android {
-    namespace = "com.hisui.kanna.core.database"
+import android.app.Application
+import android.content.Context
+import androidx.test.runner.AndroidJUnitRunner
+import dagger.hilt.android.testing.HiltTestApplication
 
-    defaultConfig {
-        testInstrumentationRunner = "com.hisui.kanna.core.testing.KannaTestRunner"
-    }
-}
+class KannaTestRunner : AndroidJUnitRunner() {
 
-dependencies {
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.datetime)
-
-    androidTestImplementation(project(":core:testing"))
+    override fun newApplication(
+        cl: ClassLoader?,
+        className: String?,
+        context: Context?
+    ): Application =
+        super.newApplication(cl, HiltTestApplication::class.java.name, context)
 }

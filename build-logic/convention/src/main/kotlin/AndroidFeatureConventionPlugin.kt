@@ -32,6 +32,10 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 apply("kanna.android.hilt")
             }
             extensions.configure<LibraryExtension> {
+                defaultConfig {
+                    testInstrumentationRunner =
+                        "com.hisui.kanna.core.testing.KannaTestRunner"
+                }
                 configureGradleManagedDevices(this)
             }
 
@@ -46,6 +50,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
                 add("testImplementation", kotlin("test"))
                 add("testImplementation", project(":core:testing"))
+                add("androidTestImplementation", kotlin("test"))
+                add("androidTestImplementation", project(":core:testing"))
 
                 add("implementation", libs.findLibrary("coil").get())
                 add("implementation", libs.findLibrary("coil.compose").get())

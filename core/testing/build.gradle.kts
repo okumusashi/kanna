@@ -16,6 +16,7 @@
 
 plugins {
     id("kanna.android.library")
+    id("kanna.android.library.compose")
     id("kanna.android.hilt")
 }
 
@@ -24,10 +25,18 @@ android {
 }
 
 dependencies {
+    api(libs.androidx.compose.ui.test.junit4)
+    api(libs.androidx.test.core)
+    api(libs.androidx.test.espresso.core)
+    api(libs.androidx.test.runner)
+    api(libs.hilt.android.testing)
+    api(libs.junit4)
     api(libs.junit5)
     api(libs.google.truth)
     api(libs.androidx.arch.core.testing)
     api(libs.kotlinx.coroutines.test)
+
+    debugApi(libs.androidx.compose.ui.test.manifest)
 
     implementation(project(":core:common"))
     implementation(project(":core:data"))

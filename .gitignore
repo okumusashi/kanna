@@ -1,12 +1,21 @@
+# Java class files
+*.class
+
+# configuration
+local.properties
+
+# idea
 *.iml
+.idea/*
+/idea/codeStyles/*
+
+!/.idea/copyright
+!/.idea/codeStyles
+!/.idea/codeStyles/Project.xml
+!/.idea/codeStyles/codeStyleConfig.xml
+
+# gradle cache
 .gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
 
 # Mac
 .DS_Store
@@ -14,7 +23,6 @@
 /captures
 .externalNativeBuild
 .cxx
-local.properties
 
 # Generated files
 build/

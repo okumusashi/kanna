@@ -57,6 +57,7 @@ data class BookEntity(
     val genreId: String?,
     @ColumnInfo(name = "read_date")
     val readDate: Instant,
+    val thought: String,
     val memo: String,
     val rating: Int
 ) {

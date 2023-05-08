@@ -52,6 +52,7 @@ class HomeViewModelTest {
                     title = book.title,
                     readDate = book.readDate,
                     rating = book.rating,
+                    thought = book.thought,
                     memo = book.memo,
                     authorId = book.author.id,
                     genreId = book.genre,

@@ -22,6 +22,7 @@ data class NewBook(
     val title: String,
     val readDate: Instant,
     val memo: String,
+    val thought: String,
     val rating: Int,
     val authorId: String,
     val genreId: String

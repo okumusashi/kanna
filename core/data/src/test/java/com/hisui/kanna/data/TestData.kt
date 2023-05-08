@@ -30,6 +30,7 @@ internal fun testBookEntity(
         authorId = "author",
         genreId = "genre",
         readDate = readDate,
+        thought = "thought",
         memo = "memo",
         rating = 1,
     )

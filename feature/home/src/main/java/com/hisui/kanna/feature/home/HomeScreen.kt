@@ -144,6 +144,7 @@ private fun HomeScreenPreview() {
                         isFavourite = false
                     ),
                     readDate = Instant.parse("2023-03-01T00:00:00Z"),
+                    thought = "",
                     memo = "",
                     rating = 5,
                     genre = "",
@@ -158,6 +159,7 @@ private fun HomeScreenPreview() {
                         isFavourite = false
                     ),
                     readDate = Instant.parse("2023-02-01T00:00:00Z"),
+                    thought = "",
                     memo = "",
                     rating = 5,
                     genre = "",
@@ -172,6 +174,7 @@ private fun HomeScreenPreview() {
                         isFavourite = false
                     ),
                     readDate = Instant.parse("2023-01-01T00:00:00Z"),
+                    thought = "",
                     memo = "",
                     rating = 5,
                     genre = "",

@@ -23,6 +23,7 @@ data class Book(
     val title: String,
     val readDate: Instant,
     val memo: String,
+    val thought: String,
     val rating: Int,
     val author: Author,
     val genre: String,

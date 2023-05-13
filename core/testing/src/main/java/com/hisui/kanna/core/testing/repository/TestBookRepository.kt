@@ -35,6 +35,7 @@ class TestBookRepository : BookRepository {
             id = books.first().keys.max() + 1,
             title = book.title,
             readDate = book.readDate,
+            thought = book.thought,
             memo = book.memo,
             rating = book.rating,
             author = Author(id = book.authorId, name = book.authorId, memo = "", isFavourite = false),

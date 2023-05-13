@@ -66,7 +66,7 @@ fun KannaApp(
                 )
             }
 
-            KannaNavHost(navController = appState.navController)
+            KannaNavHost(navController = appState.navController, windowSizeClass = windowSizeClass)
         }
     }
 }

@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.hisui.kanna.feature.book.NewBookScreen
+import com.hisui.kanna.feature.book.NewBookRoute
 
 const val newBookNavigationRoute = "book/new"
 
@@ -28,8 +28,14 @@ fun NavController.navigateToNewBook(options: NavOptions?) {
     navigate(newBookNavigationRoute, options)
 }
 
-fun NavGraphBuilder.newBookScreen() {
+fun NavGraphBuilder.newBookScreen(
+    isCompactScreen: Boolean,
+    popBackStack: () -> Unit
+) {
     composable(route = newBookNavigationRoute) {
-        NewBookScreen()
+        NewBookRoute(
+            isCompactScreen = isCompactScreen,
+            popBackStack = popBackStack
+        )
     }
 }

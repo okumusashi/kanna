@@ -17,13 +17,68 @@
 package com.hisui.kanna.feature.book
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.hisui.kanna.core.model.Author
+import com.hisui.kanna.core.model.NewBook
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.datetime.Clock
 import javax.inject.Inject
 
 data class NewBookUiState(
     val loading: Boolean,
-    val error: String? = null
+    val error: String?,
+    val newBook: NewBook,
+    val authors: List<Author>,
+    val genres: List<String>
 )
 
+private data class NewBookViewModelState(
+    val loading: Boolean = false,
+    val error: String? = null,
+
+    val newBook: NewBook = NewBook(
+        title = "",
+        readDate = Clock.System.now(),
+        memo = "",
+        thought = "",
+        rating = 0,
+        authorId = "",
+        genreId = "",
+    ),
+
+    val authors: List<Author> = emptyList(),
+    val genres: List<String> = emptyList()
+) {
+    fun toState(): NewBookUiState =
+        NewBookUiState(
+            loading = loading,
+            error = error,
+            newBook = newBook,
+            authors = authors,
+            genres = genres
+        )
+}
+
 @HiltViewModel
-class NewBookViewModel @Inject constructor() : ViewModel()
+class NewBookViewModel @Inject constructor() : ViewModel() {
+
+    private val _state = MutableStateFlow(NewBookViewModelState())
+    val uiState: StateFlow<NewBookUiState>
+        get() = _state
+            .map { it.toState() }
+            .stateIn(
+                viewModelScope,
+                started = SharingStarted.Eagerly,
+                initialValue = NewBookViewModelState().toState()
+            )
+
+    fun updateBook(book: NewBook) {
+        _state.update { it.copy(newBook = book) }
+    }
+}

@@ -14,9 +14,22 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.common.util
+package com.hisui.kanna.core.ui.util
 
+import android.text.format.DateFormat
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.core.os.ConfigurationCompat
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-val dateTimeFormatter = DateTimeFormatter.ofPattern("MMM d yyyy").withZone(ZoneId.systemDefault())
+@Composable
+fun dateTimeFormatter(): DateTimeFormatter {
+    val locale = ConfigurationCompat
+        .getLocales(LocalConfiguration.current)
+        .get(0)
+        ?: java.util.Locale.getDefault()
+
+    val pattern = DateFormat.getBestDateTimePattern(locale, "MMMM d, YYYY")
+    return DateTimeFormatter.ofPattern(pattern, locale).withZone(ZoneId.systemDefault())
+}

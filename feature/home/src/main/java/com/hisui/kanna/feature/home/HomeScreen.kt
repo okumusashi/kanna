@@ -47,10 +47,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hisui.kanna.core.common.util.dateTimeFormatter
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.ui.util.dateTimeFormatter
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
 
@@ -211,7 +211,7 @@ private fun LazyGridScope.bookList(books: List<Book>) {
                     style = MaterialTheme.typography.labelMedium,
                 )
                 Text(
-                    text = dateTimeFormatter.format(book.readDate.toJavaInstant()),
+                    text = dateTimeFormatter().format(book.readDate.toJavaInstant()),
                     style = MaterialTheme.typography.labelSmall,
                 )
             }

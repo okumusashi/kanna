@@ -57,7 +57,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hisui.kanna.core.common.util.dateTimeFormatter
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.NewBook
 import kotlinx.datetime.Clock
@@ -167,8 +166,8 @@ internal fun NewBookScreen(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = dateTimeFormatter.format(newBook.readDate.toJavaInstant()),
                 onValueChange = { /* TODO */ },
+                value = dateTimeFormatter().format(newBook.readDate.toJavaInstant()),
                 label = { Text(text = stringResource(id = R.string.read_date)) },
                 readOnly = true,
             )

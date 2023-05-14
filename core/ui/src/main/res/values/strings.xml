@@ -17,4 +17,7 @@
     <!-- region General terms -->
     <string name="save">save</string>
     <string name="close">close</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+    <!-- endregion -->
 </resources>

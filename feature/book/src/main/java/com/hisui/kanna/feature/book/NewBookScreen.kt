@@ -32,9 +32,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Grade
 import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material3.Button
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,7 +46,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -59,9 +64,12 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.NewBook
+import com.hisui.kanna.core.ui.util.dateTimeFormatter
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun NewBookRoute(
     viewModel: NewBookViewModel = hiltViewModel(),
@@ -79,7 +87,34 @@ internal fun NewBookRoute(
             uiState = uiState,
             popBackStack = popBackStack,
             onUpdateBook = viewModel::updateBook,
+            onShowDatePicker = viewModel::showDatePicker
         )
+    }
+
+    if (uiState.showDatePicker) {
+        val datePickerState = rememberDatePickerState()
+        DatePickerDialog(
+            onDismissRequest = viewModel::hideDatePicker,
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        datePickerState.selectedDateMillis?.let { epochMilli ->
+                            val date = Instant.fromEpochMilliseconds(epochMilli)
+                            viewModel.updateBook(uiState.newBook.copy(readDate = date))
+                        }
+                    }
+                ) {
+                    Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = viewModel::hideDatePicker) {
+                    Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.cancel))
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
     }
 }
 
@@ -119,7 +154,8 @@ internal fun NewBookScreen(
     isCompactScreen: Boolean,
     uiState: NewBookUiState,
     popBackStack: () -> Unit,
-    onUpdateBook: (NewBook) -> Unit
+    onUpdateBook: (NewBook) -> Unit,
+    onShowDatePicker: () -> Unit
 ) {
     Scaffold(
         modifier = Modifier
@@ -166,8 +202,15 @@ internal fun NewBookScreen(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                onValueChange = { /* TODO */ },
+                trailingIcon = {
+                    Icon(
+                        modifier = Modifier.clickable { onShowDatePicker() },
+                        imageVector = Icons.Filled.EditCalendar,
+                        contentDescription = "Calendar"
+                    )
+                },
                 value = dateTimeFormatter().format(newBook.readDate.toJavaInstant()),
+                onValueChange = { },
                 label = { Text(text = stringResource(id = R.string.read_date)) },
                 readOnly = true,
             )
@@ -210,6 +253,7 @@ private fun NewBookScreen() {
                 uiState = previewUiState,
                 popBackStack = {},
                 onUpdateBook = {},
+                onShowDatePicker = {}
             )
         }
     }
@@ -277,7 +321,8 @@ private val previewUiState: NewBookUiState =
             genreId = "genre"
         ),
         authors = emptyList(),
-        genres = emptyList()
+        genres = emptyList(),
+        showDatePicker = false
     )
 
 @Composable
@@ -292,7 +337,8 @@ private fun NewBookScreenPreviewBase(isCompactScreen: Boolean) {
                     isCompactScreen = isCompactScreen,
                     uiState = previewUiState,
                     onUpdateBook = {},
-                    popBackStack = {}
+                    popBackStack = {},
+                    onShowDatePicker = {},
                 )
             }
         }

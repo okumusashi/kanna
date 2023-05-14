@@ -35,13 +35,13 @@ data class NewBookUiState(
     val error: String?,
     val newBook: NewBook,
     val authors: List<Author>,
-    val genres: List<String>
+    val genres: List<String>,
+    val showDatePicker: Boolean
 )
 
 private data class NewBookViewModelState(
     val loading: Boolean = false,
     val error: String? = null,
-
     val newBook: NewBook = NewBook(
         title = "",
         readDate = Clock.System.now(),
@@ -51,9 +51,9 @@ private data class NewBookViewModelState(
         authorId = "",
         genreId = "",
     ),
-
     val authors: List<Author> = emptyList(),
-    val genres: List<String> = emptyList()
+    val genres: List<String> = emptyList(),
+    val showDatePicker: Boolean = false
 ) {
     fun toState(): NewBookUiState =
         NewBookUiState(
@@ -61,7 +61,8 @@ private data class NewBookViewModelState(
             error = error,
             newBook = newBook,
             authors = authors,
-            genres = genres
+            genres = genres,
+            showDatePicker = showDatePicker
         )
 }
 
@@ -79,6 +80,19 @@ class NewBookViewModel @Inject constructor() : ViewModel() {
             )
 
     fun updateBook(book: NewBook) {
-        _state.update { it.copy(newBook = book) }
+        _state.update {
+            it.copy(
+                newBook = book,
+                showDatePicker = false
+            )
+        }
+    }
+
+    fun showDatePicker() {
+        _state.update { it.copy(showDatePicker = true) }
+    }
+
+    fun hideDatePicker() {
+        _state.update { it.copy(showDatePicker = false) }
     }
 }

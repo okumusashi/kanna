@@ -16,8 +16,8 @@
 
 package com.hisui.kanna.core.data.repository
 
-import com.hisui.kanna.core.model.Author
+import com.hisui.kanna.core.model.AuthorInput
 
 interface AuthorRepository {
-    suspend fun save(author: Author): Result<Unit>
+    suspend fun save(author: AuthorInput): Result<Unit>
 }

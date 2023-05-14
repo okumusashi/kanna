@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.data.mapper
+package com.hisui.kanna.core.domain.usecase
 
-import com.hisui.kanna.core.database.entity.AuthorEntity
-import com.hisui.kanna.core.model.Author
+import com.hisui.kanna.core.data.repository.AuthorRepository
 import com.hisui.kanna.core.model.AuthorInput
+import javax.inject.Inject
 
-internal fun AuthorInput.asEntity(): AuthorEntity =
-    AuthorEntity(
-        id = memo?.let { "$name-$memo" } ?: name,
-        name = name,
-        memo = memo,
-        isFavourite = isFavorite
-    )
-
-internal fun AuthorEntity.asExternalModel(): Author =
-    Author(
-        id = id,
-        name = name,
-        memo = memo,
-        isFavourite = isFavourite
-    )
+class CreateAuthorUseCase @Inject constructor(
+    private val repository: AuthorRepository
+) {
+    suspend operator fun invoke(author: AuthorInput): Result<Unit> =
+        repository.save(author = author)
+}

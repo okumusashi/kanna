@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.data.mapper
+package com.hisui.kanna.core.model
 
-import com.hisui.kanna.core.database.entity.AuthorEntity
-import com.hisui.kanna.core.model.Author
-import com.hisui.kanna.core.model.AuthorInput
-
-internal fun AuthorInput.asEntity(): AuthorEntity =
-    AuthorEntity(
-        id = memo?.let { "$name-$memo" } ?: name,
-        name = name,
-        memo = memo,
-        isFavourite = isFavorite
-    )
-
-internal fun AuthorEntity.asExternalModel(): Author =
-    Author(
-        id = id,
-        name = name,
-        memo = memo,
-        isFavourite = isFavourite
-    )
+data class AuthorInput(
+    val name: String,
+    val memo: String?,
+    val isFavorite: Boolean = false
+) {
+    val id: String get() = name + (memo ?: "")
+}

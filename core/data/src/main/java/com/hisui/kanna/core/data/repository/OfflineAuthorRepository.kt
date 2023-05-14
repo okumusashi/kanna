@@ -19,9 +19,13 @@ package com.hisui.kanna.core.data.repository
 import com.hisui.kanna.core.common.Dispatcher
 import com.hisui.kanna.core.common.KannaDispatchers
 import com.hisui.kanna.core.data.mapper.asEntity
+import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.database.dao.AuthorDao
+import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.AuthorInput
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -29,6 +33,8 @@ class OfflineAuthorRepository @Inject constructor(
     private val dao: AuthorDao,
     @Dispatcher(KannaDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : AuthorRepository {
+    override fun getAllStream(): Flow<List<Author>> = dao.getAllStream().map(::asExternalModel)
+
     override suspend fun save(author: AuthorInput): Result<Unit> =
         withContext(ioDispatcher) {
             dao.insert(author.asEntity()).let {

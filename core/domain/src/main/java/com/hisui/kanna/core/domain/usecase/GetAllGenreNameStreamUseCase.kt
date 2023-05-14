@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.database.dao
+package com.hisui.kanna.core.domain.usecase
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import com.hisui.kanna.core.database.entity.AuthorEntity
+import com.hisui.kanna.core.data.repository.GenreRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-@Dao
-interface AuthorDao {
-    @Insert
-    suspend fun insert(author: AuthorEntity)
-
-    @Query("SELECT * FROM authors ORDER BY name ASC")
-    fun getAllStream(): Flow<List<AuthorEntity>>
+class GetAllGenreNameStreamUseCase @Inject constructor(
+    private val repository: GenreRepository
+) {
+    operator fun invoke(): Flow<List<String>> =
+        repository.getAllStream().map { genre ->
+            genre.map { it.name }
+        }
 }

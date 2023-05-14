@@ -14,27 +14,15 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.data.mapper
+package com.hisui.kanna.core.domain.usecase
 
-import com.hisui.kanna.core.database.entity.AuthorEntity
+import com.hisui.kanna.core.data.repository.AuthorRepository
 import com.hisui.kanna.core.model.Author
-import com.hisui.kanna.core.model.AuthorInput
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-internal fun AuthorInput.asEntity(): AuthorEntity =
-    AuthorEntity(
-        id = memo?.let { "$name-$memo" } ?: name,
-        name = name,
-        memo = memo,
-        isFavourite = isFavorite
-    )
-
-internal fun asExternalModel(list: List<AuthorEntity>): List<Author> =
-    list.map { it.asExternalModel() }
-
-internal fun AuthorEntity.asExternalModel(): Author =
-    Author(
-        id = id,
-        name = name,
-        memo = memo,
-        isFavourite = isFavourite
-    )
+class GetAllAuthorsStreamUseCase @Inject constructor(
+    private val repository: AuthorRepository
+) {
+    operator fun invoke(): Flow<List<Author>> = repository.getAllStream()
+}

@@ -88,11 +88,15 @@ class NewBookViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun createBook(book: NewBook) {
+        // TODO
+    }
+
     fun showDatePicker() {
         _state.update { it.copy(showDatePicker = true) }
     }
 
-    fun hideDatePicker() {
+    fun dismissDatePicker() {
         _state.update { it.copy(showDatePicker = false) }
     }
 }

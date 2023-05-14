@@ -69,7 +69,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun NewBookRoute(
     viewModel: NewBookViewModel = hiltViewModel(),
@@ -88,34 +87,16 @@ internal fun NewBookRoute(
             uiState = uiState,
             popBackStack = popBackStack,
             onUpdateBook = viewModel::updateBook,
-            onShowDatePicker = viewModel::showDatePicker
+            onShowDatePicker = viewModel::showDatePicker,
+            onCreateBook = viewModel::createBook
         )
     }
 
     if (uiState.showDatePicker) {
-        val datePickerState = rememberDatePickerState()
-        DatePickerDialog(
-            onDismissRequest = viewModel::hideDatePicker,
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        datePickerState.selectedDateMillis?.let { epochMilli ->
-                            val date = Instant.fromEpochMilliseconds(epochMilli)
-                            viewModel.updateBook(uiState.newBook.copy(readDate = date))
-                        }
-                    }
-                ) {
-                    Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.ok))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = viewModel::hideDatePicker) {
-                    Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.cancel))
-                }
-            }
-        ) {
-            DatePicker(state = datePickerState)
-        }
+        ReadDatePicker(
+            onDismiss = viewModel::dismissDatePicker,
+            onUpdate = { viewModel.updateBook(book = uiState.newBook.copy(readDate = it)) }
+        )
     }
 }
 
@@ -145,42 +126,57 @@ private fun NewBookDialogTabletPreview() { NewBookScreenPreviewBase(isCompactScr
 @Preview(device = Devices.DESKTOP) @Composable
 private fun NewBookDialogDesktopPreview() { NewBookScreenPreviewBase(isCompactScreen = false) }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReadDatePicker(
+    onDismiss: () -> Unit,
+    onUpdate: (Instant) -> Unit
+) {
+    val datePickerState = rememberDatePickerState()
+    DatePickerDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    datePickerState.selectedDateMillis?.let { epochMilli ->
+                        onUpdate(Instant.fromEpochMilliseconds(epochMilli))
+                    }
+                }
+            ) {
+                Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.ok))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.cancel))
+            }
+        }
+    ) {
+        DatePicker(state = datePickerState)
+    }
+}
+
 /**
  * This screen is shown as a full screen on `compact` devices
  * and as a dialog on `medium` & `large` devices.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun NewBookScreen(
     isCompact: Boolean,
     uiState: NewBookUiState,
     popBackStack: () -> Unit,
     onUpdateBook: (NewBook) -> Unit,
-    onShowDatePicker: () -> Unit
+    onShowDatePicker: () -> Unit,
+    onCreateBook: (NewBook) -> Unit
 ) {
     Scaffold(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(if (isCompact) 1f else 0.65f),
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(id = R.string.new_book)) },
-                navigationIcon = {
-                    IconButton(onClick = popBackStack) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = stringResource(id = com.hisui.kanna.core.ui.R.string.close)
-                        )
-                    }
-                },
-                actions = {
-                    Button(
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        onClick = { },
-                    ) {
-                        Text(stringResource(id = com.hisui.kanna.core.ui.R.string.save))
-                    }
-                }
+            NewBookTopBar(
+                onClickNavigationIcon = popBackStack,
+                onCreate = { onCreateBook(uiState.newBook) }
             )
         }
     ) { paddingValues ->
@@ -191,7 +187,7 @@ internal fun NewBookScreen(
                 .padding(paddingValues)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             OutlinedTextField(
@@ -220,7 +216,7 @@ internal fun NewBookScreen(
 
             BookRating(
                 value = newBook.rating,
-                onUpdate = { rating -> onUpdateBook(newBook.copy(rating = rating)) }
+                onUpdate = { onUpdateBook(newBook.copy(rating = it)) }
             )
 
             OutlinedTextField(
@@ -254,10 +250,38 @@ private fun NewBookScreenPreview() {
                 uiState = previewUiState,
                 popBackStack = {},
                 onUpdateBook = {},
-                onShowDatePicker = {}
+                onShowDatePicker = {},
+                onCreateBook = {},
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun NewBookTopBar(
+    onClickNavigationIcon: () -> Unit,
+    onCreate: () -> Unit,
+) {
+    TopAppBar(
+        title = { Text(stringResource(id = R.string.new_book)) },
+        navigationIcon = {
+            IconButton(onClick = onClickNavigationIcon) {
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = stringResource(id = com.hisui.kanna.core.ui.R.string.close)
+                )
+            }
+        },
+        actions = {
+            Button(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                onClick = onCreate,
+            ) {
+                Text(stringResource(id = com.hisui.kanna.core.ui.R.string.create))
+            }
+        }
+    )
 }
 
 @Composable
@@ -340,6 +364,7 @@ private fun NewBookScreenPreviewBase(isCompactScreen: Boolean) {
                     onUpdateBook = {},
                     popBackStack = {},
                     onShowDatePicker = {},
+                    onCreateBook = {},
                 )
             }
         }

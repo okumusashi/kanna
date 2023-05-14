@@ -73,17 +73,18 @@ import kotlinx.datetime.toJavaInstant
 @Composable
 internal fun NewBookRoute(
     viewModel: NewBookViewModel = hiltViewModel(),
-    isCompactScreen: Boolean,
+    isWidthCompact: Boolean,
+    isHeightCompact: Boolean,
     popBackStack: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     NewBookDialog(
-        isCompactScreen = isCompactScreen,
+        isWidthCompact = isWidthCompact,
         onDismiss = popBackStack
     ) {
         NewBookScreen(
-            isCompactScreen = isCompactScreen,
+            isCompact = isWidthCompact || isHeightCompact,
             uiState = uiState,
             popBackStack = popBackStack,
             onUpdateBook = viewModel::updateBook,
@@ -120,14 +121,14 @@ internal fun NewBookRoute(
 
 @Composable
 private fun NewBookDialog(
-    isCompactScreen: Boolean,
+    isWidthCompact: Boolean,
     onDismiss: () -> Unit,
     content: @Composable () -> Unit,
 ) {
     Dialog(
         properties = DialogProperties(
             dismissOnClickOutside = false,
-            usePlatformDefaultWidth = !isCompactScreen
+            usePlatformDefaultWidth = !isWidthCompact
         ),
         onDismissRequest = onDismiss
     ) {
@@ -151,7 +152,7 @@ private fun NewBookDialogDesktopPreview() { NewBookScreenPreviewBase(isCompactSc
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun NewBookScreen(
-    isCompactScreen: Boolean,
+    isCompact: Boolean,
     uiState: NewBookUiState,
     popBackStack: () -> Unit,
     onUpdateBook: (NewBook) -> Unit,
@@ -160,7 +161,7 @@ internal fun NewBookScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(if (isCompactScreen) 1f else 0.65f),
+            .fillMaxHeight(if (isCompact) 1f else 0.65f),
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(id = R.string.new_book)) },
@@ -245,11 +246,11 @@ internal fun NewBookScreen(
 
 @Preview
 @Composable
-private fun NewBookScreen() {
+private fun NewBookScreenPreview() {
     KannaTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             NewBookScreen(
-                isCompactScreen = false,
+                isCompact = false,
                 uiState = previewUiState,
                 popBackStack = {},
                 onUpdateBook = {},
@@ -330,11 +331,11 @@ private fun NewBookScreenPreviewBase(isCompactScreen: Boolean) {
     KannaTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             NewBookDialog(
-                isCompactScreen = isCompactScreen,
+                isWidthCompact = isCompactScreen,
                 onDismiss = {}
             ) {
                 NewBookScreen(
-                    isCompactScreen = isCompactScreen,
+                    isCompact = isCompactScreen,
                     uiState = previewUiState,
                     onUpdateBook = {},
                     popBackStack = {},

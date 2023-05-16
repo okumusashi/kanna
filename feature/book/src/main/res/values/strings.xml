@@ -20,4 +20,8 @@
     <string name="thought">Thought</string>
     <string name="memo">Memo</string>
     <string name="rating">Rating</string>
+    <string name="add_genre">Add genre</string>
+    <string name="add_author">Add author</string>
+    <string name="memo_optional">Memo (Optional)</string>
+    <string name="for_your_memo">For your memo.</string>
 </resources>

@@ -20,10 +20,15 @@
     <string name="close">close</string>
     <string name="ok">ok</string>
     <string name="cancel">cancel</string>
+    <string name="name">name</string>
     <!-- endregion -->
 
     <!-- region Book -->
     <string name="author">author</string>
     <string name="genre">genre</string>
     <!-- endregion -->
+
+    <!-- region Form -->
+    <string name="add_new">Add New</string>
+    <!-- endregino -->
 </resources>

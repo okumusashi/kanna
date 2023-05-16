@@ -38,7 +38,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -116,7 +115,12 @@ internal fun AuthorSelection(
             onDismissRequest = { expanded = false }
         ) {
             DropdownMenuItem(
-                text = { Text("Add New", color = Color.Cyan) },
+                text = {
+                    Text(
+                        text = stringResource(R.string.add_new),
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                },
                 trailingIcon = {
                     Icon(imageVector = Icons.Filled.PersonAdd, contentDescription = "Add")
                 },
@@ -181,21 +185,21 @@ private fun CreateAuthorDialog(
     var memo: String? by remember { mutableStateOf(null) }
 
     FormDialog(
-        title = "Add author",
+        title = stringResource(com.hisui.kanna.feature.book.R.string.add_author),
         onDismiss = onDismiss,
         onCreate = { onCreate(name, memo) }
     ) {
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text("Name") }
+            label = { Text(stringResource(id = R.string.name)) }
         )
 
         OutlinedTextField(
             value = memo ?: "",
             onValueChange = { memo = it },
-            label = { Text("Memo (Optional)") },
-            placeholder = { Text("For your memo.") }
+            label = { Text(stringResource(com.hisui.kanna.feature.book.R.string.memo_optional)) },
+            placeholder = { Text(stringResource(com.hisui.kanna.feature.book.R.string.for_your_memo)) }
         )
     }
 }

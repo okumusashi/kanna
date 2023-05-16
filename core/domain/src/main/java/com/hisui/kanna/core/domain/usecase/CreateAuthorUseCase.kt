@@ -17,12 +17,13 @@
 package com.hisui.kanna.core.domain.usecase
 
 import com.hisui.kanna.core.data.repository.AuthorRepository
+import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.AuthorInput
 import javax.inject.Inject
 
 class CreateAuthorUseCase @Inject constructor(
     private val repository: AuthorRepository
 ) {
-    suspend operator fun invoke(author: AuthorInput): Result<Unit> =
-        repository.save(author = author)
+    suspend operator fun invoke(name: String, memo: String?): Result<Author> =
+        repository.save(author = AuthorInput(name = name, memo = memo))
 }

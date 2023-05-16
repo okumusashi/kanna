@@ -35,10 +35,10 @@ class OfflineAuthorRepository @Inject constructor(
 ) : AuthorRepository {
     override fun getAllStream(): Flow<List<Author>> = dao.getAllStream().map(::asExternalModel)
 
-    override suspend fun save(author: AuthorInput): Result<Unit> =
+    override suspend fun save(author: AuthorInput): Result<Author> =
         withContext(ioDispatcher) {
-            dao.insert(author.asEntity()).let {
-                Result.success(Unit)
-            }
+            author.asEntity()
+                .also { dao.insert(it) }
+                .let { Result.success(it.asExternalModel()) }
         }
 }

@@ -22,5 +22,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthorRepository {
     fun getAllStream(): Flow<List<Author>>
-    suspend fun save(author: AuthorInput): Result<Unit>
+    suspend fun save(author: AuthorInput): Result<Author>
 }

@@ -52,6 +52,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -63,6 +64,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
+import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.NewBook
 import com.hisui.kanna.core.ui.util.dateTimeFormatter
 import kotlinx.datetime.Clock
@@ -87,6 +89,8 @@ internal fun NewBookRoute(
             uiState = uiState,
             popBackStack = popBackStack,
             onUpdateBook = viewModel::updateBook,
+            onSelectAuthor = viewModel::selectAuthor,
+            onSelectGenre = viewModel::selectGenre,
             onShowDatePicker = viewModel::showDatePicker,
             onCreateBook = viewModel::createBook
         )
@@ -166,6 +170,8 @@ internal fun NewBookScreen(
     uiState: NewBookUiState,
     popBackStack: () -> Unit,
     onUpdateBook: (NewBook) -> Unit,
+    onSelectAuthor: (Author) -> Unit,
+    onSelectGenre: (String) -> Unit,
     onShowDatePicker: () -> Unit,
     onCreateBook: (NewBook) -> Unit
 ) {
@@ -212,6 +218,16 @@ internal fun NewBookScreen(
                 readOnly = true,
             )
 
+            AuthorSelection(
+                selected = uiState.selectedAuthor,
+                onSelect = onSelectAuthor,
+            )
+
+            GenreSelection(
+                selected = uiState.selectedGenre,
+                onSelect = onSelectGenre,
+            )
+
             BookFormDivider()
 
             BookRating(
@@ -250,6 +266,8 @@ private fun NewBookScreenPreview() {
                 uiState = previewUiState,
                 popBackStack = {},
                 onUpdateBook = {},
+                onSelectAuthor = {},
+                onSelectGenre = {},
                 onShowDatePicker = {},
                 onCreateBook = {},
             )
@@ -345,8 +363,8 @@ private val previewUiState: NewBookUiState =
             authorId = "author",
             genreId = "genre"
         ),
-        authors = emptyList(),
-        genres = emptyList(),
+        selectedAuthor = Author(id = "", name = "author", memo = "", isFavourite = false),
+        selectedGenre = "genre",
         showDatePicker = false
     )
 
@@ -362,6 +380,8 @@ private fun NewBookScreenPreviewBase(isCompactScreen: Boolean) {
                     isCompact = isCompactScreen,
                     uiState = previewUiState,
                     onUpdateBook = {},
+                    onSelectAuthor = {},
+                    onSelectGenre = {},
                     popBackStack = {},
                     onShowDatePicker = {},
                     onCreateBook = {},

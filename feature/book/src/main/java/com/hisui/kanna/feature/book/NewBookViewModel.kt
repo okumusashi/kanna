@@ -34,8 +34,8 @@ data class NewBookUiState(
     val loading: Boolean,
     val error: String?,
     val newBook: NewBook,
-    val authors: List<Author>,
-    val genres: List<String>,
+    val selectedAuthor: Author?,
+    val selectedGenre: String?,
     val showDatePicker: Boolean
 )
 
@@ -51,8 +51,7 @@ private data class NewBookViewModelState(
         authorId = "",
         genreId = "",
     ),
-    val authors: List<Author> = emptyList(),
-    val genres: List<String> = emptyList(),
+    val selectedAuthor: Author? = null,
     val showDatePicker: Boolean = false
 ) {
     fun toState(): NewBookUiState =
@@ -60,8 +59,8 @@ private data class NewBookViewModelState(
             loading = loading,
             error = error,
             newBook = newBook,
-            authors = authors,
-            genres = genres,
+            selectedAuthor = selectedAuthor,
+            selectedGenre = newBook.genreId,
             showDatePicker = showDatePicker
         )
 }
@@ -98,5 +97,20 @@ class NewBookViewModel @Inject constructor() : ViewModel() {
 
     fun dismissDatePicker() {
         _state.update { it.copy(showDatePicker = false) }
+    }
+
+    fun selectAuthor(author: Author) {
+        _state.update {
+            it.copy(
+                selectedAuthor = author,
+                newBook = it.newBook.copy(authorId = author.id),
+            )
+        }
+    }
+
+    fun selectGenre(genre: String) {
+        _state.update {
+            it.copy(newBook = it.newBook.copy(genreId = genre))
+        }
     }
 }

@@ -17,10 +17,7 @@
 package com.hisui.kanna.feature.book
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PersonAdd
@@ -32,7 +29,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -42,12 +38,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hisui.kanna.core.designsystem.component.FormDialog
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.ui.R
@@ -120,12 +116,9 @@ internal fun AuthorSelection(
             onDismissRequest = { expanded = false }
         ) {
             DropdownMenuItem(
-                text = { Text("Add New") },
+                text = { Text("Add New", color = Color.Cyan) },
                 trailingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.PersonAdd,
-                        contentDescription = "Calendar"
-                    )
+                    Icon(imageVector = Icons.Filled.PersonAdd, contentDescription = "Add")
                 },
                 onClick = onShowCreateDialog
             )
@@ -142,12 +135,10 @@ internal fun AuthorSelection(
     }
 
     if (showCreateDialog) {
-        Dialog(onDismissRequest = onDismissCreateDialog) {
-            CreateAuthorScreen(
-                onDismiss = onDismissCreateDialog,
-                onCreate = onCreate
-            )
-        }
+        CreateAuthorDialog(
+            onDismiss = onDismissCreateDialog,
+            onCreate = onCreate
+        )
     }
 }
 
@@ -182,33 +173,23 @@ private fun AuthorSelectionPreview() {
 }
 
 @Composable
-private fun CreateAuthorScreen(
+private fun CreateAuthorDialog(
     onDismiss: () -> Unit,
     onCreate: (name: String, memo: String?) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(32.dp),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+    var name by remember { mutableStateOf("") }
+    var memo: String? by remember { mutableStateOf(null) }
+
+    FormDialog(
+        title = "Add author",
+        onDismiss = onDismiss,
+        onCreate = { onCreate(name, memo) }
     ) {
-        Text(
-            text = "Add an author",
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-
-        var name by remember { mutableStateOf("") }
-
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
             label = { Text("Name") }
         )
-
-        var memo: String? by remember { mutableStateOf(null) }
 
         OutlinedTextField(
             value = memo ?: "",
@@ -216,24 +197,6 @@ private fun CreateAuthorScreen(
             label = { Text("Memo (Optional)") },
             placeholder = { Text("For your memo.") }
         )
-
-        Row(
-            modifier = Modifier.align(Alignment.End),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            TextButton(onClick = onDismiss) {
-                Text(text = "Cancel")
-            }
-            TextButton(
-                onClick = {
-                    onCreate(name, memo)
-                    onDismiss()
-                }
-            ) {
-                Text("Create")
-            }
-        }
     }
 }
 
@@ -241,7 +204,7 @@ private fun CreateAuthorScreen(
 @Composable
 private fun CreateAuthorScreenPreview() {
     KannaTheme {
-        CreateAuthorScreen(
+        CreateAuthorDialog(
             onDismiss = {},
             onCreate = { _, _ -> }
         )

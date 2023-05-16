@@ -23,6 +23,6 @@ import javax.inject.Inject
 class CreateGenreUseCase @Inject constructor(
     private val repository: GenreRepository
 ) {
-    suspend operator fun invoke(genre: String): Result<Unit> =
+    suspend operator fun invoke(genre: String): Result<String> =
         repository.save(genre = Genre(name = genre, isFavourite = false))
 }

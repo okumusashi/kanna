@@ -34,10 +34,10 @@ class OfflineGenreRepository @Inject constructor(
 ) : GenreRepository {
     override fun getAllStream(): Flow<List<Genre>> = dao.getAllStream().map(::asExternalModel)
 
-    override suspend fun save(genre: Genre): Result<Unit> =
+    override suspend fun save(genre: Genre): Result<String> =
         withContext(ioDispatcher) {
             dao.insert(genre.asEntity()).let {
-                Result.success(Unit)
+                Result.success(genre.name)
             }
         }
 }

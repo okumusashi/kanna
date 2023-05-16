@@ -21,5 +21,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface GenreRepository {
     fun getAllStream(): Flow<List<Genre>>
-    suspend fun save(genre: Genre): Result<Unit>
+    suspend fun save(genre: Genre): Result<String>
 }

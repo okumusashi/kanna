@@ -18,15 +18,21 @@ package com.hisui.kanna.feature.book
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hisui.kanna.core.data.repository.BookRepository
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.NewBook
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import javax.inject.Inject
 
@@ -65,8 +71,14 @@ private data class NewBookViewModelState(
         )
 }
 
+sealed interface NewBookEvent {
+    object Created : NewBookEvent
+}
+
 @HiltViewModel
-class NewBookViewModel @Inject constructor() : ViewModel() {
+class NewBookViewModel @Inject constructor(
+    private val repository: BookRepository,
+) : ViewModel() {
 
     private val _state = MutableStateFlow(NewBookViewModelState())
     val uiState: StateFlow<NewBookUiState>
@@ -78,6 +90,9 @@ class NewBookViewModel @Inject constructor() : ViewModel() {
                 initialValue = NewBookViewModelState().toState()
             )
 
+    private val _event = Channel<NewBookEvent>(BUFFERED)
+    val event: Flow<NewBookEvent> = _event.receiveAsFlow()
+
     fun updateBook(book: NewBook) {
         _state.update {
             it.copy(
@@ -88,7 +103,14 @@ class NewBookViewModel @Inject constructor() : ViewModel() {
     }
 
     fun createBook(book: NewBook) {
-        // TODO
+        viewModelScope.launch {
+            val result = repository.save(book = book)
+            if (result.isSuccess) {
+                _event.send(NewBookEvent.Created)
+            } else {
+                _state.update { it.copy(error = result.exceptionOrNull()?.message) }
+            }
+        }
     }
 
     fun showDatePicker() {

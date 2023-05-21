@@ -58,7 +58,7 @@ data class BookEntity(
     @ColumnInfo(name = "read_date")
     val readDate: Instant,
     val thought: String,
-    val memo: String,
+    val memo: String?,
     val rating: Int
 ) {
     val id: Long get() = _id

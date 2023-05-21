@@ -76,8 +76,8 @@ class HomeViewModelTest {
             runTest {
                 val expected = bookList.sortedByDescending { it.readDate }
                 val actual = (viewModel.uiState.first() as HomeUiState.RecentBooks).books
-                assertThat(expected)
-                    .containsExactlyElementsIn(actual)
+                assertThat(actual)
+                    .containsExactlyElementsIn(expected)
                     .inOrder()
             }
         }
@@ -95,8 +95,8 @@ class HomeViewModelTest {
             runTest {
                 val expected = bookList.sortedBy { it.readDate }
                 val actual = (viewModel.uiState.first() as HomeUiState.RecentBooks).books
-                assertThat(expected)
-                    .containsExactlyElementsIn(actual)
+                assertThat(actual)
+                    .containsExactlyElementsIn(expected)
                     .inOrder()
             }
         }
@@ -114,8 +114,8 @@ class HomeViewModelTest {
             runTest {
                 val expected = bookList.sortedByDescending { it.title }
                 val actual = (viewModel.uiState.first() as HomeUiState.RecentBooks).books
-                assertThat(expected)
-                    .containsExactlyElementsIn(actual)
+                assertThat(actual)
+                    .containsExactlyElementsIn(expected)
                     .inOrder()
             }
         }
@@ -133,8 +133,8 @@ class HomeViewModelTest {
             runTest {
                 val expected = bookList.sortedBy { it.title }
                 val actual = (viewModel.uiState.first() as HomeUiState.RecentBooks).books
-                assertThat(expected)
-                    .containsExactlyElementsIn(actual)
+                assertThat(actual)
+                    .containsExactlyElementsIn(expected)
                     .inOrder()
             }
         }

@@ -21,7 +21,7 @@ import kotlinx.datetime.Instant
 data class NewBook(
     val title: String,
     val readDate: Instant,
-    val memo: String,
+    val memo: String?,
     val thought: String,
     val rating: Int,
     val authorId: String,

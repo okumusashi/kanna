@@ -21,12 +21,7 @@ import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.AuthorInput
 
 internal fun AuthorInput.asEntity(): AuthorEntity =
-    AuthorEntity(
-        id = memo?.let { "$name-$memo" } ?: name,
-        name = name,
-        memo = memo,
-        isFavourite = isFavorite
-    )
+    AuthorEntity(name = name, memo = memo)
 
 internal fun asExternalModel(list: List<AuthorEntity>): List<Author> =
     list.map { it.asExternalModel() }

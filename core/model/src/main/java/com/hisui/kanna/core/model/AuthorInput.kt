@@ -16,10 +16,4 @@
 
 package com.hisui.kanna.core.model
 
-data class AuthorInput(
-    val name: String,
-    val memo: String?,
-    val isFavorite: Boolean = false
-) {
-    val id: String get() = name + (memo ?: "")
-}
+data class AuthorInput(val name: String, val memo: String?)

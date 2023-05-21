@@ -40,7 +40,7 @@ internal fun asExternalModel(bookAndAuthor: Map<BookEntity, AuthorEntity>): List
             author = author.asExternalModel(),
             genre = book.genreId ?: "",
             readDate = book.readDate,
-            memo = book.memo,
+            memo = book.memo ?: "",
             thought = book.thought,
             rating = book.rating
         )

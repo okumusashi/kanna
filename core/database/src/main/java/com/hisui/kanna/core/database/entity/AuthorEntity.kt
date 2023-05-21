@@ -31,6 +31,13 @@ import androidx.room.PrimaryKey
 data class AuthorEntity(
     @PrimaryKey val id: String,
     val name: String,
-    val memo: String? = null,
+    val memo: String?,
     @ColumnInfo(name = "is_favourite") val isFavourite: Boolean
-)
+) {
+    constructor(name: String, memo: String?) : this(
+        id = memo?.let { name + memo } ?: name,
+        name = name,
+        memo = memo,
+        isFavourite = false,
+    )
+}

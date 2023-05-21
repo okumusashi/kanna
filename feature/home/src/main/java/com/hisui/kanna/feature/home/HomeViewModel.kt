@@ -96,7 +96,7 @@ internal class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getRecentBooks(
                 sort = BookSorter.TITLE,
-                isAsc = true
+                isAsc = false
             )
         }
     }

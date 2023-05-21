@@ -50,9 +50,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -78,6 +78,14 @@ internal fun NewBookRoute(
     isHeightCompact: Boolean,
     popBackStack: () -> Unit
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.event.collect { event ->
+            when (event) {
+                NewBookEvent.Created -> popBackStack()
+            }
+        }
+    }
+
     val uiState by viewModel.uiState.collectAsState()
 
     NewBookDialog(
@@ -248,7 +256,7 @@ internal fun NewBookScreen(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = newBook.thought,
+                value = newBook.memo ?: "",
                 onValueChange = { onUpdateBook(newBook.copy(memo = it)) },
                 label = { Text(text = stringResource(id = R.string.memo)) },
             )

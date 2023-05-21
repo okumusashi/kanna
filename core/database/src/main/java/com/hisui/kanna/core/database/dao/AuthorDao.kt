@@ -18,10 +18,15 @@ package com.hisui.kanna.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.Query
 import com.hisui.kanna.core.database.entity.AuthorEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AuthorDao {
     @Insert
     suspend fun insert(author: AuthorEntity)
+
+    @Query("SELECT * FROM authors ORDER BY name ASC")
+    fun getAllStream(): Flow<List<AuthorEntity>>
 }

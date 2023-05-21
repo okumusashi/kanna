@@ -19,19 +19,32 @@ package com.hisui.kanna.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.hisui.kanna.feature.book.navigation.newBookNavigationRoute
+import com.hisui.kanna.feature.book.navigation.newBookScreen
 import com.hisui.kanna.feature.home.navigation.homeNavigationRoute
 import com.hisui.kanna.feature.home.navigation.homeScreen
 import com.hisui.kanna.feature.quote.navigation.quoteScreen
 
 @Composable
 fun KannaNavHost(
-    navController: NavHostController
+    navController: NavHostController,
+    isWidthCompact: Boolean,
+    isHeightCompact: Boolean
 ) {
     NavHost(
         navController = navController,
         startDestination = homeNavigationRoute
     ) {
-        homeScreen()
+        homeScreen(
+            onNewBookFabClick = {
+                navController.navigate(newBookNavigationRoute)
+            }
+        )
         quoteScreen()
+        newBookScreen(
+            isWidthCompact = isWidthCompact,
+            isHeightCompact = isHeightCompact,
+            popBackStack = navController::popBackStack
+        )
     }
 }

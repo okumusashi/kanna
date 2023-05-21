@@ -149,11 +149,12 @@ private fun testBookEntity(
     readDate: Instant = Instant.parse("2023-01-01T00:00:00.00Z"),
 ): BookEntity =
     BookEntity(
-        id = id,
+        _id = id,
         title = title,
         authorId = "author",
-        genre = genre,
+        genreId = genre,
         readDate = readDate,
+        thought = "thought",
         memo = "testMemo",
         rating = 5
     )

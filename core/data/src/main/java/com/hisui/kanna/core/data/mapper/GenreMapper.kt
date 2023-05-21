@@ -24,3 +24,12 @@ internal fun Genre.asEntity(): GenreEntity =
         name = name,
         isFavourite = isFavourite
     )
+
+internal fun asExternalModel(list: List<GenreEntity>): List<Genre> =
+    list.map { it.asExternalModel() }
+
+internal fun GenreEntity.asExternalModel(): Genre =
+    Genre(
+        name = name,
+        isFavourite = isFavourite
+    )

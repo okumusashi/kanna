@@ -23,21 +23,23 @@ import com.hisui.kanna.core.model.BookSorter
 import com.hisui.kanna.core.model.NewBook
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
 class TestBookRepository : BookRepository {
+
     private val books = MutableStateFlow<Map<Long, Book>>(emptyMap())
 
     override suspend fun save(book: NewBook): Result<Unit> {
         val newBook = Book(
-            id = books.first().keys.max() + 1,
+            id = books.firstOrNull()?.keys?.maxOrNull()?.plus(1) ?: 1,
             title = book.title,
             readDate = book.readDate,
-            memo = book.memo,
+            thought = book.thought,
+            memo = book.memo ?: "",
             rating = book.rating,
-            author = Author(id = book.authorId, name = book.authorId, memo = "", isFavourite = false),
+            author = Author(id = book.authorId, name = book.authorId, memo = null, isFavourite = false),
             genre = book.genreId
         )
         updateBook(book = newBook)

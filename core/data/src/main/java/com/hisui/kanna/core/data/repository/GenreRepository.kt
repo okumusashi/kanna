@@ -17,7 +17,9 @@
 package com.hisui.kanna.core.data.repository
 
 import com.hisui.kanna.core.model.Genre
+import kotlinx.coroutines.flow.Flow
 
 interface GenreRepository {
-    suspend fun save(genre: Genre): Result<Unit>
+    fun getAllStream(): Flow<List<Genre>>
+    suspend fun save(genre: Genre): Result<String>
 }

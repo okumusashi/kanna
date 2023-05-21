@@ -18,10 +18,15 @@ package com.hisui.kanna.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.Query
 import com.hisui.kanna.core.database.entity.GenreEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GenreDao {
     @Insert
     suspend fun insert(genre: GenreEntity)
+
+    @Query("SELECT * FROM genres ORDER BY name ASC")
+    fun getAllStream(): Flow<List<GenreEntity>>
 }

@@ -29,10 +29,10 @@ class HomeScreenTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun test() {
+    fun when_loading_then_should_show_loading_indicator() {
         composeTestRule.setContent {
             BoxWithConstraints {
-                HomeScreen(homeUiState = HomeUiState.Loading)
+                HomeScreen(homeUiState = HomeUiState.Loading, onNewBookFabClick = {})
             }
         }
 

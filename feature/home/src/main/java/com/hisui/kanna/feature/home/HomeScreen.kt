@@ -18,6 +18,7 @@ package com.hisui.kanna.feature.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,13 +27,19 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -43,60 +50,81 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.ui.util.dateTimeFormatter
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @Composable
 internal fun HomeRoute(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onNewBookFabClick: () -> Unit
 ) {
     val homeUiState by viewModel.uiState.collectAsState()
 
-    HomeScreen(homeUiState = homeUiState)
+    HomeScreen(
+        homeUiState = homeUiState,
+        onNewBookFabClick = onNewBookFabClick
+    )
 }
 
 @Composable
-internal fun HomeScreen(homeUiState: HomeUiState) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
-    ) {
-        Text(
+internal fun HomeScreen(
+    homeUiState: HomeUiState,
+    onNewBookFabClick: () -> Unit
+) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        val lazyGridState = rememberLazyGridState()
+
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            text = stringResource(R.string.title),
-            style = MaterialTheme.typography.headlineMedium
-        )
-
-        LazyVerticalGrid(
-            modifier = Modifier.fillMaxWidth(),
-            columns = GridCells.Adaptive(300.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(16.dp)
         ) {
-            // TODO: Filter dropdown
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                text = stringResource(R.string.title),
+                style = MaterialTheme.typography.headlineMedium
+            )
 
-            when (homeUiState) {
-                is HomeUiState.Loading -> {
-                    item {
-                        CircularProgressIndicator(
-                            modifier = Modifier.testTag(stringResource(id = R.string.loading_tag))
-                        )
+            LazyVerticalGrid(
+                modifier = Modifier.fillMaxWidth(),
+                state = lazyGridState,
+                columns = GridCells.Adaptive(300.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                // TODO: Filter dropdown
+
+                when (homeUiState) {
+                    is HomeUiState.Loading -> {
+                        item {
+                            CircularProgressIndicator(
+                                modifier = Modifier.testTag(stringResource(id = R.string.loading_tag))
+                            )
+                        }
                     }
-                }
-                is HomeUiState.Empty -> {
-                    // TODO: Add explanation and button (if not using fab) to add a new book
-                }
-                is HomeUiState.RecentBooks -> {
-                    bookList(books = homeUiState.books)
+                    is HomeUiState.Empty -> {
+                        // TODO: Add explanation and button (if not using fab) to add a new book
+                    }
+                    is HomeUiState.RecentBooks -> {
+                        bookList(books = homeUiState.books)
+                    }
                 }
             }
         }
+
+        ExtendedFloatingActionButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            onClick = onNewBookFabClick,
+            expanded = !lazyGridState.canScrollBackward || !lazyGridState.canScrollForward,
+            icon = { Icon(Icons.Filled.Add, "Add a new book") },
+            text = { Text(text = stringResource(R.string.add_book)) }
+        )
     }
 }
 
@@ -115,6 +143,7 @@ private fun HomeScreenPreview() {
                         isFavourite = false
                     ),
                     readDate = Instant.parse("2023-03-01T00:00:00Z"),
+                    thought = "",
                     memo = "",
                     rating = 5,
                     genre = "",
@@ -129,6 +158,7 @@ private fun HomeScreenPreview() {
                         isFavourite = false
                     ),
                     readDate = Instant.parse("2023-02-01T00:00:00Z"),
+                    thought = "",
                     memo = "",
                     rating = 5,
                     genre = "",
@@ -143,13 +173,14 @@ private fun HomeScreenPreview() {
                         isFavourite = false
                     ),
                     readDate = Instant.parse("2023-01-01T00:00:00Z"),
+                    thought = "",
                     memo = "",
                     rating = 5,
                     genre = "",
                 ),
             )
         )
-        HomeScreen(homeUiState = state)
+        HomeScreen(homeUiState = state, onNewBookFabClick = {})
     }
 }
 
@@ -179,9 +210,8 @@ private fun LazyGridScope.bookList(books: List<Book>) {
                     text = book.author.name,
                     style = MaterialTheme.typography.labelMedium,
                 )
-                val dateTimeFormatter = DateTimeFormatter.ofPattern("MMM d yyyy").withZone(ZoneId.systemDefault())
                 Text(
-                    text = dateTimeFormatter.format(book.readDate.toJavaInstant()),
+                    text = dateTimeFormatter().format(book.readDate.toJavaInstant()),
                     style = MaterialTheme.typography.labelSmall,
                 )
             }

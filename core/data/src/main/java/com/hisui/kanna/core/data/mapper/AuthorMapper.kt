@@ -18,13 +18,13 @@ package com.hisui.kanna.core.data.mapper
 
 import com.hisui.kanna.core.database.entity.AuthorEntity
 import com.hisui.kanna.core.model.Author
+import com.hisui.kanna.core.model.AuthorInput
 
-internal fun Author.asEntity(): AuthorEntity =
-    AuthorEntity(
-        id = memo?.let { "$name-$memo" } ?: name,
-        name = name,
-        isFavourite = isFavourite
-    )
+internal fun AuthorInput.asEntity(): AuthorEntity =
+    AuthorEntity(name = name, memo = memo)
+
+internal fun asExternalModel(list: List<AuthorEntity>): List<Author> =
+    list.map { it.asExternalModel() }
 
 internal fun AuthorEntity.asExternalModel(): Author =
     Author(

@@ -25,6 +25,7 @@ val defaultBook: Book =
         id = 1,
         title = "title",
         readDate = Clock.System.now(),
+        thought = "thought",
         memo = "memo",
         rating = 5,
         author = Author(

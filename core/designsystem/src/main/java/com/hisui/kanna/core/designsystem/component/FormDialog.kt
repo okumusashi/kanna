@@ -38,8 +38,10 @@ import com.hisui.kanna.core.designsystem.theme.KannaTheme
 fun FormDialog(
     modifier: Modifier = Modifier,
     title: String,
+    confirmButtonText: String,
+    dismissButtonText: String,
+    onSubmit: () -> Unit,
     onDismiss: () -> Unit,
-    onCreate: () -> Unit,
     content: @Composable () -> Unit
 ) {
 
@@ -47,8 +49,10 @@ fun FormDialog(
         FormDialogContent(
             modifier = modifier,
             title = title,
+            confirmButtonText = confirmButtonText,
+            dismissButtonText = dismissButtonText,
+            onSubmit = onSubmit,
             onDismiss = onDismiss,
-            onCreate = onCreate,
             content = content
         )
     }
@@ -58,8 +62,10 @@ fun FormDialog(
 private fun FormDialogContent(
     modifier: Modifier = Modifier,
     title: String,
+    confirmButtonText: String,
+    dismissButtonText: String,
     onDismiss: () -> Unit,
-    onCreate: () -> Unit,
+    onSubmit: () -> Unit,
     content: @Composable () -> Unit
 ) {
     Column(
@@ -84,15 +90,15 @@ private fun FormDialogContent(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             TextButton(onClick = onDismiss) {
-                Text(text = "Cancel")
+                Text(text = dismissButtonText)
             }
             TextButton(
                 onClick = {
-                    onCreate()
+                    onSubmit()
                     onDismiss()
                 }
             ) {
-                Text("Create")
+                Text(text = confirmButtonText)
             }
         }
     }
@@ -104,8 +110,10 @@ private fun FormDialogPreview() {
     KannaTheme {
         FormDialogContent(
             title = "Create book",
-            onDismiss = { /*TODO*/ },
-            onCreate = { /*TODO*/ }
+            confirmButtonText = "Create",
+            dismissButtonText = "Cancel",
+            onDismiss = {},
+            onSubmit = {}
         ) {
             OutlinedTextField(
                 value = "",

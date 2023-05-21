@@ -187,7 +187,7 @@ private fun CreateAuthorDialog(
     FormDialog(
         title = stringResource(com.hisui.kanna.feature.book.R.string.add_author),
         onDismiss = onDismiss,
-        onCreate = { onCreate(name, memo) }
+        onSubmit = { onCreate(name, memo) }
     ) {
         OutlinedTextField(
             value = name,

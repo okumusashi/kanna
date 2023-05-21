@@ -37,8 +37,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hisui.kanna.core.designsystem.component.FormDialog
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
+import com.hisui.kanna.core.ui.component.CreateFormDialog
 
 @Composable
 internal fun GenreSelection(
@@ -146,7 +146,7 @@ private fun CreateGenreDialog(
 ) {
     var name by remember { mutableStateOf("") }
 
-    FormDialog(
+    CreateFormDialog(
         title = stringResource(R.string.add_genre),
         onDismiss = onDismiss,
         onCreate = { onCreate(name) }

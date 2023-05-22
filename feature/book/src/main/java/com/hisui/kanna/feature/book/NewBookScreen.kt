@@ -31,23 +31,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Grade
 import androidx.compose.material.icons.filled.StarOutline
-import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -66,6 +62,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.NewBook
+import com.hisui.kanna.core.ui.component.CreateFormTopBar
 import com.hisui.kanna.core.ui.util.dateTimeFormatter
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -188,9 +185,10 @@ internal fun NewBookScreen(
             .fillMaxWidth()
             .fillMaxHeight(if (isCompact) 1f else 0.65f),
         topBar = {
-            NewBookTopBar(
+            CreateFormTopBar(
+                title = stringResource(id = R.string.new_book),
                 onClickNavigationIcon = popBackStack,
-                onCreate = { onCreateBook(uiState.newBook) }
+                onCreate = { onCreateBook(uiState.newBook) },
             )
         }
     ) { paddingValues ->
@@ -284,32 +282,6 @@ private fun NewBookScreenPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun NewBookTopBar(
-    onClickNavigationIcon: () -> Unit,
-    onCreate: () -> Unit,
-) {
-    TopAppBar(
-        title = { Text(stringResource(id = R.string.new_book)) },
-        navigationIcon = {
-            IconButton(onClick = onClickNavigationIcon) {
-                Icon(
-                    imageVector = Icons.Filled.Close,
-                    contentDescription = stringResource(id = com.hisui.kanna.core.ui.R.string.close)
-                )
-            }
-        },
-        actions = {
-            Button(
-                modifier = Modifier.padding(horizontal = 8.dp),
-                onClick = onCreate,
-            ) {
-                Text(stringResource(id = com.hisui.kanna.core.ui.R.string.create))
-            }
-        }
-    )
-}
-
 @Composable
 private fun BookRating(
     value: Int,

@@ -42,10 +42,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hisui.kanna.core.designsystem.component.FormDialog
+import com.hisui.kanna.core.designsystem.component.AddButton
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.ui.R
+import com.hisui.kanna.core.ui.component.CreateFormDialog
 
 @Composable
 internal fun AuthorSelection(
@@ -66,20 +67,41 @@ internal fun AuthorSelection(
 
     when (val uiState = state) {
         AuthorSelectionUiState.Loading -> {}
-        is AuthorSelectionUiState.NoAuthor -> {}
-        is AuthorSelectionUiState.ShowList -> {
+
+        is AuthorSelectionUiState.NoAuthor ->
+            AddAuthorButton(
+                modifier = modifier,
+                onShowCreateDialog = viewModel::showCreateDialog
+            )
+
+        is AuthorSelectionUiState.ShowList ->
             AuthorSelection(
                 modifier = modifier,
                 list = uiState.authors,
                 selected = selected,
                 onSelect = onSelect,
-                showCreateDialog = uiState.showCreateDialog,
                 onShowCreateDialog = viewModel::showCreateDialog,
-                onDismissCreateDialog = viewModel::dismissCreateDialog,
-                onCreate = viewModel::createAuthor,
             )
-        }
     }
+
+    if (state.showCreateDialog) {
+        CreateAuthorDialog(
+            onDismiss = viewModel::dismissCreateDialog,
+            onCreate = viewModel::createAuthor
+        )
+    }
+}
+
+@Composable
+private fun AddAuthorButton(
+    modifier: Modifier = Modifier,
+    onShowCreateDialog: () -> Unit
+) {
+    AddButton(
+        modifier = modifier,
+        onClick = onShowCreateDialog,
+        buttonText = stringResource(id = com.hisui.kanna.feature.book.R.string.add_author)
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,10 +111,7 @@ internal fun AuthorSelection(
     list: List<Author>,
     selected: Author?,
     onSelect: (Author) -> Unit,
-    showCreateDialog: Boolean,
     onShowCreateDialog: () -> Unit,
-    onDismissCreateDialog: () -> Unit,
-    onCreate: (name: String, memo: String?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -137,13 +156,6 @@ internal fun AuthorSelection(
             }
         }
     }
-
-    if (showCreateDialog) {
-        CreateAuthorDialog(
-            onDismiss = onDismissCreateDialog,
-            onCreate = onCreate
-        )
-    }
 }
 
 private val authorPreviewList: List<Author> =
@@ -167,10 +179,7 @@ private fun AuthorSelectionPreview() {
                 list = authorPreviewList,
                 selected = null,
                 onSelect = {},
-                showCreateDialog = false,
                 onShowCreateDialog = {},
-                onDismissCreateDialog = {},
-                onCreate = { _, _ -> }
             )
         }
     }
@@ -184,10 +193,10 @@ private fun CreateAuthorDialog(
     var name by remember { mutableStateOf("") }
     var memo: String? by remember { mutableStateOf(null) }
 
-    FormDialog(
+    CreateFormDialog(
         title = stringResource(com.hisui.kanna.feature.book.R.string.add_author),
         onDismiss = onDismiss,
-        onSubmit = { onCreate(name, memo) }
+        onCreate = { onCreate(name, memo) }
     ) {
         OutlinedTextField(
             value = name,

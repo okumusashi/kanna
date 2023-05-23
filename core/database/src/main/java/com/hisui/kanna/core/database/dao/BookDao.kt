@@ -50,4 +50,16 @@ interface BookDao {
         """
     )
     fun getAllBooksAndAuthorsByReadDate(isAsc: Boolean): Flow<Map<BookEntity, AuthorEntity>>
+
+    @Query("SELECT COUNT(1) FROM books")
+    fun countStream(): Flow<Int>
+
+    @Query(
+        """
+            SELECT * FROM books
+            INNER JOIN authors ON books.author_id = authors.id
+            WHERE books.title LIKE '%' || :partialTitle || '%'
+        """
+    )
+    fun getBooksAndAuthorsByPartialTitle(partialTitle: String): Flow<Map<BookEntity, AuthorEntity>>
 }

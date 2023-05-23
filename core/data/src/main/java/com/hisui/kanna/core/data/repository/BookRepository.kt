@@ -26,7 +26,11 @@ interface BookRepository {
 
     fun getAllStream(sort: BookSorter, isAsc: Boolean): Flow<List<Book>>
 
+    fun countStream(): Flow<Int>
+
     fun getStream(id: Long): Flow<Book?>
+
+    fun getListStreamByPartialTitle(partialTitle: String): Flow<List<Book>>
 
     suspend fun update(book: Book): Result<Unit>
 }

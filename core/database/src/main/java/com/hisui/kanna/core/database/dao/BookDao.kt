@@ -26,16 +26,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface BookDao {
 
-    object BookColumn {
-        const val TITLE = "title"
-        const val READ_DATE = "read_date"
-    }
-
-    enum class SortBy(val columnName: String) {
-        TITLE(BookColumn.TITLE),
-        READ_DATE(BookColumn.READ_DATE)
-    }
-
     @Insert
     suspend fun insert(vararg books: BookEntity)
 
@@ -56,7 +46,7 @@ interface BookDao {
             INNER JOIN authors ON books.author_id = authors.id
             ORDER BY
                 CASE WHEN :isAsc = 1 THEN books.read_date END ASC,
-                CASE WHEN :isAsc = 1 THEN books.read_date END DESC;
+                CASE WHEN :isAsc = 0 THEN books.read_date END DESC;
         """
     )
     fun getAllBooksAndAuthorsByReadDate(isAsc: Boolean): Flow<Map<BookEntity, AuthorEntity>>

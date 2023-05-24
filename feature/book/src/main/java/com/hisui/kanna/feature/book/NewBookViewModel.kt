@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import javax.inject.Inject
 
-data class NewBookUiState(
+internal data class NewBookUiState(
     val loading: Boolean,
     val error: String?,
     val newBook: NewBook,
@@ -76,7 +76,7 @@ sealed interface NewBookEvent {
 }
 
 @HiltViewModel
-class NewBookViewModel @Inject constructor(
+internal class NewBookViewModel @Inject constructor(
     private val repository: BookRepository,
 ) : ViewModel() {
 
@@ -85,7 +85,7 @@ class NewBookViewModel @Inject constructor(
         get() = _state
             .map { it.toState() }
             .stateIn(
-                viewModelScope,
+                scope = viewModelScope,
                 started = SharingStarted.Eagerly,
                 initialValue = NewBookViewModelState().toState()
             )

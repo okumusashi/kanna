@@ -54,7 +54,7 @@ private data class NewQuoteViewModelState(
     val newQuote: NewQuote = NewQuote(
         quote = "",
         bookId = 0,
-        page = -1,
+        page = null,
         thought = ""
     ),
     val selectedBook: Book? = null,
@@ -98,8 +98,17 @@ internal class NewQuoteViewModel @Inject constructor(
     private val _event = Channel<NewQuoteEvent>(BUFFERED)
     val event: Flow<NewQuoteEvent> = _event.receiveAsFlow()
 
+    init {
+        // TODO
+        viewModelState.update { it.copy(loading = false) }
+    }
+
     // Note: Move to another ViewModel if necessary
     fun filterBooks(q: String) {
+        if (q.isBlank()) {
+            viewModelState.update { it.copy(bookCandidates = emptyList()) }
+        }
+
         viewModelScope.launch {
             getFilteredBooksStreamUseCase(q = q).collect { books ->
                 viewModelState.update { it.copy(bookCandidates = books) }
@@ -113,5 +122,17 @@ internal class NewQuoteViewModel @Inject constructor(
 
     fun selectBook(book: Book) {
         viewModelState.update { it.copy(selectedBook = book) }
+    }
+
+    fun create(newQuote: NewQuote) {
+        viewModelScope.launch {
+            val result = repository.save(quote = newQuote)
+            if (result.isSuccess) {
+                _event.send(NewQuoteEvent.Created)
+            }
+            if (result.isFailure) {
+                // TODO
+            }
+        }
     }
 }

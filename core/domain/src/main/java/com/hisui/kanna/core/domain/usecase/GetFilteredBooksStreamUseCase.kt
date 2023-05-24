@@ -25,5 +25,5 @@ class GetFilteredBooksStreamUseCase @Inject constructor(
     private val repository: BookRepository
 ) {
     operator fun invoke(q: String): Flow<List<Book>> =
-        repository.getListStreamByPartialTitle(partialTitle = q)
+        repository.getListStreamByQuery(q = q)
 }

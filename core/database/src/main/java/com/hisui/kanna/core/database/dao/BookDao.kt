@@ -58,8 +58,9 @@ interface BookDao {
         """
             SELECT * FROM books
             INNER JOIN authors ON books.author_id = authors.id
-            WHERE books.title LIKE '%' || :partialTitle || '%'
+            WHERE books.title LIKE '%' || :q || '%'
+            OR authors.name LIKE '%' || :q || '%'
         """
     )
-    fun getBooksAndAuthorsByPartialTitle(partialTitle: String): Flow<Map<BookEntity, AuthorEntity>>
+    fun getBooksAndAuthorsByQuery(q: String): Flow<Map<BookEntity, AuthorEntity>>
 }

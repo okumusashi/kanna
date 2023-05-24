@@ -55,10 +55,10 @@ class FakeBookDao : BookDao {
 
     override fun countStream(): Flow<Int> = books.map { it.size }
 
-    override fun getBooksAndAuthorsByPartialTitle(partialTitle: String): Flow<Map<BookEntity, AuthorEntity>> =
+    override fun getBooksAndAuthorsByQuery(q: String): Flow<Map<BookEntity, AuthorEntity>> =
         books.map { books ->
             books.values
-                .filter { it.title.contains(partialTitle) }
+                .filter { it.title.contains(q) }
                 .associateWith(::toTestAuthorEntity)
         }
 }

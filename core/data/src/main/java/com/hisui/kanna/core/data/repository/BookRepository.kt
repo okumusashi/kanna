@@ -30,7 +30,7 @@ interface BookRepository {
 
     fun getStream(id: Long): Flow<Book?>
 
-    fun getListStreamByPartialTitle(partialTitle: String): Flow<List<Book>>
+    fun getListStreamByQuery(q: String): Flow<List<Book>>
 
     suspend fun update(book: Book): Result<Unit>
 }

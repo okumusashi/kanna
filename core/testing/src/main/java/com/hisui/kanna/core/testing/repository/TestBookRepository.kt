@@ -70,10 +70,10 @@ class TestBookRepository : BookRepository {
             books.getOrDefault(id, null)
         }
 
-    override fun getListStreamByPartialTitle(partialTitle: String): Flow<List<Book>> =
+    override fun getListStreamByQuery(q: String): Flow<List<Book>> =
         books.map { books ->
             books
-                .filterValues { it.title.contains(partialTitle) }
+                .filterValues { it.title.contains(q) }
                 .values
                 .toList()
         }

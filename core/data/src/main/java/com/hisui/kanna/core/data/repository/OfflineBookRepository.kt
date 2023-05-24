@@ -54,8 +54,8 @@ class OfflineBookRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getListStreamByPartialTitle(partialTitle: String): Flow<List<Book>> =
-        dao.getBooksAndAuthorsByPartialTitle(partialTitle = partialTitle)
+    override fun getListStreamByQuery(q: String): Flow<List<Book>> =
+        dao.getBooksAndAuthorsByQuery(q = q)
             .map(::asExternalModel)
 
     override suspend fun update(book: Book): Result<Unit> {

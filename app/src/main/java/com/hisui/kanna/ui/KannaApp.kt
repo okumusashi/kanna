@@ -33,6 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.hisui.kanna.core.ui.ext.isHeightCompact
+import com.hisui.kanna.core.ui.ext.isWidthCompact
 import com.hisui.kanna.navigation.KannaNavHost
 import com.hisui.kanna.navigation.KannaNavItem
 
@@ -68,8 +70,8 @@ fun KannaApp(
 
             KannaNavHost(
                 navController = appState.navController,
-                isWidthCompact = appState.isWidthCompact,
-                isHeightCompact = appState.isHeightCompact
+                isWidthCompact = appState.windowSizeClass.isWidthCompact,
+                isHeightCompact = appState.windowSizeClass.isHeightCompact
             )
         }
     }

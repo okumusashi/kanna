@@ -16,11 +16,11 @@
 
 package com.hisui.kanna.core.data.repository
 
+import com.hisui.kanna.core.model.NewQuote
 import com.hisui.kanna.core.model.Quote
-import com.hisui.kanna.core.model.QuoteInput
 import kotlinx.coroutines.flow.Flow
 
 interface QuoteRepository {
-    suspend fun save(quote: QuoteInput): Result<Unit>
+    suspend fun save(quote: NewQuote): Result<Unit>
     fun getAllStream(): Flow<List<Quote>>
 }

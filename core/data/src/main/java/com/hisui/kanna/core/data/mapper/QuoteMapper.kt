@@ -18,16 +18,15 @@ package com.hisui.kanna.core.data.mapper
 
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
+import com.hisui.kanna.core.model.NewQuote
 import com.hisui.kanna.core.model.Quote
-import com.hisui.kanna.core.model.QuoteInput
-import kotlin.text.Typography.quote
 
-internal fun QuoteInput.toEntity(): FavouriteQuoteEntity =
+internal fun NewQuote.toEntity(): FavouriteQuoteEntity =
     FavouriteQuoteEntity(
         bookId = bookId,
-        page = page,
+        page = page ?: 0,
         quote = quote,
-        thought = thought ?: ""
+        thought = thought
     )
 
 internal fun Map<FavouriteQuoteEntity, BookAndAuthorEntity>.asExternalModel(): List<Quote> =

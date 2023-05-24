@@ -21,8 +21,8 @@ import com.hisui.kanna.core.common.KannaDispatchers
 import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.data.mapper.toEntity
 import com.hisui.kanna.core.database.dao.FavouriteQuoteDao
+import com.hisui.kanna.core.model.NewQuote
 import com.hisui.kanna.core.model.Quote
-import com.hisui.kanna.core.model.QuoteInput
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -33,7 +33,7 @@ class OfflineQuoteRepository @Inject constructor(
     private val dao: FavouriteQuoteDao,
     @Dispatcher(KannaDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 ) : QuoteRepository {
-    override suspend fun save(quote: QuoteInput): Result<Unit> {
+    override suspend fun save(quote: NewQuote): Result<Unit> {
         withContext(ioDispatcher) {
             dao.insert(quote.toEntity())
         }

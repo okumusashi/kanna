@@ -19,6 +19,6 @@ package com.hisui.kanna.core.model
 data class NewQuote(
     val quote: String,
     val bookId: Long,
-    val page: Int,
+    val page: Int?,
     val thought: String,
 )

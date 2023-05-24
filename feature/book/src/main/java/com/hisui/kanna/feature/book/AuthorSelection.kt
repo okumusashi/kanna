@@ -19,6 +19,7 @@ package com.hisui.kanna.feature.book
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.DropdownMenuItem
@@ -39,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -201,14 +203,16 @@ private fun CreateAuthorDialog(
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text(stringResource(id = R.string.name)) }
+            label = { Text(stringResource(id = R.string.name)) },
+            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Words)
         )
 
         OutlinedTextField(
             value = memo ?: "",
             onValueChange = { memo = it },
             label = { Text(stringResource(com.hisui.kanna.feature.book.R.string.memo_optional)) },
-            placeholder = { Text(stringResource(com.hisui.kanna.feature.book.R.string.for_your_memo)) }
+            placeholder = { Text(stringResource(com.hisui.kanna.feature.book.R.string.for_your_memo)) },
+            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
         )
     }
 }

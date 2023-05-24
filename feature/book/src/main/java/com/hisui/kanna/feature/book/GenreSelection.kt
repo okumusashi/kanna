@@ -16,6 +16,7 @@
 
 package com.hisui.kanna.feature.book
 
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DropdownMenuItem
@@ -35,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.component.AddButton
@@ -164,7 +166,8 @@ private fun CreateGenreDialog(
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text(stringResource(com.hisui.kanna.core.ui.R.string.name)) }
+            label = { Text(stringResource(com.hisui.kanna.core.ui.R.string.name)) },
+            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
         )
     }
 }

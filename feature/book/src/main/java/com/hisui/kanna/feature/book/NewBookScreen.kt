@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EditCalendar
@@ -53,6 +54,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -206,7 +208,8 @@ internal fun NewBookScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = newBook.title,
                 onValueChange = { onUpdateBook(newBook.copy(title = it)) },
-                label = { Text(text = stringResource(id = R.string.title)) }
+                label = { Text(text = stringResource(id = R.string.title)) },
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
             )
 
             OutlinedTextField(
@@ -248,6 +251,7 @@ internal fun NewBookScreen(
                 value = newBook.thought,
                 onValueChange = { onUpdateBook(newBook.copy(thought = it)) },
                 label = { Text(text = stringResource(id = R.string.thought)) },
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
             )
 
             BookFormDivider()
@@ -257,6 +261,7 @@ internal fun NewBookScreen(
                 value = newBook.memo ?: "",
                 onValueChange = { onUpdateBook(newBook.copy(memo = it)) },
                 label = { Text(text = stringResource(id = R.string.memo)) },
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
             )
         }
     }

@@ -208,10 +208,12 @@ private fun BookSelection(
                     return@ExposedDropdownMenu
                 }
                 .forEach { item ->
+                    val bookTitle = stringResource(id = com.hisui.kanna.core.ui.R.string.book_by_author, item.title, item.author.name)
                     DropdownMenuItem(
-                        text = { Text(stringResource(id = com.hisui.kanna.core.ui.R.string.book_by_author, item.title, item.author.name)) },
+                        text = { Text(bookTitle) },
                         onClick = {
                             onSelect(item)
+                            title = bookTitle
                             expanded = false
                         }
                     )

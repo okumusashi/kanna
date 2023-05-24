@@ -37,6 +37,7 @@ fun CreateFormTopBar(
     title: String,
     onClickNavigationIcon: () -> Unit,
     onCreate: () -> Unit,
+    enabled: Boolean = true,
 ) {
     TopAppBar(
         title = { Text(title) },
@@ -52,6 +53,7 @@ fun CreateFormTopBar(
             Button(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 onClick = onCreate,
+                enabled = enabled
             ) {
                 Text(stringResource(id = R.string.create))
             }

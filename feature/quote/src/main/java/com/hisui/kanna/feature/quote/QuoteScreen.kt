@@ -19,6 +19,7 @@ package com.hisui.kanna.feature.quote
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,52 +27,92 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.hisui.kanna.core.designsystem.component.AddButton
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Quote
+import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
 
 @Composable
 internal fun QuoteScreen(
-    viewModel: QuoteViewModel = hiltViewModel()
+    viewModel: QuoteViewModel = hiltViewModel(),
+    onOpenNewQuoteScreen: () -> Unit,
+    onOpenNewBookScreen: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    QuoteScreen(uiState = uiState)
+    QuoteScreen(
+        uiState = uiState,
+        onOpenNewQuoteScreen = onOpenNewQuoteScreen,
+        onOpenNewBookScreen = onOpenNewBookScreen
+    )
 }
 
 @Composable
-private fun QuoteScreen(uiState: QuoteUiState) {
+private fun QuoteScreen(
+    uiState: QuoteUiState,
+    onOpenNewQuoteScreen: () -> Unit,
+    onOpenNewBookScreen: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
     ) {
-        when (uiState) {
-            QuoteUiState.Loading -> {
-                // TODO: Add indicator
-            }
-            QuoteUiState.Empty -> {
-                // TODO: Add explanation and add button
-            }
-            is QuoteUiState.Success -> {
-                LazyColumn {
-                    items(uiState.quotes) { quote ->
-                        QuoteItem(quote = quote)
-                    }
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .padding(bottom = 16.dp),
+            text = stringResource(R.string.quotes),
+            style = MaterialTheme.typography.headlineMedium
+        )
+
+        Box {
+            when (uiState) {
+                QuoteUiState.Loading -> {
+                    // TODO: Add indicator
                 }
+
+                QuoteUiState.NoBook ->
+                    NoBookScreen(onOpenNewBookScreen = onOpenNewBookScreen)
+
+                QuoteUiState.NoQuote ->
+                    NoQuoteScreen(onOpenNewQuoteScreen = onOpenNewQuoteScreen)
+
+                is QuoteUiState.ShowQuotes ->
+                    ShowQuotesScreen(
+                        quotes = uiState.quotes,
+                        onOpenNewQuoteScreen = onOpenNewQuoteScreen
+                    )
             }
         }
     }
@@ -79,15 +120,17 @@ private fun QuoteScreen(uiState: QuoteUiState) {
 
 @Composable
 private fun QuoteScreenPreview() {
-    KannaTheme {
-        val quotes = (1..10)
-            .map { previewQuote() }
-            .distinctBy { it.quote }
-            .sortedByDescending { it.createdAt }
+    val quotes = (1..10)
+        .map { previewQuote() }
+        .distinctBy { it.quote }
+        .sortedByDescending { it.createdAt }
 
-        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-            QuoteScreen(uiState = QuoteUiState.Success(quotes = quotes))
-        }
+    PreviewColumnWrapper {
+        QuoteScreen(
+            uiState = QuoteUiState.ShowQuotes(quotes = quotes),
+            onOpenNewQuoteScreen = {},
+            onOpenNewBookScreen = {},
+        )
     }
 }
 
@@ -99,6 +142,154 @@ private fun QuoteScreenCompactMedium() { QuoteScreenPreview() }
 
 @Preview(device = Devices.DESKTOP) @Composable
 private fun QuoteScreenCompactLarge() { QuoteScreenPreview() }
+
+@Preview
+@Composable
+private fun NoBookScreenPreview() {
+    PreviewColumnWrapper {
+        QuoteScreen(
+            uiState = QuoteUiState.NoBook,
+            onOpenNewQuoteScreen = {},
+            onOpenNewBookScreen = {},
+        )
+    }
+}
+
+@Composable
+private fun NoBookScreen(onOpenNewBookScreen: () -> Unit) {
+    OutlinedCard(
+        modifier = Modifier.padding(16.dp),
+        shape = MaterialTheme.shapes.large,
+    ) {
+        Text(
+            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            text = stringResource(id = R.string.no_book_yet),
+            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+        )
+
+        Text(
+            modifier = Modifier.padding(16.dp),
+            text = stringResource(id = R.string.lets_add_book),
+            style = MaterialTheme.typography.bodyMedium
+        )
+
+        AddButton(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 16.dp),
+            onClick = onOpenNewBookScreen,
+            buttonText = stringResource(com.hisui.kanna.core.ui.R.string.add_books)
+        )
+    }
+}
+
+@Composable
+private fun NoQuoteScreen(
+    modifier: Modifier = Modifier,
+    onOpenNewQuoteScreen: () -> Unit
+) {
+    Box(modifier = modifier.fillMaxSize()) {
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxSize(),
+            columns = GridCells.Adaptive(300.dp),
+            horizontalArrangement = Arrangement.spacedBy(
+                16.dp,
+                alignment = Alignment.CenterHorizontally
+            ),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            item {
+                val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.book))
+                val progress by animateLottieCompositionAsState(
+                    composition = composition,
+                    iterations = 5,
+                    speed = 0.5f,
+                )
+
+                LottieAnimation(
+                    modifier = Modifier.sizeIn(maxWidth = 240.dp, maxHeight = 240.dp),
+                    composition = composition,
+                    progress = { progress }
+                )
+            }
+
+            item {
+                Box(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .fillMaxSize()
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = stringResource(id = R.string.no_quote_yet),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
+        }
+
+        AddQuoteFab(
+            modifier = Modifier.align(Alignment.BottomEnd),
+            onClick = onOpenNewQuoteScreen,
+            expanded = true,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun NoQuoteScreenPreview() {
+    PreviewColumnWrapper {
+        QuoteScreen(
+            uiState = QuoteUiState.NoQuote,
+            onOpenNewQuoteScreen = {},
+            onOpenNewBookScreen = {},
+        )
+    }
+}
+
+@Composable
+private fun ShowQuotesScreen(
+    modifier: Modifier = Modifier,
+    quotes: List<Quote>,
+    onOpenNewQuoteScreen: () -> Unit
+) {
+    val lazyListState = rememberLazyListState()
+
+    Box(modifier = modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = lazyListState,
+        ) {
+            items(quotes) { quote ->
+                QuoteItem(quote = quote)
+            }
+        }
+
+        AddQuoteFab(
+            modifier = Modifier.align(Alignment.BottomEnd),
+            onClick = onOpenNewQuoteScreen,
+            expanded = !lazyListState.canScrollBackward || !lazyListState.canScrollForward,
+        )
+    }
+}
+
+@Composable
+private fun AddQuoteFab(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    expanded: Boolean
+) {
+    ExtendedFloatingActionButton(
+        modifier = modifier,
+        onClick = onClick,
+        expanded = expanded,
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        icon = { Icon(Icons.Filled.Add, "Add new quote") },
+        text = { Text(text = stringResource(R.string.add_quote)) }
+    )
+}
 
 @Composable
 private fun QuoteItem(quote: Quote) {
@@ -118,14 +309,6 @@ private fun QuoteItem(quote: Quote) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                modifier = Modifier
-                    .clickable { /* TODO: Navigate to author screen */ },
-                text = quote.author,
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.labelMedium,
-            )
-
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -137,6 +320,13 @@ private fun QuoteItem(quote: Quote) {
                     style = MaterialTheme.typography.labelMedium
                 )
             }
+
+            Text(
+                modifier = Modifier.clickable { /* TODO: Navigate to author screen */ },
+                text = quote.author,
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.labelMedium,
+            )
         }
 
         Divider(

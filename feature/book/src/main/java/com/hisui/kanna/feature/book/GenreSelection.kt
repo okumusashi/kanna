@@ -16,8 +16,9 @@
 
 package com.hisui.kanna.feature.book
 
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -35,8 +36,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hisui.kanna.core.designsystem.component.AddButton
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.ui.component.CreateFormDialog
 
@@ -59,19 +62,38 @@ internal fun GenreSelection(
 
     when (val uiState = state) {
         GenreSelectionUiState.Loading -> {}
-        is GenreSelectionUiState.NoGenre -> {}
+
+        is GenreSelectionUiState.NoGenre ->
+            AddGenreButton(onShowCreateDialog = viewModel::showCreateDialog)
+
         is GenreSelectionUiState.ShowList ->
             GenreSelection(
                 modifier = modifier,
                 list = uiState.genres,
                 selected = selected,
-                showCreateDialog = uiState.showCreateDialog,
                 onSelect = onSelect,
                 onShowCreateDialog = viewModel::showCreateDialog,
-                onDismissCreateDialog = viewModel::dismissCreateDialog,
-                onCreate = viewModel::create,
             )
     }
+
+    if (state.showCreateDialog) {
+        CreateGenreDialog(
+            onDismiss = viewModel::dismissCreateDialog,
+            onCreate = viewModel::create,
+        )
+    }
+}
+
+@Composable
+private fun AddGenreButton(
+    modifier: Modifier = Modifier,
+    onShowCreateDialog: () -> Unit
+) {
+    AddButton(
+        modifier = modifier,
+        onClick = onShowCreateDialog,
+        buttonText = stringResource(id = R.string.add_genre)
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,11 +102,8 @@ internal fun GenreSelection(
     modifier: Modifier = Modifier,
     list: List<String>,
     selected: String?,
-    showCreateDialog: Boolean,
     onSelect: (String) -> Unit,
     onShowCreateDialog: () -> Unit,
-    onDismissCreateDialog: () -> Unit,
-    onCreate: (String) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -114,7 +133,7 @@ internal fun GenreSelection(
                     )
                 },
                 trailingIcon = {
-                    Icon(imageVector = Icons.Filled.PersonAdd, contentDescription = "Add")
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
                 },
                 onClick = onShowCreateDialog
             )
@@ -129,13 +148,6 @@ internal fun GenreSelection(
                 )
             }
         }
-    }
-
-    if (showCreateDialog) {
-        CreateGenreDialog(
-            onDismiss = onDismissCreateDialog,
-            onCreate = onCreate,
-        )
     }
 }
 
@@ -154,7 +166,8 @@ private fun CreateGenreDialog(
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text(stringResource(com.hisui.kanna.core.ui.R.string.name)) }
+            label = { Text(stringResource(com.hisui.kanna.core.ui.R.string.name)) },
+            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
         )
     }
 }

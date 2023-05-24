@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.feature")
-    id("kanna.android.library.compose")
-}
+package com.hisui.kanna.core.domain.usecase
 
-android {
-    namespace = "com.hisui.kanna.feature.quote"
-}
+import com.hisui.kanna.core.data.repository.BookRepository
+import com.hisui.kanna.core.model.Book
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-dependencies {
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.lottie.compose)
-    implementation(libs.kotlinx.datetime)
+class GetFilteredBooksStreamUseCase @Inject constructor(
+    private val repository: BookRepository
+) {
+    operator fun invoke(q: String): Flow<List<Book>> =
+        repository.getListStreamByQuery(q = q)
 }

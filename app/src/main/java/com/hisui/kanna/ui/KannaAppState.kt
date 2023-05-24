@@ -16,9 +16,7 @@
 
 package com.hisui.kanna.ui
 
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
@@ -27,6 +25,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.hisui.kanna.core.ui.ext.isWidthCompact
+import com.hisui.kanna.core.ui.ext.isWidthExpanded
 import com.hisui.kanna.feature.home.navigation.navigateToHome
 import com.hisui.kanna.feature.quote.navigation.navigateToQuote
 import com.hisui.kanna.navigation.KannaNavItem
@@ -50,16 +50,10 @@ class KannaAppState(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val isWidthCompact: Boolean
-        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
-
-    val isHeightCompact: Boolean
-        get() = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-
     val shouldShowTwoPane: Boolean
-        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
+        get() = windowSizeClass.isWidthExpanded
 
-    val shouldShowBottomBar: Boolean get() = isWidthCompact
+    val shouldShowBottomBar: Boolean get() = windowSizeClass.isWidthCompact
 
     val shouldShowNavRail: Boolean get() = !shouldShowBottomBar
 

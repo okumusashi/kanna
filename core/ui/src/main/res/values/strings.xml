@@ -24,11 +24,14 @@
     <!-- endregion -->
 
     <!-- region Book -->
+    <string name="book_title">book title</string>
+    <string name="book_by_author">%1s (%2s)</string>
     <string name="author">author</string>
     <string name="genre">genre</string>
+    <string name="add_books">add books</string>
     <!-- endregion -->
 
     <!-- region Form -->
     <string name="add_new">Add New</string>
-    <!-- endregino -->
+    <!-- endregion -->
 </resources>

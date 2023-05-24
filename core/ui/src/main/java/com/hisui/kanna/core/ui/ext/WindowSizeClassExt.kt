@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.feature")
-    id("kanna.android.library.compose")
-}
+package com.hisui.kanna.core.ui.ext
 
-android {
-    namespace = "com.hisui.kanna.feature.quote"
-}
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 
-dependencies {
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.lottie.compose)
-    implementation(libs.kotlinx.datetime)
-}
+val WindowSizeClass.isWidthCompact: Boolean
+    get() = widthSizeClass == WindowWidthSizeClass.Compact
+
+val WindowSizeClass.isWidthExpanded
+    get() = widthSizeClass == WindowWidthSizeClass.Expanded
+
+val WindowSizeClass.isHeightCompact: Boolean
+    get() = heightSizeClass == WindowHeightSizeClass.Compact

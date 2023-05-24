@@ -20,16 +20,42 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
+import com.hisui.kanna.feature.quote.NewQuoteRoute
 import com.hisui.kanna.feature.quote.QuoteScreen
 
+const val quoteRoute = "quote_route"
 const val quoteNavigationRoute = "quote"
+const val newQuoteNavigationRoute = "quote/new"
 
 fun NavController.navigateToQuote(options: NavOptions?) {
     navigate(quoteNavigationRoute, options)
 }
 
-fun NavGraphBuilder.quoteScreen() {
-    composable(route = quoteNavigationRoute) {
-        QuoteScreen()
+fun NavGraphBuilder.quoteScreen(
+    navController: NavController,
+    isWidthCompact: Boolean,
+    isHeightCompact: Boolean,
+    onOpenNewBookScreen: () -> Unit,
+    popBackStack: () -> Unit
+) {
+    navigation(
+        route = quoteRoute,
+        startDestination = quoteNavigationRoute,
+    ) {
+        composable(route = quoteNavigationRoute) {
+            QuoteScreen(
+                onOpenNewQuoteScreen = { navController.navigate(newQuoteNavigationRoute) },
+                onOpenNewBookScreen = onOpenNewBookScreen,
+            )
+        }
+
+        composable(route = newQuoteNavigationRoute) {
+            NewQuoteRoute(
+                isWidthCompact = isWidthCompact,
+                isHeightCompact = isHeightCompact,
+                popBackStack = popBackStack
+            )
+        }
     }
 }

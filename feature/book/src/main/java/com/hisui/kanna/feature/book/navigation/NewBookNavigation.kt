@@ -24,7 +24,7 @@ import com.hisui.kanna.feature.book.NewBookRoute
 
 const val newBookNavigationRoute = "book/new"
 
-fun NavController.navigateToNewBook(options: NavOptions?) {
+fun NavController.navigateToNewBook(options: NavOptions? = null) {
     navigate(newBookNavigationRoute, options)
 }
 

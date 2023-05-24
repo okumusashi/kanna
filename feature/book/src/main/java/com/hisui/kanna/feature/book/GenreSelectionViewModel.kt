@@ -37,16 +37,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed interface GenreSelectionUiState {
-    object Loading : GenreSelectionUiState
+    val showCreateDialog: Boolean
+    object Loading : GenreSelectionUiState {
+        override val showCreateDialog: Boolean = false
+    }
 
     data class NoGenre(
-        val showCreateDialog: Boolean,
+        override val showCreateDialog: Boolean,
         val error: GenreError?
     ) : GenreSelectionUiState
 
     data class ShowList(
         val genres: List<String>,
-        val showCreateDialog: Boolean,
+        override val showCreateDialog: Boolean,
         val error: GenreError?,
     ) : GenreSelectionUiState
 }

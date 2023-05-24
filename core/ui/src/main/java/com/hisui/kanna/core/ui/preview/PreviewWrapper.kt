@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.feature")
-    id("kanna.android.library.compose")
-}
+package com.hisui.kanna.core.ui.preview
 
-android {
-    namespace = "com.hisui.kanna.feature.quote"
-}
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.hisui.kanna.core.designsystem.theme.KannaTheme
 
-dependencies {
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.lottie.compose)
-    implementation(libs.kotlinx.datetime)
+@Composable
+fun PreviewColumnWrapper(content: @Composable () -> Unit) {
+    KannaTheme {
+        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+            content()
+        }
+    }
 }

@@ -37,16 +37,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed interface AuthorSelectionUiState {
-    object Loading : AuthorSelectionUiState
+    val showCreateDialog: Boolean
+    object Loading : AuthorSelectionUiState {
+        override val showCreateDialog: Boolean = false
+    }
 
     data class NoAuthor(
-        val showCreateDialog: Boolean,
+        override val showCreateDialog: Boolean,
         val error: AuthorError?,
     ) : AuthorSelectionUiState
 
     data class ShowList(
         val authors: List<Author>,
-        val showCreateDialog: Boolean,
+        override val showCreateDialog: Boolean,
         val error: AuthorError?,
     ) : AuthorSelectionUiState
 }

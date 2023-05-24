@@ -13,15 +13,14 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <resources>
-    <string name="new_book">New book</string>
-    <string name="title">title</string>
-    <string name="read_date">read date</string>
-    <string name="thought">thought</string>
-    <string name="memo">memo</string>
-    <string name="rating">rating</string>
-    <string name="add_genre">add genre</string>
-    <string name="add_author">add author</string>
-    <string name="memo_optional">memo (optional)</string>
-    <string name="for_your_memo">For your memo.</string>
+    <string name="add_quote">Add quote</string>
+    <string name="quote">quote</string>
+    <string name="quotes">Quotes</string>
+    <string name="type_to_search">…Type to find a book by title</string>
+    <string name="page">page</string>
+    <string name="no_book_yet">There is no book for a quote yet.</string>
+    <string name="lets_add_book">Add books so you can add some nice quotes from the them.</string>
+    <string name="no_quote_yet">"No quote added yet. \nA sentence can change one's life… "</string>
 </resources>

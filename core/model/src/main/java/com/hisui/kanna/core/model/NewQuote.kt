@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.feature")
-    id("kanna.android.library.compose")
-}
+package com.hisui.kanna.core.model
 
-android {
-    namespace = "com.hisui.kanna.feature.quote"
-}
-
-dependencies {
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.lottie.compose)
-    implementation(libs.kotlinx.datetime)
-}
+data class NewQuote(
+    val quote: String,
+    val bookId: Long,
+    val page: Int?,
+    val thought: String,
+)

@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.feature")
-    id("kanna.android.library.compose")
-}
+package com.hisui.kanna.core.domain.usecase
 
-android {
-    namespace = "com.hisui.kanna.feature.quote"
-}
+import com.hisui.kanna.core.data.repository.BookRepository
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-dependencies {
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.lottie.compose)
-    implementation(libs.kotlinx.datetime)
+class CountBooksStreamUseCase @Inject constructor(
+    private val repository: BookRepository
+) {
+    operator fun invoke(): Flow<Int> = repository.countStream()
 }

@@ -29,25 +29,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Grade
 import androidx.compose.material.icons.filled.StarOutline
-import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -57,6 +54,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,6 +64,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.NewBook
+import com.hisui.kanna.core.ui.component.CreateFormTopBar
 import com.hisui.kanna.core.ui.util.dateTimeFormatter
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -188,9 +187,10 @@ internal fun NewBookScreen(
             .fillMaxWidth()
             .fillMaxHeight(if (isCompact) 1f else 0.65f),
         topBar = {
-            NewBookTopBar(
+            CreateFormTopBar(
+                title = stringResource(id = R.string.new_book),
                 onClickNavigationIcon = popBackStack,
-                onCreate = { onCreateBook(uiState.newBook) }
+                onCreate = { onCreateBook(uiState.newBook) },
             )
         }
     ) { paddingValues ->
@@ -208,7 +208,8 @@ internal fun NewBookScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = newBook.title,
                 onValueChange = { onUpdateBook(newBook.copy(title = it)) },
-                label = { Text(text = stringResource(id = R.string.title)) }
+                label = { Text(text = stringResource(id = R.string.title)) },
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
             )
 
             OutlinedTextField(
@@ -250,6 +251,7 @@ internal fun NewBookScreen(
                 value = newBook.thought,
                 onValueChange = { onUpdateBook(newBook.copy(thought = it)) },
                 label = { Text(text = stringResource(id = R.string.thought)) },
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
             )
 
             BookFormDivider()
@@ -259,6 +261,7 @@ internal fun NewBookScreen(
                 value = newBook.memo ?: "",
                 onValueChange = { onUpdateBook(newBook.copy(memo = it)) },
                 label = { Text(text = stringResource(id = R.string.memo)) },
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
             )
         }
     }
@@ -284,32 +287,6 @@ private fun NewBookScreenPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun NewBookTopBar(
-    onClickNavigationIcon: () -> Unit,
-    onCreate: () -> Unit,
-) {
-    TopAppBar(
-        title = { Text(stringResource(id = R.string.new_book)) },
-        navigationIcon = {
-            IconButton(onClick = onClickNavigationIcon) {
-                Icon(
-                    imageVector = Icons.Filled.Close,
-                    contentDescription = stringResource(id = com.hisui.kanna.core.ui.R.string.close)
-                )
-            }
-        },
-        actions = {
-            Button(
-                modifier = Modifier.padding(horizontal = 8.dp),
-                onClick = onCreate,
-            ) {
-                Text(stringResource(id = com.hisui.kanna.core.ui.R.string.create))
-            }
-        }
-    )
-}
-
 @Composable
 private fun BookRating(
     value: Int,

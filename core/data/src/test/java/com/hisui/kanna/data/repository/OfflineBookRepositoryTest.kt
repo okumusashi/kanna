@@ -72,7 +72,8 @@ class OfflineBookRepositoryTest {
                 // THEN
                 runTest {
                     assertThat(
-                        repository.getAllStream(sort = sort, isAsc = isAsc)
+                        repository
+                            .getAllStream(sort = sort, isAsc = isAsc)
                             .first()
                     ).containsExactlyElementsIn(
                         dao.getAllBooksAndAuthorsByTitle(isAsc = isAsc)
@@ -103,7 +104,8 @@ class OfflineBookRepositoryTest {
                 // THEN
                 runTest {
                     assertThat(
-                        repository.getAllStream(sort = sort, isAsc = isAsc)
+                        repository
+                            .getAllStream(sort = sort, isAsc = isAsc)
                             .first()
                     ).containsExactlyElementsIn(
                         dao.getAllBooksAndAuthorsByTitle(isAsc = isAsc)

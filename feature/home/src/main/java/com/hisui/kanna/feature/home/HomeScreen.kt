@@ -32,6 +32,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -67,6 +68,7 @@ internal fun HomeRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeScreen(
     homeUiState: HomeUiState,
@@ -84,7 +86,8 @@ internal fun HomeScreen(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
+                    .padding(8.dp)
+                    .padding(bottom = 16.dp),
                 text = stringResource(R.string.title),
                 style = MaterialTheme.typography.headlineMedium
             )
@@ -122,7 +125,7 @@ internal fun HomeScreen(
                 .padding(16.dp),
             onClick = onNewBookFabClick,
             expanded = !lazyGridState.canScrollBackward || !lazyGridState.canScrollForward,
-            icon = { Icon(Icons.Filled.Add, "Add a new book") },
+            icon = { Icon(Icons.Filled.Add, "Add new book") },
             text = { Text(text = stringResource(R.string.add_book)) }
         )
     }

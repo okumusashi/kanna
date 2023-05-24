@@ -37,6 +37,8 @@ ksp = "1.8.10-1.0.9"
 ktlint = "0.47.1"
 ktlintGradle = "11.0.0"
 
+lottie = "6.0.0"
+
 protobuf = "3.21.9"
 protobufPlugin = "0.8.19"
 
@@ -96,6 +98,8 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 ktlint = { group = "com.pinterest", name = "ktlint", version.ref = "ktlint" }
+
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }

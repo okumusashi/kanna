@@ -63,9 +63,19 @@ class TestBookRepository : BookRepository {
             }
         }
 
+    override fun countStream(): Flow<Int> = books.map { it.size }
+
     override fun getStream(id: Long): Flow<Book?> =
         books.map { books ->
             books.getOrDefault(id, null)
+        }
+
+    override fun getListStreamByQuery(q: String): Flow<List<Book>> =
+        books.map { books ->
+            books
+                .filterValues { it.title.contains(q) }
+                .values
+                .toList()
         }
 
     override suspend fun update(book: Book): Result<Unit> {

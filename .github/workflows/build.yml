@@ -1,0 +1,59 @@
+
+name: Build
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Lint
+        id: ktlint
+        run: ./gradlew ktlintCheck
+
+      - name: Build
+        id: build
+        run: ./gradlew assemble
+
+      - name: Test
+        id: unit_test
+        run: ./gradlew testDebugUnitTest
+
+      - name: Slack success report
+        uses: 8398a7/action-slack@v3
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTIONS_SLACK_WEBHOOK }}
+        with:
+          status: 'success'
+          fields: repo,pullRequest,author,commit,took
+          text: ':white_check_mark: Build succeeded.'
+
+      - name: Slack failure report
+        uses: 8398a7/action-slack@v3
+        if: always() && failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTIONS_SLACK_WEBHOOK }}
+        with:
+          mention: 'here'
+          if_mention: 'always'
+          status: 'failure'
+          fields: repo,pullRequest,author,commit,took
+          text: ':x: Build failed.'

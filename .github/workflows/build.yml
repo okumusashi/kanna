@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -37,35 +37,23 @@ jobs:
         id: unit_test
         run: ./gradlew testDebugUnitTest
 
-      - name: Slack failure report
-        if: ${{ failure() }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.ACTIONS_SLACK_WEBHOOK }}
-          SLACK_COLOR: ${{ job.status }}
-          SLACK_MESSAGE: ":x: Job failed."
-
       - name: Slack success report
-        if: ${{ success() }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.ACTIONS_SLACK_WEBHOOK }}
-          SLACK_COLOR: "#15d40f"
-          SLACK_MESSAGE: ":white_check_mark: All the checks succeeded."
-
-  slack_failure_report:
-    needs: build
-    if: always() && needs.build.result == 'failure'
-    runs-on: ubuntu-latest
-    env:
-      SLACK_WEBHOOK_URL: ${{ secrets.ACTIONS_SLACK_WEBHOOK }}
-
-    steps:
-      - name: Notify failure to slack
         uses: 8398a7/action-slack@v3
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTIONS_SLACK_WEBHOOK }}
         with:
-          text: ":x: Build failed."
-          status: failure
-          fields: repo,message,author,action,workflow,took,pullRequest
+          status: 'success'
+          fields: repo,pullRequest,author,commit,took
+          text: ':white_check_mark: Build succeeded.'
+
+      - name: Slack failure report
+        uses: 8398a7/action-slack@v3
+        if: always() && failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTIONS_SLACK_WEBHOOK }}
+        with:
           mention: 'here'
-          if_mention: always
+          if_mention: 'always'
+          status: 'failure'
+          fields: repo,pullRequest,author,commit,took
+          text: ':x: Build failed.'

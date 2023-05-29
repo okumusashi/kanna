@@ -25,10 +25,11 @@ plugins {
 }
 
 android {
+    namespace = "com.hisui.kanna.datastore"
+
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }
-    namespace = "com.hisui.kanna.datastore"
 }
 
 protobuf {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.model
+package com.hisui.kanna.core.database.entity
 
-import kotlinx.datetime.Instant
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class NewBook(
-    val title: String,
-    val readDate: Instant,
-    val memo: String?,
-    val thought: String,
-    val rating: Int,
-    val authorId: String,
-    val genreId: String,
-    val statusId: Long
+@Entity(tableName = "book_read_statuses")
+data class BookReadStatusEntity(
+    @PrimaryKey val id: Long,
+    val name: String
 )

@@ -349,7 +349,8 @@ private val previewUiState: NewBookUiState =
             memo = "",
             rating = 3,
             authorId = "author",
-            genreId = "genre"
+            genreId = "genre",
+            statusId = 1
         ),
         selectedAuthor = Author(id = "", name = "author", memo = "", isFavourite = false),
         selectedGenre = "genre",

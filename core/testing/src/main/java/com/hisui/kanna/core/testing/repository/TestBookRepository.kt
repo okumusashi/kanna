@@ -21,6 +21,7 @@ import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookSorter
 import com.hisui.kanna.core.model.NewBook
+import com.hisui.kanna.core.model.ReadStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -40,7 +41,8 @@ class TestBookRepository : BookRepository {
             memo = book.memo ?: "",
             rating = book.rating,
             author = Author(id = book.authorId, name = book.authorId, memo = null, isFavourite = false),
-            genre = book.genreId
+            genre = book.genreId,
+            status = ReadStatus.values()[book.statusId.toInt() - 1]
         )
         updateBook(book = newBook)
         return Result.success(Unit)

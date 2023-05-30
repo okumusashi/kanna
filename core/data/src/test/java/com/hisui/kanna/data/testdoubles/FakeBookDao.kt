@@ -18,7 +18,10 @@ package com.hisui.kanna.data.testdoubles
 
 import com.hisui.kanna.core.database.dao.BookDao
 import com.hisui.kanna.core.database.entity.AuthorEntity
+import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
+import com.hisui.kanna.core.database.entity.BookReadStatusEntity
+import com.hisui.kanna.core.model.ReadStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -33,7 +36,7 @@ class FakeBookDao : BookDao {
         this.books.update { it + newBooks }
     }
 
-    override fun getAllBooksAndAuthorsByTitle(isAsc: Boolean): Flow<Map<BookEntity, AuthorEntity>> =
+    override fun getAllBooksAndAuthorsByTitle(isAsc: Boolean): Flow<List<BookAndAuthorEntity>> =
         books.map { bookMap ->
             bookMap.values
                 .let { entities ->
@@ -43,10 +46,10 @@ class FakeBookDao : BookDao {
                         entities.sortedByDescending { it.title }
                     }
                 }
-                .associateWith(::toTestAuthorEntity)
+                .map(::toBookAndAuthorEntity)
         }
 
-    override fun getAllBooksAndAuthorsByReadDate(isAsc: Boolean): Flow<Map<BookEntity, AuthorEntity>> =
+    override fun getAllBooksAndAuthorsByReadDate(isAsc: Boolean): Flow<List<BookAndAuthorEntity>> =
         books.map { bookMap ->
             bookMap.values
                 .let { entities ->
@@ -56,23 +59,30 @@ class FakeBookDao : BookDao {
                         entities.sortedByDescending { it.readDate }
                     }
                 }
-                .associateWith(::toTestAuthorEntity)
+                .map(::toBookAndAuthorEntity)
         }
 
     override fun countStream(): Flow<Int> = books.map { it.size }
 
-    override fun getBooksAndAuthorsByQuery(q: String): Flow<Map<BookEntity, AuthorEntity>> =
+    override fun getBooksAndAuthorsByQuery(q: String): Flow<List<BookAndAuthorEntity>> =
         books.map { books ->
             books.values
                 .filter { it.title.contains(q) }
-                .associateWith(::toTestAuthorEntity)
+                .map(::toBookAndAuthorEntity)
         }
 }
 
-private fun toTestAuthorEntity(book: BookEntity): AuthorEntity =
-    AuthorEntity(
-        id = book.authorId!!,
-        name = book.authorId!!,
-        memo = "",
-        isFavourite = false
+private fun toBookAndAuthorEntity(book: BookEntity): BookAndAuthorEntity =
+    BookAndAuthorEntity(
+        book = book,
+        author = AuthorEntity(
+            id = book.authorId!!,
+            name = book.authorId!!,
+            memo = "",
+            isFavourite = false
+        ),
+        status = BookReadStatusEntity(
+            id = book.statusId!!,
+            name = ReadStatus.values()[book.statusId!!.toInt() - 1].name
+        )
     )

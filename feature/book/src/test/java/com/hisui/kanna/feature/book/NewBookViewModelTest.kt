@@ -59,7 +59,8 @@ class NewBookViewModelTest {
                 genreId = "genre",
                 thought = "thought",
                 memo = null,
-                rating = 2
+                rating = 2,
+                statusId = 1
             )
             runTest {
                 viewModel.createBook(book = newBook)

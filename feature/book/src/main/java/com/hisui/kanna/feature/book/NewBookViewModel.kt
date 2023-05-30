@@ -55,7 +55,8 @@ private data class NewBookViewModelState(
         thought = "",
         rating = 0,
         authorId = "",
-        genreId = ""
+        genreId = "",
+        statusId = 1
     ),
     val selectedAuthor: Author? = null,
     val showDatePicker: Boolean = false

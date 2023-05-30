@@ -26,9 +26,23 @@ data class Book(
     val thought: String,
     val rating: Int,
     val author: Author,
-    val genre: String
+    val genre: String,
+    val status: ReadStatus
 )
 
 enum class BookSorter {
     TITLE, READ_DATE
+}
+
+enum class ReadStatus {
+    HAVE_READ,
+    IS_READING_NOW,
+    READ_NEXT,
+    WANT_TO_READ
+    ;
+
+    companion object {
+        fun from(value: String): ReadStatus =
+            values().find { it.name == value } ?: HAVE_READ
+    }
 }

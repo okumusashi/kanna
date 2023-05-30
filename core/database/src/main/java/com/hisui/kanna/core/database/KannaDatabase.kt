@@ -25,12 +25,15 @@ import com.hisui.kanna.core.database.dao.FavouriteQuoteDao
 import com.hisui.kanna.core.database.dao.GenreDao
 import com.hisui.kanna.core.database.entity.AuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
+import com.hisui.kanna.core.database.entity.BookReadStatusEntity
 import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
 import com.hisui.kanna.core.database.entity.GenreEntity
+import com.hisui.kanna.core.model.ReadStatus
 
 @Database(
     entities = [
         BookEntity::class,
+        BookReadStatusEntity::class,
         AuthorEntity::class,
         GenreEntity::class,
         FavouriteQuoteEntity::class
@@ -45,3 +48,14 @@ abstract class KannaDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao
     abstract fun favouriteQuoteDao(): FavouriteQuoteDao
 }
+
+internal val PRE_POPULATE_QUERY: String =
+    """
+        INSERT INTO
+            book_read_statuses (id, name)
+        VALUES
+            (1, '${ReadStatus.HAVE_READ.name}'),
+            (2, '${ReadStatus.IS_READING_NOW.name}'),
+            (3, '${ReadStatus.READ_NEXT.name}'),
+            (4, '${ReadStatus.WANT_TO_READ.name}');
+    """.trimIndent()

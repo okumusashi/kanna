@@ -88,7 +88,7 @@ internal fun HomeScreen(
                     .fillMaxWidth()
                     .padding(8.dp)
                     .padding(bottom = 16.dp),
-                text = stringResource(R.string.title),
+                text = stringResource(R.string.home_title),
                 style = MaterialTheme.typography.headlineMedium
             )
 

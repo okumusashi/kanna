@@ -217,7 +217,7 @@ internal fun NewBookScreen(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
+                leadingIcon = {
                     Icon(
                         modifier = Modifier.clickable { onShowDatePicker() },
                         imageVector = Icons.Filled.EditCalendar,

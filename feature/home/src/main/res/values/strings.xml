@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <string name="title">Your books</string>
+    <string name="home_title">Your books</string>
 
     <!-- region tags for testing -->
     <string name="loading_tag">loading</string>

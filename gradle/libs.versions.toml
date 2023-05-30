@@ -2,7 +2,7 @@
 accompanist = "0.27.0"
 
 androidDesugarJdkLibs = "1.2.2"
-androidGradlePlugin = "7.4.1"
+androidGradlePlugin = "8.0.1"
 androidxArchCore = "2.2.0"
 androidxActivityCompose = "1.6.1"
 androidxComposeBom = "2023.04.01"
@@ -39,8 +39,8 @@ ktlintGradle = "11.0.0"
 
 lottie = "6.0.0"
 
-protobuf = "3.21.9"
-protobufPlugin = "0.8.19"
+protobuf = "3.23.2"
+protobufPlugin = "0.9.3"
 
 retrofit = "2.9.0"
 

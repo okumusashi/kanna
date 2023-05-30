@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kotlin")
-}
+import com.hisui.kanna.configureKotlinJvm
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 
-kotlin {
-    jvmToolchain(11)
-}
-
-dependencies {
-    implementation(libs.kotlinx.datetime)
+class JvmLibraryConventionPlugin : Plugin<Project> {
+    override fun apply(target: Project) {
+        with(target) {
+            with(pluginManager) {
+                apply("org.jetbrains.kotlin.jvm")
+            }
+            configureKotlinJvm()
+        }
+    }
 }

@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-import com.google.protobuf.gradle.generateProtoTasks
-import com.google.protobuf.gradle.protobuf
-import com.google.protobuf.gradle.protoc
-
 plugins {
     id("kanna.android.library")
     id("kanna.android.hilt")
@@ -25,10 +21,11 @@ plugins {
 }
 
 android {
+    namespace = "com.hisui.kanna.datastore"
+
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }
-    namespace = "com.hisui.kanna.datastore"
 }
 
 protobuf {

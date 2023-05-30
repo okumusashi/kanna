@@ -33,7 +33,7 @@ kotlin = "1.8.10"
 kotlinxCoroutines = "1.6.4"
 kotlinxDatetime = "0.4.0"
 kotlinxSerializationJson = "1.4.1"
-ksp = "1.8.10-1.0.9"
+ksp = "1.8.21-1.0.11"
 ktlint = "0.47.1"
 ktlintGradle = "11.0.0"
 

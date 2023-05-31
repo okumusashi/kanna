@@ -32,5 +32,5 @@ internal fun testBookEntity(
         readDate = readDate,
         thought = "thought",
         memo = "memo",
-        rating = 1,
+        rating = 1
     )

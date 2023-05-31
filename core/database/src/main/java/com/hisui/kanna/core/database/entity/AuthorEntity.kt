@@ -38,6 +38,6 @@ data class AuthorEntity(
         id = memo?.let { name + memo } ?: name,
         name = name,
         memo = memo,
-        isFavourite = false,
+        isFavourite = false
     )
 }

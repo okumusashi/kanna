@@ -37,8 +37,11 @@ class FakeBookDao : BookDao {
         books.map { bookMap ->
             bookMap.values
                 .let { entities ->
-                    if (isAsc) entities.sortedBy { it.title }
-                    else entities.sortedByDescending { it.title }
+                    if (isAsc) {
+                        entities.sortedBy { it.title }
+                    } else {
+                        entities.sortedByDescending { it.title }
+                    }
                 }
                 .associateWith(::toTestAuthorEntity)
         }
@@ -47,8 +50,11 @@ class FakeBookDao : BookDao {
         books.map { bookMap ->
             bookMap.values
                 .let { entities ->
-                    if (isAsc) entities.sortedBy { it.readDate }
-                    else entities.sortedByDescending { it.readDate }
+                    if (isAsc) {
+                        entities.sortedBy { it.readDate }
+                    } else {
+                        entities.sortedByDescending { it.readDate }
+                    }
                 }
                 .associateWith(::toTestAuthorEntity)
         }

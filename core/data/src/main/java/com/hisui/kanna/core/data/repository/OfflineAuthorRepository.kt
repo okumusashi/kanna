@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 class OfflineAuthorRepository @Inject constructor(
     private val dao: AuthorDao,
-    @Dispatcher(KannaDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+    @Dispatcher(KannaDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 ) : AuthorRepository {
     override fun getAllStream(): Flow<List<Author>> = dao.getAllStream().map(::asExternalModel)
 

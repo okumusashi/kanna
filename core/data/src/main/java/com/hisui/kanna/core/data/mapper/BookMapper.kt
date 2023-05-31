@@ -29,7 +29,7 @@ internal fun NewBook.asEntity(): BookEntity =
         thought = thought,
         rating = rating,
         authorId = authorId,
-        genreId = genreId,
+        genreId = genreId
     )
 
 internal fun asExternalModel(bookAndAuthor: Map<BookEntity, AuthorEntity>): List<Book> =

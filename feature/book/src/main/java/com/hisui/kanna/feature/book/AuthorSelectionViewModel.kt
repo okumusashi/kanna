@@ -44,13 +44,13 @@ sealed interface AuthorSelectionUiState {
 
     data class NoAuthor(
         override val showCreateDialog: Boolean,
-        val error: AuthorError?,
+        val error: AuthorError?
     ) : AuthorSelectionUiState
 
     data class ShowList(
         val authors: List<Author>,
         override val showCreateDialog: Boolean,
-        val error: AuthorError?,
+        val error: AuthorError?
     ) : AuthorSelectionUiState
 }
 
@@ -71,7 +71,7 @@ private data class AuthorSelectionViewModelState(
                 AuthorSelectionUiState.ShowList(
                     authors = authors,
                     showCreateDialog = showCreateDialog,
-                    error = error,
+                    error = error
                 )
         }
 }
@@ -83,7 +83,7 @@ sealed interface AuthorSelectionEvent {
 @HiltViewModel
 class AuthorSelectionViewModel @Inject constructor(
     private val getAllAuthorsStreamUseCase: GetAllAuthorsStreamUseCase,
-    private val createAuthorUseCase: CreateAuthorUseCase,
+    private val createAuthorUseCase: CreateAuthorUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AuthorSelectionViewModelState())

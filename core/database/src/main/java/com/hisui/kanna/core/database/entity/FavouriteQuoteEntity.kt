@@ -32,7 +32,7 @@ import kotlinx.datetime.Instant
             parentColumns = ["id"],
             childColumns = ["book_id"],
             onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ],
     indices = [

@@ -83,7 +83,7 @@ internal fun NewQuoteScreen(
     onSelectBook: (Book) -> Unit,
     onUpdateBookFilter: (q: String) -> Unit,
     onCreate: (NewQuote) -> Unit,
-    onExit: () -> Unit,
+    onExit: () -> Unit
 ) {
     Scaffold(
         modifier = Modifier
@@ -171,7 +171,6 @@ private fun BookSelection(
     onUpdateFilter: (q: String) -> Unit,
     onSelect: (Book) -> Unit
 ) {
-
     var expanded by remember { mutableStateOf(false) }
     var title by remember { mutableStateOf("") }
 

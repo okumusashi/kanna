@@ -27,5 +27,5 @@ data class Quote(
     val bookId: Long,
     val bookTitle: String,
     val authorId: String,
-    val author: String,
+    val author: String
 )

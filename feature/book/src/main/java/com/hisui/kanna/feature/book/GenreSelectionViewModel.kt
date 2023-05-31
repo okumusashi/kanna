@@ -50,7 +50,7 @@ sealed interface GenreSelectionUiState {
     data class ShowList(
         val genres: List<String>,
         override val showCreateDialog: Boolean,
-        val error: GenreError?,
+        val error: GenreError?
     ) : GenreSelectionUiState
 }
 
@@ -67,7 +67,7 @@ private data class GenreSelectionViewModelState(
             genres.isEmpty() ->
                 GenreSelectionUiState.NoGenre(
                     showCreateDialog = showCreateDialog,
-                    error = error,
+                    error = error
                 )
 
             else ->
@@ -108,7 +108,7 @@ class GenreSelectionViewModel @Inject constructor(
                     it.copy(
                         loading = false,
                         genres = genres,
-                        error = null,
+                        error = null
                     )
                 }
             }

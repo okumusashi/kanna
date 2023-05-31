@@ -43,7 +43,7 @@ import kotlinx.datetime.Instant
     ],
     indices = [
         Index(value = ["author_id"]),
-        Index(value = ["genre_id"]),
+        Index(value = ["genre_id"])
     ]
 )
 data class BookEntity(

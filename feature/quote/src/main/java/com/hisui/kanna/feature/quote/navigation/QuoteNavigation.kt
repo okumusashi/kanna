@@ -41,12 +41,12 @@ fun NavGraphBuilder.quoteScreen(
 ) {
     navigation(
         route = quoteRoute,
-        startDestination = quoteNavigationRoute,
+        startDestination = quoteNavigationRoute
     ) {
         composable(route = quoteNavigationRoute) {
             QuoteScreen(
                 onOpenNewQuoteScreen = { navController.navigate(newQuoteNavigationRoute) },
-                onOpenNewBookScreen = onOpenNewBookScreen,
+                onOpenNewBookScreen = onOpenNewBookScreen
             )
         }
 

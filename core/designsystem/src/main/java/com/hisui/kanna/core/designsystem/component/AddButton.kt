@@ -35,7 +35,7 @@ fun AddButton(
 ) {
     FilledTonalButton(
         modifier = modifier,
-        onClick = onClick,
+        onClick = onClick
     ) {
         Icon(imageVector = Icons.Filled.Add, contentDescription = "Add icon")
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))

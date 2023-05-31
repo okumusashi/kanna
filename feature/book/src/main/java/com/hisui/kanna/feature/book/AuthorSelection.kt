@@ -82,7 +82,7 @@ internal fun AuthorSelection(
                 list = uiState.authors,
                 selected = selected,
                 onSelect = onSelect,
-                onShowCreateDialog = viewModel::showCreateDialog,
+                onShowCreateDialog = viewModel::showCreateDialog
             )
     }
 
@@ -113,7 +113,7 @@ internal fun AuthorSelection(
     list: List<Author>,
     selected: Author?,
     onSelect: (Author) -> Unit,
-    onShowCreateDialog: () -> Unit,
+    onShowCreateDialog: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -128,7 +128,7 @@ internal fun AuthorSelection(
             onValueChange = {},
             readOnly = true,
             label = { Text(stringResource(id = R.string.author)) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) }
         )
 
         ExposedDropdownMenu(
@@ -164,7 +164,7 @@ private val authorPreviewList: List<Author> =
     listOf(
         Author(id = "1", name = "Ernest Hemingway", memo = "", isFavourite = false),
         Author(id = "2", name = "Rachel Carson", memo = "", isFavourite = false),
-        Author(id = "3", name = "芥川龍之介", memo = "", isFavourite = false),
+        Author(id = "3", name = "芥川龍之介", memo = "", isFavourite = false)
     )
 
 @Preview
@@ -181,7 +181,7 @@ private fun AuthorSelectionPreview() {
                 list = authorPreviewList,
                 selected = null,
                 onSelect = {},
-                onShowCreateDialog = {},
+                onShowCreateDialog = {}
             )
         }
     }

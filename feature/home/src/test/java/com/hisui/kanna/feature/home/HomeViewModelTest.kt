@@ -41,7 +41,7 @@ class HomeViewModelTest {
         listOf(
             defaultBook.copy(id = 1, title = "aa", readDate = Instant.parse("2022-01-01T01:00:00Z")),
             defaultBook.copy(id = 2, title = "bb", readDate = Instant.parse("2023-01-01T01:00:00Z")),
-            defaultBook.copy(id = 3, title = "cc", readDate = Instant.parse("2021-01-01T01:00:00Z")),
+            defaultBook.copy(id = 3, title = "cc", readDate = Instant.parse("2021-01-01T01:00:00Z"))
         )
 
     @BeforeEach
@@ -55,7 +55,7 @@ class HomeViewModelTest {
                     thought = book.thought,
                     memo = book.memo,
                     authorId = book.author.id,
-                    genreId = book.genre,
+                    genreId = book.genre
                 )
                 bookRepository.save(book = newBook)
             }

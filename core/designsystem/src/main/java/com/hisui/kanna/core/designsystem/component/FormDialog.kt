@@ -44,7 +44,6 @@ fun FormDialog(
     onDismiss: () -> Unit,
     content: @Composable () -> Unit
 ) {
-
     Dialog(onDismissRequest = onDismiss) {
         FormDialogContent(
             modifier = modifier,
@@ -118,13 +117,13 @@ private fun FormDialogPreview() {
             OutlinedTextField(
                 value = "",
                 onValueChange = {},
-                label = { Text(text = "title") },
+                label = { Text(text = "title") }
             )
 
             OutlinedTextField(
                 value = "",
                 onValueChange = {},
-                label = { Text(text = "author") },
+                label = { Text(text = "author") }
             )
         }
     }

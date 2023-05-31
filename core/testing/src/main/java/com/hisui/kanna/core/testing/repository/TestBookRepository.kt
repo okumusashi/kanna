@@ -51,12 +51,18 @@ class TestBookRepository : BookRepository {
             map.values.toList().let { books ->
                 when (sort) {
                     BookSorter.READ_DATE ->
-                        if (isAsc) books.sortedBy { it.readDate }
-                        else books.sortedByDescending { it.readDate }
+                        if (isAsc) {
+                            books.sortedBy { it.readDate }
+                        } else {
+                            books.sortedByDescending { it.readDate }
+                        }
 
                     BookSorter.TITLE ->
-                        if (isAsc) books.sortedBy { it.title }
-                        else books.sortedByDescending { it.title }
+                        if (isAsc) {
+                            books.sortedBy { it.title }
+                        } else {
+                            books.sortedByDescending { it.title }
+                        }
 
                     else -> books
                 }

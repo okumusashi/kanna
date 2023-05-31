@@ -57,13 +57,13 @@ private fun CreteFormDialogPreview() {
             OutlinedTextField(
                 value = "",
                 onValueChange = {},
-                label = { Text(text = "title") },
+                label = { Text(text = "title") }
             )
 
             OutlinedTextField(
                 value = "",
                 onValueChange = {},
-                label = { Text(text = "author") },
+                label = { Text(text = "author") }
             )
         }
     }

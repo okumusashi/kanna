@@ -74,7 +74,7 @@ class BookDaoTest {
             val expected = mapOf(
                 book1 to testAuthor,
                 book3 to testAuthor,
-                book2 to testAuthor,
+                book2 to testAuthor
             )
             assertThat(actual)
                 .containsExactlyEntriesIn(expected)
@@ -98,7 +98,7 @@ class BookDaoTest {
             val expected = mapOf(
                 book2 to testAuthor,
                 book3 to testAuthor,
-                book1 to testAuthor,
+                book1 to testAuthor
             )
             assertThat(actual)
                 .containsExactlyEntriesIn(expected)
@@ -124,7 +124,7 @@ class BookDaoTest {
             val expected = mapOf(
                 book1 to testAuthor,
                 book3 to testAuthor,
-                book2 to testAuthor,
+                book2 to testAuthor
             )
             assertThat(actual)
                 .containsExactlyEntriesIn(expected)
@@ -148,7 +148,7 @@ class BookDaoTest {
             val expected = mapOf(
                 book2 to testAuthor,
                 book3 to testAuthor,
-                book1 to testAuthor,
+                book1 to testAuthor
             )
             assertThat(actual)
                 .containsExactlyEntriesIn(expected)
@@ -171,7 +171,7 @@ private const val genre = "genre"
 private fun testBookEntity(
     id: Long,
     title: String = "test",
-    readDate: Instant = Instant.parse("2023-01-01T00:00:00.00Z"),
+    readDate: Instant = Instant.parse("2023-01-01T00:00:00.00Z")
 ): BookEntity =
     BookEntity(
         _id = id,

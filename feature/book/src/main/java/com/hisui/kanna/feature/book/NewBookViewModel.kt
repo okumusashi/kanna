@@ -55,7 +55,7 @@ private data class NewBookViewModelState(
         thought = "",
         rating = 0,
         authorId = "",
-        genreId = "",
+        genreId = ""
     ),
     val selectedAuthor: Author? = null,
     val showDatePicker: Boolean = false
@@ -77,7 +77,7 @@ sealed interface NewBookEvent {
 
 @HiltViewModel
 internal class NewBookViewModel @Inject constructor(
-    private val repository: BookRepository,
+    private val repository: BookRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(NewBookViewModelState())
@@ -125,7 +125,7 @@ internal class NewBookViewModel @Inject constructor(
         _state.update {
             it.copy(
                 selectedAuthor = author,
-                newBook = it.newBook.copy(authorId = author.id),
+                newBook = it.newBook.copy(authorId = author.id)
             )
         }
     }

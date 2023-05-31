@@ -20,5 +20,5 @@ data class NewQuote(
     val quote: String,
     val bookId: Long,
     val page: Int?,
-    val thought: String,
+    val thought: String
 )

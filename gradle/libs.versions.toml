@@ -27,7 +27,7 @@ googleTruth = "1.1.4"
 hilt = "2.46.1"
 
 junit4 = "4.13.2"
-junit5 = "5.8.2"
+junit5 = "5.9.3"
 
 kotlin = "1.8.21"
 kotlinxCoroutines = "1.6.4"

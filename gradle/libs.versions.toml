@@ -20,7 +20,7 @@ androidxTestRunner = "1.5.2"
 androidxTestEspresso = "3.5.1"
 androidxTestExtJunit = "1.1.5"
 
-coil = "2.2.2"
+coil = "2.4.0"
 
 googleTruth = "1.1.4"
 

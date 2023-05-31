@@ -20,7 +20,6 @@ import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.NewBook
-import com.hisui.kanna.core.model.ReadStatus
 
 internal fun NewBook.asEntity(): BookEntity =
     BookEntity(
@@ -45,6 +44,6 @@ internal fun asExternalModel(bookAndAuthors: List<BookAndAuthorEntity>): List<Bo
             memo = book.memo ?: "",
             thought = book.thought,
             rating = book.rating,
-            status = ReadStatus.from(status.name)
+            status = Book.Status.from(status.name)
         )
     }

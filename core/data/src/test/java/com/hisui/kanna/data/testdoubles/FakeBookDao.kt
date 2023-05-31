@@ -21,7 +21,7 @@ import com.hisui.kanna.core.database.entity.AuthorEntity
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
 import com.hisui.kanna.core.database.entity.BookReadStatusEntity
-import com.hisui.kanna.core.model.ReadStatus
+import com.hisui.kanna.core.model.BookReadStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -83,6 +83,6 @@ private fun toBookAndAuthorEntity(book: BookEntity): BookAndAuthorEntity =
         ),
         status = BookReadStatusEntity(
             id = book.statusId!!,
-            name = ReadStatus.values()[book.statusId!!.toInt() - 1].name
+            name = BookReadStatus.values()[book.statusId!!.toInt() - 1].name
         )
     )

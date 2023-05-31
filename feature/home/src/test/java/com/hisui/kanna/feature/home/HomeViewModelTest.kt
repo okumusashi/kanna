@@ -17,8 +17,8 @@
 package com.hisui.kanna.feature.home
 
 import com.google.common.truth.Truth.assertThat
+import com.hisui.kanna.core.model.BookReadStatus
 import com.hisui.kanna.core.model.NewBook
-import com.hisui.kanna.core.model.ReadStatus
 import com.hisui.kanna.core.testing.MainDispatcherExtension
 import com.hisui.kanna.core.testing.data.defaultBook
 import com.hisui.kanna.core.testing.repository.TestBookRepository
@@ -57,7 +57,7 @@ class HomeViewModelTest {
                     memo = book.memo,
                     authorId = book.author.id,
                     genreId = book.genre,
-                    statusId = ReadStatus.values().indexOf(book.status).toLong() + 1
+                    statusId = BookReadStatus.values().indexOf(book.status).toLong() + 1
                 )
                 bookRepository.save(book = newBook)
             }

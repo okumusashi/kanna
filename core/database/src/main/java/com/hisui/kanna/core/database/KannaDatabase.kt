@@ -28,7 +28,7 @@ import com.hisui.kanna.core.database.entity.BookEntity
 import com.hisui.kanna.core.database.entity.BookReadStatusEntity
 import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
 import com.hisui.kanna.core.database.entity.GenreEntity
-import com.hisui.kanna.core.model.ReadStatus
+import com.hisui.kanna.core.model.Book
 
 @Database(
     entities = [
@@ -54,8 +54,8 @@ internal val PRE_POPULATE_QUERY: String =
         INSERT INTO
             book_read_statuses (id, name)
         VALUES
-            (1, '${ReadStatus.HAVE_READ.name}'),
-            (2, '${ReadStatus.IS_READING_NOW.name}'),
-            (3, '${ReadStatus.READ_NEXT.name}'),
-            (4, '${ReadStatus.WANT_TO_READ.name}');
+            (1, '${Book.Status.HAVE_READ.name}'),
+            (2, '${Book.Status.IS_READING_NOW.name}'),
+            (3, '${Book.Status.READ_NEXT.name}'),
+            (4, '${Book.Status.WANT_TO_READ.name}');
     """.trimIndent()

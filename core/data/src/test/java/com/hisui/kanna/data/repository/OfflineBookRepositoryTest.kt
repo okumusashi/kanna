@@ -97,7 +97,7 @@ class OfflineBookRepositoryTest {
                 runTest {
                     dao.insert(
                         testBookEntity(id = 1, readDate = Instant.parse("2022-01-01T01:00:00Z")),
-                        testBookEntity(id = 2, readDate = Instant.parse("2023-01-01T01:00:00Z")),
+                        testBookEntity(id = 2, readDate = Instant.parse("2023-01-01T01:00:00Z"))
                     )
                 }
 

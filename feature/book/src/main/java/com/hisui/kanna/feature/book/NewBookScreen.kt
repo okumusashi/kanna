@@ -115,7 +115,7 @@ internal fun NewBookRoute(
 private fun NewBookDialog(
     isWidthCompact: Boolean,
     onDismiss: () -> Unit,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     Dialog(
         properties = DialogProperties(
@@ -128,13 +128,16 @@ private fun NewBookDialog(
     }
 }
 
-@Preview(device = Devices.PIXEL_4) @Composable
+@Preview(device = Devices.PIXEL_4)
+@Composable
 private fun NewBookDialogCompactPreview() { NewBookScreenPreviewBase(isCompactScreen = true) }
 
-@Preview(device = Devices.TABLET) @Composable
+@Preview(device = Devices.TABLET)
+@Composable
 private fun NewBookDialogTabletPreview() { NewBookScreenPreviewBase(isCompactScreen = false) }
 
-@Preview(device = Devices.DESKTOP) @Composable
+@Preview(device = Devices.DESKTOP)
+@Composable
 private fun NewBookDialogDesktopPreview() { NewBookScreenPreviewBase(isCompactScreen = false) }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -190,7 +193,7 @@ internal fun NewBookScreen(
             CreateFormTopBar(
                 title = stringResource(id = R.string.new_book),
                 onClickNavigationIcon = popBackStack,
-                onCreate = { onCreateBook(uiState.newBook) },
+                onCreate = { onCreateBook(uiState.newBook) }
             )
         }
     ) { paddingValues ->
@@ -224,17 +227,17 @@ internal fun NewBookScreen(
                 value = dateTimeFormatter().format(newBook.readDate.toJavaInstant()),
                 onValueChange = { },
                 label = { Text(text = stringResource(id = R.string.read_date)) },
-                readOnly = true,
+                readOnly = true
             )
 
             AuthorSelection(
                 selected = uiState.selectedAuthor,
-                onSelect = onSelectAuthor,
+                onSelect = onSelectAuthor
             )
 
             GenreSelection(
                 selected = uiState.selectedGenre,
-                onSelect = onSelectGenre,
+                onSelect = onSelectGenre
             )
 
             BookFormDivider()
@@ -280,7 +283,7 @@ private fun NewBookScreenPreview() {
                 onSelectAuthor = {},
                 onSelectGenre = {},
                 onShowDatePicker = {},
-                onCreateBook = {},
+                onCreateBook = {}
             )
         }
     }
@@ -319,7 +322,7 @@ private fun BookRating(
                         .clickable { onUpdate(index + 1) },
                     imageVector = if (coloured) Icons.Filled.Grade else Icons.Filled.StarOutline,
                     contentDescription = null,
-                    tint = tint,
+                    tint = tint
                 )
             }
         }
@@ -369,7 +372,7 @@ private fun NewBookScreenPreviewBase(isCompactScreen: Boolean) {
                     onSelectGenre = {},
                     popBackStack = {},
                     onShowDatePicker = {},
-                    onCreateBook = {},
+                    onCreateBook = {}
                 )
             }
         }

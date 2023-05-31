@@ -66,7 +66,7 @@ import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
 internal fun QuoteScreen(
     viewModel: QuoteViewModel = hiltViewModel(),
     onOpenNewQuoteScreen: () -> Unit,
-    onOpenNewBookScreen: () -> Unit,
+    onOpenNewBookScreen: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     QuoteScreen(
@@ -80,12 +80,12 @@ internal fun QuoteScreen(
 private fun QuoteScreen(
     uiState: QuoteUiState,
     onOpenNewQuoteScreen: () -> Unit,
-    onOpenNewBookScreen: () -> Unit,
+    onOpenNewBookScreen: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
     ) {
         Text(
             modifier = Modifier
@@ -129,7 +129,7 @@ private fun QuoteScreenPreview() {
         QuoteScreen(
             uiState = QuoteUiState.ShowQuotes(quotes = quotes),
             onOpenNewQuoteScreen = {},
-            onOpenNewBookScreen = {},
+            onOpenNewBookScreen = {}
         )
     }
 }
@@ -137,10 +137,12 @@ private fun QuoteScreenPreview() {
 @Preview @Composable
 private fun QuoteScreenCompactPreview() { QuoteScreenPreview() }
 
-@Preview(device = Devices.PIXEL_C) @Composable
+@Preview(device = Devices.PIXEL_C)
+@Composable
 private fun QuoteScreenCompactMedium() { QuoteScreenPreview() }
 
-@Preview(device = Devices.DESKTOP) @Composable
+@Preview(device = Devices.DESKTOP)
+@Composable
 private fun QuoteScreenCompactLarge() { QuoteScreenPreview() }
 
 @Preview
@@ -150,7 +152,7 @@ private fun NoBookScreenPreview() {
         QuoteScreen(
             uiState = QuoteUiState.NoBook,
             onOpenNewQuoteScreen = {},
-            onOpenNewBookScreen = {},
+            onOpenNewBookScreen = {}
         )
     }
 }
@@ -159,7 +161,7 @@ private fun NoBookScreenPreview() {
 private fun NoBookScreen(onOpenNewBookScreen: () -> Unit) {
     OutlinedCard(
         modifier = Modifier.padding(16.dp),
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.large
     ) {
         Text(
             modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
@@ -196,14 +198,14 @@ private fun NoQuoteScreen(
                 16.dp,
                 alignment = Alignment.CenterHorizontally
             ),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
                 val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.book))
                 val progress by animateLottieCompositionAsState(
                     composition = composition,
                     iterations = 5,
-                    speed = 0.5f,
+                    speed = 0.5f
                 )
 
                 LottieAnimation(
@@ -231,7 +233,7 @@ private fun NoQuoteScreen(
         AddQuoteFab(
             modifier = Modifier.align(Alignment.BottomEnd),
             onClick = onOpenNewQuoteScreen,
-            expanded = true,
+            expanded = true
         )
     }
 }
@@ -243,7 +245,7 @@ private fun NoQuoteScreenPreview() {
         QuoteScreen(
             uiState = QuoteUiState.NoQuote,
             onOpenNewQuoteScreen = {},
-            onOpenNewBookScreen = {},
+            onOpenNewBookScreen = {}
         )
     }
 }
@@ -259,7 +261,7 @@ private fun ShowQuotesScreen(
     Box(modifier = modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            state = lazyListState,
+            state = lazyListState
         ) {
             items(quotes) { quote ->
                 QuoteItem(quote = quote)
@@ -269,7 +271,7 @@ private fun ShowQuotesScreen(
         AddQuoteFab(
             modifier = Modifier.align(Alignment.BottomEnd),
             onClick = onOpenNewQuoteScreen,
-            expanded = !lazyListState.canScrollBackward || !lazyListState.canScrollForward,
+            expanded = !lazyListState.canScrollBackward || !lazyListState.canScrollForward
         )
     }
 }
@@ -325,7 +327,7 @@ private fun QuoteItem(quote: Quote) {
                 modifier = Modifier.clickable { /* TODO: Navigate to author screen */ },
                 text = quote.author,
                 color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelMedium
             )
         }
 

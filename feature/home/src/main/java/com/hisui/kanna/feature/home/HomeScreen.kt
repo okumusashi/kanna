@@ -97,7 +97,7 @@ internal fun HomeScreen(
                 state = lazyGridState,
                 columns = GridCells.Adaptive(300.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 // TODO: Filter dropdown
 
@@ -149,7 +149,7 @@ private fun HomeScreenPreview() {
                     thought = "",
                     memo = "",
                     rating = 5,
-                    genre = "",
+                    genre = ""
                 ),
                 Book(
                     id = 2,
@@ -164,7 +164,7 @@ private fun HomeScreenPreview() {
                     thought = "",
                     memo = "",
                     rating = 5,
-                    genre = "",
+                    genre = ""
                 ),
                 Book(
                     id = 3,
@@ -179,8 +179,8 @@ private fun HomeScreenPreview() {
                     thought = "",
                     memo = "",
                     rating = 5,
-                    genre = "",
-                ),
+                    genre = ""
+                )
             )
         )
         HomeScreen(homeUiState = state, onNewBookFabClick = {})
@@ -190,10 +190,12 @@ private fun HomeScreenPreview() {
 @Preview @Composable
 private fun HomeScreenPreviewCompact() { HomeScreenPreview() }
 
-@Preview(device = Devices.TABLET) @Composable
+@Preview(device = Devices.TABLET)
+@Composable
 private fun HomeScreenPreviewMedium() { HomeScreenPreview() }
 
-@Preview(device = Devices.DESKTOP) @Composable
+@Preview(device = Devices.DESKTOP)
+@Composable
 private fun HomeScreenPreviewLarge() { HomeScreenPreview() }
 
 private fun LazyGridScope.bookList(books: List<Book>) {
@@ -203,19 +205,19 @@ private fun LazyGridScope.bookList(books: List<Book>) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
                     text = book.title,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleMedium
                 )
                 Text(
                     text = book.author.name,
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.labelMedium
                 )
                 Text(
                     text = dateTimeFormatter().format(book.readDate.toJavaInstant()),
-                    style = MaterialTheme.typography.labelSmall,
+                    style = MaterialTheme.typography.labelSmall
                 )
             }
         }

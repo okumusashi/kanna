@@ -31,10 +31,10 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun providesKannaDatabase(
-        @ApplicationContext context: Context,
+        @ApplicationContext context: Context
     ): KannaDatabase = Room.databaseBuilder(
         context = context,
         klass = KannaDatabase::class.java,
-        name = "kanna-database",
+        name = "kanna-database"
     ).build()
 }

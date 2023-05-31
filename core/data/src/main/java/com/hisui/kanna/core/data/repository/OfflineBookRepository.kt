@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 class OfflineBookRepository @Inject constructor(
     private val dao: BookDao,
-    @Dispatcher(KannaDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+    @Dispatcher(KannaDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 ) : BookRepository {
     override suspend fun save(book: NewBook): Result<Unit> =
         withContext(ioDispatcher) {

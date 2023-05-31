@@ -83,7 +83,7 @@ sealed interface NewQuoteEvent {
 @HiltViewModel
 internal class NewQuoteViewModel @Inject constructor(
     private val repository: QuoteRepository,
-    private val getFilteredBooksStreamUseCase: GetFilteredBooksStreamUseCase,
+    private val getFilteredBooksStreamUseCase: GetFilteredBooksStreamUseCase
 ) : ViewModel() {
 
     private val viewModelState = MutableStateFlow(NewQuoteViewModelState())

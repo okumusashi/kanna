@@ -23,7 +23,7 @@ private data class DummyQuote(
     val id: Long,
     val quote: String,
     val bookTitle: String,
-    val author: String,
+    val author: String
 )
 
 private val dummyQuotes = listOf(
@@ -31,31 +31,31 @@ private val dummyQuotes = listOf(
         id = 1,
         quote = "It is only with the heart that one can see rightly; what is essential is invisible to the eye.",
         bookTitle = "The Little Prince",
-        author = "Antoine de Saint-Exupéry",
+        author = "Antoine de Saint-Exupéry"
     ),
     DummyQuote(
         id = 2,
         quote = "The most beautiful things in the world cannot be seen or touched, they are felt with the heart.",
         bookTitle = "The Little Prince",
-        author = "Antoine de Saint-Exupéry",
+        author = "Antoine de Saint-Exupéry"
     ),
     DummyQuote(
         id = 3,
         quote = "You become responsible, forever, for what you have tamed.",
         bookTitle = "The Little Prince",
-        author = "Antoine de Saint-Exupéry",
+        author = "Antoine de Saint-Exupéry"
     ),
     DummyQuote(
         id = 4,
         quote = "I am no bird; and no net ensnares me: I am a free human being with an independent will, which I now exert to leave you.",
         bookTitle = "Jane Eyre",
-        author = "Charlotte Brontë",
+        author = "Charlotte Brontë"
     ),
     DummyQuote(
         id = 5,
         quote = "I would always rather be happy than dignified.",
         bookTitle = "Jane Eyre",
-        author = "Charlotte Brontë",
+        author = "Charlotte Brontë"
     ),
     DummyQuote(
         id = 6,
@@ -104,7 +104,7 @@ private val dummyQuotes = listOf(
         quote = "The world breaks everyone, and afterward, many are strong at the broken places.",
         bookTitle = "A Farewell to Arms",
         author = "Ernest Hemingway"
-    ),
+    )
 )
 
 internal fun previewQuote(): Quote {

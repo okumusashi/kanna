@@ -48,7 +48,7 @@ internal fun GenreSelection(
     modifier: Modifier = Modifier,
     viewModel: GenreSelectionViewModel = hiltViewModel(),
     selected: String?,
-    onSelect: (String) -> Unit,
+    onSelect: (String) -> Unit
 ) {
     LaunchedEffect(Unit) {
         viewModel.event.collect { event ->
@@ -72,14 +72,14 @@ internal fun GenreSelection(
                 list = uiState.genres,
                 selected = selected,
                 onSelect = onSelect,
-                onShowCreateDialog = viewModel::showCreateDialog,
+                onShowCreateDialog = viewModel::showCreateDialog
             )
     }
 
     if (state.showCreateDialog) {
         CreateGenreDialog(
             onDismiss = viewModel::dismissCreateDialog,
-            onCreate = viewModel::create,
+            onCreate = viewModel::create
         )
     }
 }
@@ -103,7 +103,7 @@ internal fun GenreSelection(
     list: List<String>,
     selected: String?,
     onSelect: (String) -> Unit,
-    onShowCreateDialog: () -> Unit,
+    onShowCreateDialog: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -118,7 +118,7 @@ internal fun GenreSelection(
             onValueChange = {},
             readOnly = true,
             label = { Text(stringResource(id = com.hisui.kanna.core.ui.R.string.genre)) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) }
         )
 
         ExposedDropdownMenu(

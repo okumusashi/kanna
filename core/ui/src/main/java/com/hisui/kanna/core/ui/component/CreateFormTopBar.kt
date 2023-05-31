@@ -37,7 +37,7 @@ fun CreateFormTopBar(
     title: String,
     onClickNavigationIcon: () -> Unit,
     onCreate: () -> Unit,
-    enabled: Boolean = true,
+    enabled: Boolean = true
 ) {
     TopAppBar(
         title = { Text(title) },

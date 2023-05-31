@@ -26,7 +26,7 @@ data class Book(
     val thought: String,
     val rating: Int,
     val author: Author,
-    val genre: String,
+    val genre: String
 )
 
 enum class BookSorter {

@@ -45,7 +45,7 @@ protobufPlugin = "0.9.3"
 retrofit = "2.9.0"
 
 # TODO: Uncomment after installing kotlinx.serialization
-retrofitKotlinxSerializationJson = "0.8.0"
+retrofitKotlinxSerializationJson = "1.0.0"
 
 [libraries]
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }

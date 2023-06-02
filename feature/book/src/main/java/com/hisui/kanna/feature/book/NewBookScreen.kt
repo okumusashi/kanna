@@ -16,6 +16,7 @@
 
 package com.hisui.kanna.feature.book
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -42,6 +45,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -54,6 +58,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,6 +68,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Author
+import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookReadStatus
 import com.hisui.kanna.core.model.NewBook
 import com.hisui.kanna.core.ui.component.CreateFormTopBar
 import com.hisui.kanna.core.ui.util.dateTimeFormatter
@@ -96,6 +103,7 @@ internal fun NewBookRoute(
             uiState = uiState,
             popBackStack = popBackStack,
             onUpdateBook = viewModel::updateBook,
+            onSelectStatus = viewModel::selectStatus,
             onSelectAuthor = viewModel::selectAuthor,
             onSelectGenre = viewModel::selectGenre,
             onShowDatePicker = viewModel::showDatePicker,
@@ -140,6 +148,18 @@ private fun NewBookDialogTabletPreview() { NewBookScreenPreviewBase(isCompactScr
 @Composable
 private fun NewBookDialogDesktopPreview() { NewBookScreenPreviewBase(isCompactScreen = false) }
 
+@Composable
+private fun SectionHeader(
+    modifier: Modifier = Modifier,
+    title: String
+) {
+    Text(
+        modifier = modifier.padding(bottom = 16.dp),
+        text = title,
+        style = MaterialTheme.typography.headlineSmall
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ReadDatePicker(
@@ -180,6 +200,7 @@ internal fun NewBookScreen(
     uiState: NewBookUiState,
     popBackStack: () -> Unit,
     onUpdateBook: (NewBook) -> Unit,
+    onSelectStatus: (BookReadStatus) -> Unit,
     onSelectAuthor: (Author) -> Unit,
     onSelectGenre: (String) -> Unit,
     onShowDatePicker: () -> Unit,
@@ -215,20 +236,28 @@ internal fun NewBookScreen(
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
             )
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                leadingIcon = {
-                    Icon(
-                        modifier = Modifier.clickable { onShowDatePicker() },
-                        imageVector = Icons.Filled.EditCalendar,
-                        contentDescription = "Calendar"
-                    )
-                },
-                value = dateTimeFormatter().format(newBook.readDate.toJavaInstant()),
-                onValueChange = { },
-                label = { Text(text = stringResource(id = R.string.read_date)) },
-                readOnly = true
+            StatusSelection(
+                currentStatus = uiState.selectedStatus,
+                readStatuses = uiState.statuses,
+                onSelect = onSelectStatus
             )
+
+            AnimatedVisibility(visible = uiState.selectedStatus == Book.Status.HAVE_READ) {
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    leadingIcon = {
+                        Icon(
+                            modifier = Modifier.clickable { onShowDatePicker() },
+                            imageVector = Icons.Filled.EditCalendar,
+                            contentDescription = "Calendar"
+                        )
+                    },
+                    value = dateTimeFormatter().format(newBook.readDate.toJavaInstant()),
+                    onValueChange = { },
+                    label = { Text(text = stringResource(id = R.string.read_date)) },
+                    readOnly = true
+                )
+            }
 
             AuthorSelection(
                 selected = uiState.selectedAuthor,
@@ -280,6 +309,7 @@ private fun NewBookScreenPreview() {
                 uiState = previewUiState,
                 popBackStack = {},
                 onUpdateBook = {},
+                onSelectStatus = {},
                 onSelectAuthor = {},
                 onSelectGenre = {},
                 onShowDatePicker = {},
@@ -289,7 +319,50 @@ private fun NewBookScreenPreview() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun StatusSelection(
+    currentStatus: Book.Status,
+    readStatuses: List<BookReadStatus>,
+    onSelect: (BookReadStatus) -> Unit
+) {
+    Column(modifier = Modifier.selectableGroup()) {
+        readStatuses.forEach { readStatus ->
+            val selected = readStatus.status == currentStatus
+            Row(
+                modifier = Modifier
+                    .selectable(
+                        selected = selected,
+                        onClick = { onSelect(readStatus) },
+                        role = Role.RadioButton
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = selected,
+                    onClick = { onSelect(readStatus) }
+                )
+
+                Text(
+                    text = readStatus.status.title(),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Book.Status.title(): String =
+    when (this) {
+        Book.Status.HAVE_READ -> R.string.status_have_read
+        Book.Status.READING_NOW -> R.string.status_reading_now
+        Book.Status.READ_NEXT -> R.string.status_read_next
+        Book.Status.WANT_TO_READ -> R.string.status_want_to_read
+    }.let { id ->
+        stringResource(id = id)
+    }
+
 @Composable
 private fun BookRating(
     value: Int,
@@ -301,11 +374,7 @@ private fun BookRating(
             .padding(horizontal = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(
-            modifier = Modifier.padding(bottom = 16.dp),
-            text = stringResource(id = R.string.rating),
-            style = MaterialTheme.typography.headlineSmall
-        )
+        SectionHeader(title = stringResource(id = R.string.rating))
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -352,6 +421,8 @@ private val previewUiState: NewBookUiState =
             genreId = "genre",
             statusId = 1
         ),
+        statuses = Book.Status.values().mapIndexed { i, status -> BookReadStatus((i + 1).toLong(), status) },
+        selectedStatus = Book.Status.HAVE_READ,
         selectedAuthor = Author(id = "", name = "author", memo = "", isFavourite = false),
         selectedGenre = "genre",
         showDatePicker = false
@@ -369,6 +440,7 @@ private fun NewBookScreenPreviewBase(isCompactScreen: Boolean) {
                     isCompact = isCompactScreen,
                     uiState = previewUiState,
                     onUpdateBook = {},
+                    onSelectStatus = {},
                     onSelectAuthor = {},
                     onSelectGenre = {},
                     popBackStack = {},

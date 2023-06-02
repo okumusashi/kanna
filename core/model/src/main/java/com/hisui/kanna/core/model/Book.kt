@@ -31,7 +31,7 @@ data class Book(
 ) {
     enum class Status {
         HAVE_READ,
-        IS_READING_NOW,
+        READING_NOW,
         READ_NEXT,
         WANT_TO_READ
         ;

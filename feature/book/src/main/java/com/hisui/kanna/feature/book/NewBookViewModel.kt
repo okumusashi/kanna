@@ -19,7 +19,10 @@ package com.hisui.kanna.feature.book
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hisui.kanna.core.data.repository.BookRepository
+import com.hisui.kanna.core.domain.usecase.GetAllStatusUseCase
 import com.hisui.kanna.core.model.Author
+import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookReadStatus
 import com.hisui.kanna.core.model.NewBook
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -40,6 +43,8 @@ internal data class NewBookUiState(
     val loading: Boolean,
     val error: String?,
     val newBook: NewBook,
+    val statuses: List<BookReadStatus>,
+    val selectedStatus: Book.Status,
     val selectedAuthor: Author?,
     val selectedGenre: String?,
     val showDatePicker: Boolean
@@ -58,6 +63,8 @@ private data class NewBookViewModelState(
         genreId = "",
         statusId = 1
     ),
+    val statuses: List<BookReadStatus> = emptyList(),
+    val selectedStatus: Book.Status = Book.Status.HAVE_READ,
     val selectedAuthor: Author? = null,
     val showDatePicker: Boolean = false
 ) {
@@ -66,6 +73,8 @@ private data class NewBookViewModelState(
             loading = loading,
             error = error,
             newBook = newBook,
+            statuses = statuses,
+            selectedStatus = selectedStatus,
             selectedAuthor = selectedAuthor,
             selectedGenre = newBook.genreId,
             showDatePicker = showDatePicker
@@ -78,7 +87,8 @@ sealed interface NewBookEvent {
 
 @HiltViewModel
 internal class NewBookViewModel @Inject constructor(
-    private val repository: BookRepository
+    private val bookRepository: BookRepository,
+    private val getAllStatusUseCase: GetAllStatusUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(NewBookViewModelState())
@@ -94,6 +104,12 @@ internal class NewBookViewModel @Inject constructor(
     private val _event = Channel<NewBookEvent>(BUFFERED)
     val event: Flow<NewBookEvent> = _event.receiveAsFlow()
 
+    init {
+        viewModelScope.launch {
+            _state.update { it.copy(statuses = getAllStatusUseCase()) }
+        }
+    }
+
     fun updateBook(book: NewBook) {
         _state.update {
             it.copy(
@@ -105,7 +121,7 @@ internal class NewBookViewModel @Inject constructor(
 
     fun createBook(book: NewBook) {
         viewModelScope.launch {
-            val result = repository.save(book = book)
+            val result = bookRepository.save(book = book)
             if (result.isSuccess) {
                 _event.send(NewBookEvent.Created)
             } else {
@@ -120,6 +136,15 @@ internal class NewBookViewModel @Inject constructor(
 
     fun dismissDatePicker() {
         _state.update { it.copy(showDatePicker = false) }
+    }
+
+    fun selectStatus(readStatus: BookReadStatus) {
+        _state.update {
+            it.copy(
+                selectedStatus = readStatus.status,
+                newBook = it.newBook.copy(statusId = readStatus.id)
+            )
+        }
     }
 
     fun selectAuthor(author: Author) {

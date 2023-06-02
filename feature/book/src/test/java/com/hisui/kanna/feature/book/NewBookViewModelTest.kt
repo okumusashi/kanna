@@ -17,8 +17,10 @@
 package com.hisui.kanna.feature.book
 
 import com.google.common.truth.Truth.assertThat
+import com.hisui.kanna.core.domain.usecase.GetAllStatusUseCase
 import com.hisui.kanna.core.model.NewBook
 import com.hisui.kanna.core.testing.MainDispatcherExtension
+import com.hisui.kanna.core.testing.repository.TestBookReadStatusRepository
 import com.hisui.kanna.core.testing.repository.TestBookRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -32,13 +34,34 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MainDispatcherExtension::class)
 class NewBookViewModelTest {
 
-    private val repository = TestBookRepository()
+    private val bookRepository = TestBookRepository()
+
+    private val getAllStatusUseCase = GetAllStatusUseCase(
+        repository = TestBookReadStatusRepository()
+    )
 
     private lateinit var viewModel: NewBookViewModel
 
     @BeforeEach
     fun setup() {
-        viewModel = NewBookViewModel(repository = repository)
+        viewModel = NewBookViewModel(
+            bookRepository = bookRepository,
+            getAllStatusUseCase = getAllStatusUseCase
+        )
+    }
+
+    @Nested
+    @DisplayName("initial state")
+    inner class InitialState {
+
+        @Test
+        fun `WHEN - NewBookViewModel is initiated, THEN - it should set statuses`() {
+            // Already initialed in `@BeforeEach` block
+            runTest {
+                val statuses = getAllStatusUseCase()
+                assertThat(viewModel.uiState.first().statuses).isEqualTo(statuses)
+            }
+        }
     }
 
     @Nested

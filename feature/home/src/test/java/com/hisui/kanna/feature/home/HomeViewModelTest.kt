@@ -17,9 +17,8 @@
 package com.hisui.kanna.feature.home
 
 import com.google.common.truth.Truth.assertThat
-import com.hisui.kanna.core.model.BookReadStatus
-import com.hisui.kanna.core.model.NewBook
 import com.hisui.kanna.core.testing.MainDispatcherExtension
+import com.hisui.kanna.core.testing.data.asNewBook
 import com.hisui.kanna.core.testing.data.defaultBook
 import com.hisui.kanna.core.testing.repository.TestBookRepository
 import kotlinx.coroutines.flow.first
@@ -48,19 +47,9 @@ class HomeViewModelTest {
     @BeforeEach
     fun setup() {
         runTest {
-            bookList.forEach { book ->
-                val newBook = NewBook(
-                    title = book.title,
-                    readDate = book.readDate,
-                    rating = book.rating,
-                    thought = book.thought,
-                    memo = book.memo,
-                    authorId = book.author.id,
-                    genreId = book.genre,
-                    statusId = BookReadStatus.values().indexOf(book.status).toLong() + 1
-                )
-                bookRepository.save(book = newBook)
-            }
+            bookList
+                .map { it.asNewBook() }
+                .forEach { bookRepository.save(it) }
         }
 
         viewModel = HomeViewModel(bookRepository = bookRepository)

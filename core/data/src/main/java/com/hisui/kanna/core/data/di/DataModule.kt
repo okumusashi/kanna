@@ -17,9 +17,11 @@
 package com.hisui.kanna.core.data.di
 
 import com.hisui.kanna.core.data.repository.AuthorRepository
+import com.hisui.kanna.core.data.repository.BookReadStatusRepository
 import com.hisui.kanna.core.data.repository.BookRepository
 import com.hisui.kanna.core.data.repository.GenreRepository
 import com.hisui.kanna.core.data.repository.OfflineAuthorRepository
+import com.hisui.kanna.core.data.repository.OfflineBookReadStatusRepository
 import com.hisui.kanna.core.data.repository.OfflineBookRepository
 import com.hisui.kanna.core.data.repository.OfflineGenreRepository
 import com.hisui.kanna.core.data.repository.OfflineQuoteRepository
@@ -36,6 +38,11 @@ internal abstract class DataModule {
     abstract fun bindsBookRepository(
         impl: OfflineBookRepository
     ): BookRepository
+
+    @Binds
+    abstract fun bindsBookReadStatusRepository(
+        impl: OfflineBookReadStatusRepository
+    ): BookReadStatusRepository
 
     @Binds
     abstract fun bindsAuthorRepository(

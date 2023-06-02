@@ -18,6 +18,7 @@ package com.hisui.kanna.core.testing.data
 
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.NewBook
 import kotlinx.datetime.Clock
 
 val defaultBook: Book =
@@ -35,5 +36,17 @@ val defaultBook: Book =
             isFavourite = false
         ),
         genre = "genre1",
-        status = Book.Status.IS_READING_NOW
+        status = Book.Status.READING_NOW
+    )
+
+fun Book.asNewBook(): NewBook =
+    NewBook(
+        title = title,
+        readDate = readDate,
+        rating = rating,
+        thought = thought,
+        memo = memo,
+        authorId = author.id,
+        genreId = genre,
+        statusId = Book.Status.values().indexOf(status).toLong() + 1
     )

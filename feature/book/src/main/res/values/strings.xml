@@ -15,13 +15,18 @@
   -->
 <resources>
     <string name="new_book">New book</string>
-    <string name="title">title</string>
-    <string name="read_date">read date</string>
-    <string name="thought">thought</string>
-    <string name="memo">memo</string>
-    <string name="rating">rating</string>
-    <string name="add_genre">add genre</string>
-    <string name="add_author">add author</string>
-    <string name="memo_optional">memo (optional)</string>
+    <string name="title">Title</string>
+    <string name="read_date">Read date</string>
+    <string name="status">Status</string>
+    <string name="status_have_read">Have read</string>
+    <string name="status_reading_now">Reading now</string>
+    <string name="status_read_next">Read next</string>
+    <string name="status_want_to_read">Want to read</string>
+    <string name="thought">Thought</string>
+    <string name="memo">Memo</string>
+    <string name="rating">Rating</string>
+    <string name="add_genre">Add genre</string>
+    <string name="add_author">Add author</string>
+    <string name="memo_optional">Memo (optional)</string>
     <string name="for_your_memo">For your memo.</string>
 </resources>

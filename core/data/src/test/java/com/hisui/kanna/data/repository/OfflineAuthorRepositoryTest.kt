@@ -22,6 +22,7 @@ import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.data.repository.OfflineAuthorRepository
 import com.hisui.kanna.core.model.AuthorInput
 import com.hisui.kanna.data.testdoubles.FakeAuthorDao
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class OfflineAuthorRepositoryTest {
 
     private lateinit var dao: FakeAuthorDao

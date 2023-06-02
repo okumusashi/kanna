@@ -21,6 +21,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.hisui.kanna.core.database.dao.AuthorDao
 import com.hisui.kanna.core.database.dao.BookDao
+import com.hisui.kanna.core.database.dao.BookReadStatusDao
 import com.hisui.kanna.core.database.dao.FavouriteQuoteDao
 import com.hisui.kanna.core.database.dao.GenreDao
 import com.hisui.kanna.core.database.entity.AuthorEntity
@@ -44,6 +45,7 @@ import com.hisui.kanna.core.model.Book
 @TypeConverters(InstantTypeConverter::class)
 abstract class KannaDatabase : RoomDatabase() {
     abstract fun bookDao(): BookDao
+    abstract fun bookReadStatusDao(): BookReadStatusDao
     abstract fun authorDao(): AuthorDao
     abstract fun genreDao(): GenreDao
     abstract fun favouriteQuoteDao(): FavouriteQuoteDao
@@ -55,7 +57,7 @@ internal val PRE_POPULATE_QUERY: String =
             book_read_statuses (id, name)
         VALUES
             (1, '${Book.Status.HAVE_READ.name}'),
-            (2, '${Book.Status.IS_READING_NOW.name}'),
+            (2, '${Book.Status.READING_NOW.name}'),
             (3, '${Book.Status.READ_NEXT.name}'),
             (4, '${Book.Status.WANT_TO_READ.name}');
     """.trimIndent()

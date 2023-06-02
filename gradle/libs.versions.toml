@@ -44,6 +44,8 @@ protobufPlugin = "0.9.3"
 
 retrofit = "2.9.0"
 
+timber = "5.0.1"
+
 # TODO: Uncomment after installing kotlinx.serialization
 retrofitKotlinxSerializationJson = "0.8.0"
 
@@ -107,6 +109,8 @@ protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 # TODO: Uncomment after installing kotlinx.serialization
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
+
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 # build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

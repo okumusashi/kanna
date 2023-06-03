@@ -21,21 +21,21 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
-import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
+import com.hisui.kanna.core.database.entity.QuoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FavouriteQuoteDao {
+interface QuoteDao {
     @Insert
-    suspend fun insert(entity: FavouriteQuoteEntity)
+    suspend fun insert(entity: QuoteEntity)
 
     @Transaction
     @Query(
         """
-            SELECT * FROM favourite_quotes
-            INNER JOIN books ON favourite_quotes.book_id = books.id
+            SELECT * FROM quotes
+            INNER JOIN books ON quotes.book_id = books.id
             ORDER BY created_at DESC
         """
     )
-    fun getAll(): Flow<Map<FavouriteQuoteEntity, BookAndAuthorEntity>>
+    fun getAll(): Flow<Map<QuoteEntity, BookAndAuthorEntity>>
 }

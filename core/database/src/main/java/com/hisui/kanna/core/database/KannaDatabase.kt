@@ -22,13 +22,13 @@ import androidx.room.TypeConverters
 import com.hisui.kanna.core.database.dao.AuthorDao
 import com.hisui.kanna.core.database.dao.BookDao
 import com.hisui.kanna.core.database.dao.BookReadStatusDao
-import com.hisui.kanna.core.database.dao.FavouriteQuoteDao
 import com.hisui.kanna.core.database.dao.GenreDao
+import com.hisui.kanna.core.database.dao.QuoteDao
 import com.hisui.kanna.core.database.entity.AuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
 import com.hisui.kanna.core.database.entity.BookReadStatusEntity
-import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
 import com.hisui.kanna.core.database.entity.GenreEntity
+import com.hisui.kanna.core.database.entity.QuoteEntity
 import com.hisui.kanna.core.model.Book
 
 @Database(
@@ -37,7 +37,7 @@ import com.hisui.kanna.core.model.Book
         BookReadStatusEntity::class,
         AuthorEntity::class,
         GenreEntity::class,
-        FavouriteQuoteEntity::class
+        QuoteEntity::class
     ],
     version = 1,
     exportSchema = true
@@ -48,7 +48,7 @@ abstract class KannaDatabase : RoomDatabase() {
     abstract fun bookReadStatusDao(): BookReadStatusDao
     abstract fun authorDao(): AuthorDao
     abstract fun genreDao(): GenreDao
-    abstract fun favouriteQuoteDao(): FavouriteQuoteDao
+    abstract fun favouriteQuoteDao(): QuoteDao
 }
 
 internal val PRE_POPULATE_QUERY: String =

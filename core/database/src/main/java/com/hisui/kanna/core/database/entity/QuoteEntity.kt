@@ -25,7 +25,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 @Entity(
-    tableName = "favourite_quotes",
+    tableName = "quotes",
     foreignKeys = [
         ForeignKey(
             entity = BookEntity::class,
@@ -39,7 +39,7 @@ import kotlinx.datetime.Instant
         Index(value = ["book_id"])
     ]
 )
-data class FavouriteQuoteEntity(
+data class QuoteEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private val _id: Long = 0,

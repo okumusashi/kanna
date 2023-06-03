@@ -17,19 +17,19 @@
 package com.hisui.kanna.core.data.mapper
 
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
-import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
+import com.hisui.kanna.core.database.entity.QuoteEntity
 import com.hisui.kanna.core.model.NewQuote
 import com.hisui.kanna.core.model.Quote
 
-internal fun NewQuote.toEntity(): FavouriteQuoteEntity =
-    FavouriteQuoteEntity(
+internal fun NewQuote.toEntity(): QuoteEntity =
+    QuoteEntity(
         bookId = bookId,
         page = page ?: 0,
         quote = quote,
         thought = thought
     )
 
-internal fun Map<FavouriteQuoteEntity, BookAndAuthorEntity>.asExternalModel(): List<Quote> =
+internal fun Map<QuoteEntity, BookAndAuthorEntity>.asExternalModel(): List<Quote> =
     map { (favouriteQuote, bookAndAuthor) ->
         Quote(
             id = favouriteQuote.id,

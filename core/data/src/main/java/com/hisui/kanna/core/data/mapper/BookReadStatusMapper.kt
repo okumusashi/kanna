@@ -23,5 +23,5 @@ import com.hisui.kanna.core.model.BookReadStatus
 internal fun asExternalModel(entity: BookReadStatusEntity): BookReadStatus =
     BookReadStatus(
         id = entity.id,
-        status = Book.Status.from(entity.name)
+        status = Book.Status.from(entity.status)
     )

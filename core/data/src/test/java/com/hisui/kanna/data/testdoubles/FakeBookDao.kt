@@ -83,6 +83,6 @@ private fun toBookAndAuthorEntity(book: BookEntity): BookAndAuthorEntity =
         ),
         status = BookReadStatusEntity(
             id = book.statusId!!,
-            name = Book.Status.values()[book.statusId!!.toInt() - 1].name
+            status = Book.Status.values()[book.statusId!!.toInt() - 1].name
         )
     )

@@ -54,7 +54,7 @@ abstract class KannaDatabase : RoomDatabase() {
 internal val PRE_POPULATE_QUERY: String =
     """
         INSERT INTO
-            book_read_statuses (id, name)
+            book_read_statuses (id, status)
         VALUES
             (1, '${Book.Status.HAVE_READ.name}'),
             (2, '${Book.Status.READING_NOW.name}'),

@@ -22,5 +22,5 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "book_read_statuses")
 data class BookReadStatusEntity(
     @PrimaryKey val id: Long,
-    val name: String
+    val status: String
 )

@@ -29,3 +29,10 @@ data class Quote(
     val authorId: String,
     val author: String
 )
+
+data class NewQuote(
+    val quote: String,
+    val bookId: Long,
+    val page: Int?,
+    val thought: String
+)

@@ -55,3 +55,13 @@ enum class BookSorter {
  */
 data class BookForQuote(val id: Long, val title: String)
 
+data class NewBook(
+    val title: String,
+    val readDate: Instant,
+    val memo: String?,
+    val thought: String,
+    val rating: Int,
+    val authorId: String,
+    val genreId: String,
+    val statusId: Long
+)

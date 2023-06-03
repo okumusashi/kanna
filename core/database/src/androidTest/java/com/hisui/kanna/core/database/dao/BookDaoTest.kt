@@ -21,9 +21,13 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import com.hisui.kanna.core.database.KannaDatabase
+import com.hisui.kanna.core.database.PRE_POPULATE_QUERY
 import com.hisui.kanna.core.database.entity.AuthorEntity
+import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
+import com.hisui.kanna.core.database.entity.BookReadStatusEntity
 import com.hisui.kanna.core.database.entity.GenreEntity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant
@@ -31,10 +35,13 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class BookDaoTest {
 
     private lateinit var dao: BookDao
     private lateinit var database: KannaDatabase
+
+    private lateinit var status: BookReadStatusEntity
 
     @Before
     fun setup() {
@@ -48,7 +55,10 @@ class BookDaoTest {
 
         runTest {
             database.authorDao().insert(testAuthor)
-            database.genreDao().insert(GenreEntity(name = genre, isFavourite = false))
+            database.query(query = PRE_POPULATE_QUERY, args = null)
+            database.genreDao().insert(GenreEntity(genre = genre, isFavourite = false))
+
+            status = database.bookReadStatusDao().getAll().first()
         }
     }
 
@@ -61,9 +71,9 @@ class BookDaoTest {
     @Test
     fun getAllBooksAndAuthorsByTitle_ascending() {
         // GIVEN
-        val book1 = testBookEntity(id = 1, title = "a")
-        val book2 = testBookEntity(id = 2, title = "c")
-        val book3 = testBookEntity(id = 3, title = "b")
+        val book1 = testBookEntity(id = 1, title = "a", statusId = status.id)
+        val book2 = testBookEntity(id = 2, title = "c", statusId = status.id)
+        val book3 = testBookEntity(id = 3, title = "b", statusId = status.id)
         runTest { dao.insert(book1, book2, book3) }
 
         runTest {
@@ -71,13 +81,13 @@ class BookDaoTest {
             val actual = dao.getAllBooksAndAuthorsByTitle(isAsc = true).first()
 
             // THEN
-            val expected = mapOf(
-                book1 to testAuthor,
-                book3 to testAuthor,
-                book2 to testAuthor
+            val expected = listOf(
+                BookAndAuthorEntity(book = book1, author = testAuthor, status = status),
+                BookAndAuthorEntity(book = book3, author = testAuthor, status = status),
+                BookAndAuthorEntity(book = book2, author = testAuthor, status = status)
             )
             assertThat(actual)
-                .containsExactlyEntriesIn(expected)
+                .containsExactlyElementsIn(expected)
                 .inOrder()
         }
     }
@@ -85,9 +95,9 @@ class BookDaoTest {
     @Test
     fun getAllBooksAndAuthorsByTitle_descending() {
         // GIVEN
-        val book1 = testBookEntity(id = 1, title = "a")
-        val book2 = testBookEntity(id = 2, title = "c")
-        val book3 = testBookEntity(id = 3, title = "b")
+        val book1 = testBookEntity(id = 1, title = "a", statusId = status.id)
+        val book2 = testBookEntity(id = 2, title = "c", statusId = status.id)
+        val book3 = testBookEntity(id = 3, title = "b", statusId = status.id)
         runTest { dao.insert(book1, book2, book3) }
 
         runTest {
@@ -95,13 +105,13 @@ class BookDaoTest {
             val actual = dao.getAllBooksAndAuthorsByTitle(isAsc = false).first()
 
             // THEN
-            val expected = mapOf(
-                book2 to testAuthor,
-                book3 to testAuthor,
-                book1 to testAuthor
+            val expected = listOf(
+                BookAndAuthorEntity(book = book2, author = testAuthor, status = status),
+                BookAndAuthorEntity(book = book3, author = testAuthor, status = status),
+                BookAndAuthorEntity(book = book1, author = testAuthor, status = status)
             )
             assertThat(actual)
-                .containsExactlyEntriesIn(expected)
+                .containsExactlyElementsIn(expected)
                 .inOrder()
         }
     }
@@ -111,9 +121,9 @@ class BookDaoTest {
     @Test
     fun getAllBooksAndAuthorsByReadDate_ascending() {
         // GIVEN
-        val book1 = testBookEntity(id = 1, readDate = Instant.parse("2023-01-01T00:00:00.00Z"))
-        val book2 = testBookEntity(id = 2, readDate = Instant.parse("2023-03-01T00:00:00.00Z"))
-        val book3 = testBookEntity(id = 3, readDate = Instant.parse("2023-02-01T00:00:00.00Z"))
+        val book1 = testBookEntity(id = 1, readDate = Instant.parse("2023-01-01T00:00:00.00Z"), statusId = status.id)
+        val book2 = testBookEntity(id = 2, readDate = Instant.parse("2023-03-01T00:00:00.00Z"), statusId = status.id)
+        val book3 = testBookEntity(id = 3, readDate = Instant.parse("2023-02-01T00:00:00.00Z"), statusId = status.id)
         runTest { dao.insert(book1, book2, book3) }
 
         runTest {
@@ -121,13 +131,13 @@ class BookDaoTest {
             val actual = dao.getAllBooksAndAuthorsByReadDate(isAsc = true).first()
 
             // THEN
-            val expected = mapOf(
-                book1 to testAuthor,
-                book3 to testAuthor,
-                book2 to testAuthor
+            val expected = listOf(
+                BookAndAuthorEntity(book = book1, author = testAuthor, status = status),
+                BookAndAuthorEntity(book = book3, author = testAuthor, status = status),
+                BookAndAuthorEntity(book = book2, author = testAuthor, status = status)
             )
             assertThat(actual)
-                .containsExactlyEntriesIn(expected)
+                .containsExactlyElementsIn(expected)
                 .inOrder()
         }
     }
@@ -135,9 +145,9 @@ class BookDaoTest {
     @Test
     fun getAllBooksAndAuthorsByReadDate_descending() {
         // GIVEN
-        val book1 = testBookEntity(id = 1, readDate = Instant.parse("2023-01-01T00:00:00.00Z"))
-        val book2 = testBookEntity(id = 2, readDate = Instant.parse("2023-03-01T00:00:00.00Z"))
-        val book3 = testBookEntity(id = 3, readDate = Instant.parse("2023-02-01T00:00:00.00Z"))
+        val book1 = testBookEntity(id = 1, readDate = Instant.parse("2023-01-01T00:00:00.00Z"), statusId = status.id)
+        val book2 = testBookEntity(id = 2, readDate = Instant.parse("2023-03-01T00:00:00.00Z"), statusId = status.id)
+        val book3 = testBookEntity(id = 3, readDate = Instant.parse("2023-02-01T00:00:00.00Z"), statusId = status.id)
         runTest { dao.insert(book1, book2, book3) }
 
         runTest {
@@ -145,13 +155,13 @@ class BookDaoTest {
             val actual = dao.getAllBooksAndAuthorsByReadDate(isAsc = false).first()
 
             // THEN
-            val expected = mapOf(
-                book2 to testAuthor,
-                book3 to testAuthor,
-                book1 to testAuthor
+            val expected = listOf(
+                BookAndAuthorEntity(book = book2, author = testAuthor, status = status),
+                BookAndAuthorEntity(book = book3, author = testAuthor, status = status),
+                BookAndAuthorEntity(book = book1, author = testAuthor, status = status)
             )
             assertThat(actual)
-                .containsExactlyEntriesIn(expected)
+                .containsExactlyElementsIn(expected)
                 .inOrder()
         }
     }
@@ -171,13 +181,15 @@ private const val genre = "genre"
 private fun testBookEntity(
     id: Long,
     title: String = "test",
-    readDate: Instant = Instant.parse("2023-01-01T00:00:00.00Z")
+    readDate: Instant = Instant.parse("2023-01-01T00:00:00.00Z"),
+    statusId: Long = 1
 ): BookEntity =
     BookEntity(
-        _id = id,
+        id = id,
         title = title,
         authorId = authorId,
         genreId = genre,
+        statusId = statusId,
         readDate = readDate,
         thought = "thought",
         memo = "testMemo",

@@ -70,4 +70,8 @@ interface BookDao {
 
     @Query("SELECT COUNT(1) FROM books")
     fun countStream(): Flow<Int>
+
+    @Transaction
+    @Query("SELECT * FROM books WHERE books.id = :id")
+    fun getStream(id: Long): Flow<BookAndAuthorEntity?>
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,10 @@
  * limitations under the License.
  */
 
-plugins {
-    id("kanna.android.library")
-    kotlin("kapt")
-}
+package com.hisui.kanna.core.domain.error
 
-android {
-    namespace = "com.hisui.kanna.core.domain"
-}
+import com.hisui.kanna.core.KannaError
 
-dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:data"))
-    implementation(project(":core:model"))
-
-    implementation(libs.hilt.android)
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.timber)
-
-    testImplementation(project(":core:testing"))
-
-    kapt(libs.hilt.compiler)
+sealed interface BookError : KannaError {
+    object NotFound : BookError
 }

@@ -50,9 +50,8 @@ class OfflineBookRepository @Inject constructor(
 
     override fun countStream(): Flow<Int> = dao.countStream()
 
-    override fun getStream(id: Long): Flow<Book?> {
-        TODO("Not yet implemented")
-    }
+    override fun getStream(id: Long): Flow<Book?> =
+        dao.getStream(id = id).map { it?.asExternalModel() }
 
     override fun getListStreamByQuery(q: String): Flow<List<Book>> =
         dao.getBooksAndAuthorsByQuery(q = q)

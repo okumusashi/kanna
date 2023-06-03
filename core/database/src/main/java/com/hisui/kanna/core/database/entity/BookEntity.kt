@@ -56,8 +56,7 @@ import kotlinx.datetime.Instant
 )
 data class BookEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private val _id: Long = 0,
+    val id: Long = 0,
     val title: String,
     @ColumnInfo(name = "author_id")
     val authorId: String?,
@@ -70,6 +69,4 @@ data class BookEntity(
     val thought: String,
     val memo: String?,
     val rating: Int
-) {
-    val id: Long get() = _id
-}
+)

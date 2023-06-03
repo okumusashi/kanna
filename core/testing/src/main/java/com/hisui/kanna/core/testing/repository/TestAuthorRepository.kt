@@ -18,7 +18,7 @@ package com.hisui.kanna.core.testing.repository
 
 import com.hisui.kanna.core.data.repository.AuthorRepository
 import com.hisui.kanna.core.model.Author
-import com.hisui.kanna.core.model.AuthorInput
+import com.hisui.kanna.core.model.NewAuthor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,7 +29,7 @@ class TestAuthorRepository : AuthorRepository {
 
     override fun getAllStream(): Flow<List<Author>> = authors
 
-    override suspend fun save(author: AuthorInput): Result<Author> {
+    override suspend fun save(author: NewAuthor): Result<Author> {
         val newAuthor = Author(
             id = author.name + author.memo,
             name = author.name,

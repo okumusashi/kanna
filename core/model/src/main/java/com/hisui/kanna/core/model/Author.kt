@@ -22,3 +22,5 @@ data class Author(
     val memo: String?,
     val isFavourite: Boolean
 )
+
+data class NewAuthor(val name: String, val memo: String?)

@@ -20,7 +20,7 @@ import com.google.common.truth.Truth.assertThat
 import com.hisui.kanna.core.data.mapper.asEntity
 import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.data.repository.OfflineAuthorRepository
-import com.hisui.kanna.core.model.AuthorInput
+import com.hisui.kanna.core.model.NewAuthor
 import com.hisui.kanna.data.testdoubles.FakeAuthorDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -57,7 +57,7 @@ class OfflineAuthorRepositoryTest {
         @DisplayName("GIVEN - arbitrary authorInput")
         inner class Given1 {
 
-            private val author = AuthorInput(name = "name", memo = "memo")
+            private val author = NewAuthor(name = "name", memo = "memo")
 
             @Test
             fun `WHEN - no exception is thrown, THEN - it should save entity and return as external model`() {

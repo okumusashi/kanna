@@ -22,7 +22,7 @@ import com.hisui.kanna.core.data.mapper.asEntity
 import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.database.dao.AuthorDao
 import com.hisui.kanna.core.model.Author
-import com.hisui.kanna.core.model.AuthorInput
+import com.hisui.kanna.core.model.NewAuthor
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -35,7 +35,7 @@ class OfflineAuthorRepository @Inject constructor(
 ) : AuthorRepository {
     override fun getAllStream(): Flow<List<Author>> = dao.getAllStream().map(::asExternalModel)
 
-    override suspend fun save(author: AuthorInput): Result<Author> =
+    override suspend fun save(author: NewAuthor): Result<Author> =
         withContext(ioDispatcher) {
             author.asEntity()
                 .also { dao.insert(it) }

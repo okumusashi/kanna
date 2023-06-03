@@ -35,8 +35,6 @@ interface BookDao {
     @Query(
         """
             SELECT * FROM books
-            INNER JOIN authors ON books.author_id = authors.id
-            INNER JOIN book_read_statuses ON books.status_id = book_read_statuses.id
             ORDER BY
                 CASE WHEN :isAsc = 1 THEN books.title END ASC,
                 CASE WHEN :isAsc = 0 THEN books.title END DESC;
@@ -48,11 +46,9 @@ interface BookDao {
     @Query(
         """
             SELECT * FROM books
-            INNER JOIN authors ON books.author_id = authors.id
-            INNER JOIN book_read_statuses ON books.status_id = book_read_statuses.id
             ORDER BY
-                CASE WHEN :isAsc = 1 THEN books.read_date END ASC,
-                CASE WHEN :isAsc = 0 THEN books.read_date END DESC;
+                CASE WHEN :isAsc = 1 THEN books.title END ASC,
+                CASE WHEN :isAsc = 0 THEN books.title END DESC;
         """
     )
     fun getAllBooksAndAuthorsByReadDate(isAsc: Boolean): Flow<List<BookAndAuthorEntity>>

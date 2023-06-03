@@ -2,14 +2,14 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "248c065e777aab61c30264cef780e23e",
+    "identityHash": "97ff88099ea445d2d853461e84cb35c9",
     "entities": [
       {
         "tableName": "books",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `author_id` TEXT, `genre_id` TEXT, `status_id` INTEGER, `read_date` INTEGER NOT NULL, `thought` TEXT NOT NULL, `memo` TEXT, `rating` INTEGER NOT NULL, FOREIGN KEY(`author_id`) REFERENCES `authors`(`id`) ON UPDATE CASCADE ON DELETE SET NULL , FOREIGN KEY(`genre_id`) REFERENCES `genres`(`name`) ON UPDATE CASCADE ON DELETE SET NULL , FOREIGN KEY(`status_id`) REFERENCES `book_read_statuses`(`id`) ON UPDATE CASCADE ON DELETE SET NULL )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `author_id` TEXT, `genre_id` TEXT, `status_id` INTEGER, `read_date` INTEGER NOT NULL, `thought` TEXT NOT NULL, `memo` TEXT, `rating` INTEGER NOT NULL, FOREIGN KEY(`author_id`) REFERENCES `authors`(`id`) ON UPDATE CASCADE ON DELETE SET NULL , FOREIGN KEY(`genre_id`) REFERENCES `genres`(`genre`) ON UPDATE CASCADE ON DELETE SET NULL , FOREIGN KEY(`status_id`) REFERENCES `book_read_statuses`(`id`) ON UPDATE CASCADE ON DELETE SET NULL )",
         "fields": [
           {
-            "fieldPath": "_id",
+            "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
@@ -118,7 +118,7 @@
               "genre_id"
             ],
             "referencedColumns": [
-              "name"
+              "genre"
             ]
           },
           {
@@ -136,7 +136,7 @@
       },
       {
         "tableName": "book_read_statuses",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `status` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -145,8 +145,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "status",
+            "columnName": "status",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -200,11 +200,11 @@
       },
       {
         "tableName": "genres",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `is_favourite` INTEGER NOT NULL, PRIMARY KEY(`name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`genre` TEXT NOT NULL, `is_favourite` INTEGER NOT NULL, PRIMARY KEY(`genre`))",
         "fields": [
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "genre",
+            "columnName": "genre",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -218,14 +218,14 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "name"
+            "genre"
           ]
         },
         "indices": [],
         "foreignKeys": []
       },
       {
-        "tableName": "favourite_quotes",
+        "tableName": "quotes",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `book_id` INTEGER NOT NULL, `page` INTEGER NOT NULL, `quote` TEXT NOT NULL, `thought` TEXT NOT NULL, `created_at` INTEGER NOT NULL, FOREIGN KEY(`book_id`) REFERENCES `books`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
@@ -273,13 +273,13 @@
         },
         "indices": [
           {
-            "name": "index_favourite_quotes_book_id",
+            "name": "index_quotes_book_id",
             "unique": false,
             "columnNames": [
               "book_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_favourite_quotes_book_id` ON `${TABLE_NAME}` (`book_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_quotes_book_id` ON `${TABLE_NAME}` (`book_id`)"
           }
         ],
         "foreignKeys": [
@@ -300,7 +300,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '248c065e777aab61c30264cef780e23e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '97ff88099ea445d2d853461e84cb35c9')"
     ]
   }
 }

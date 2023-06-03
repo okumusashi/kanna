@@ -28,8 +28,14 @@ fun NavController.navigateToHome(options: NavOptions?) {
     navigate(homeNavigationRoute, options)
 }
 
-fun NavGraphBuilder.homeScreen(onNewBookFabClick: () -> Unit) {
+fun NavGraphBuilder.homeScreen(
+    onNewBookFabClick: () -> Unit,
+    onOpenBook: (id: Long) -> Unit
+) {
     composable(route = homeNavigationRoute) {
-        HomeRoute(onNewBookFabClick = onNewBookFabClick)
+        HomeRoute(
+            onNewBookFabClick = onNewBookFabClick,
+            onOpenBook = onOpenBook
+        )
     }
 }

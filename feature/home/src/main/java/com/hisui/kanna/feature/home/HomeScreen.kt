@@ -30,8 +30,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -51,20 +51,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
-import com.hisui.kanna.core.ui.util.dateTimeFormatter
+import com.hisui.kanna.core.ui.util.format
 import kotlinx.datetime.Instant
-import kotlinx.datetime.toJavaInstant
 
 @Composable
 internal fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel(),
-    onNewBookFabClick: () -> Unit
+    onNewBookFabClick: () -> Unit,
+    onOpenBook: (id: Long) -> Unit
 ) {
     val homeUiState by viewModel.uiState.collectAsState()
 
     HomeScreen(
         homeUiState = homeUiState,
-        onNewBookFabClick = onNewBookFabClick
+        onNewBookFabClick = onNewBookFabClick,
+        onOpenBook = onOpenBook
     )
 }
 
@@ -72,7 +73,8 @@ internal fun HomeRoute(
 @Composable
 internal fun HomeScreen(
     homeUiState: HomeUiState,
-    onNewBookFabClick: () -> Unit
+    onNewBookFabClick: () -> Unit,
+    onOpenBook: (id: Long) -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         val lazyGridState = rememberLazyGridState()
@@ -113,7 +115,10 @@ internal fun HomeScreen(
                         // TODO: Add explanation and button (if not using fab) to add a new book
                     }
                     is HomeUiState.RecentBooks -> {
-                        bookList(books = homeUiState.books)
+                        bookList(
+                            books = homeUiState.books,
+                            onClick = onOpenBook
+                        )
                     }
                 }
             }
@@ -186,7 +191,11 @@ private fun HomeScreenPreview() {
                 )
             )
         )
-        HomeScreen(homeUiState = state, onNewBookFabClick = {})
+        HomeScreen(
+            homeUiState = state,
+            onNewBookFabClick = {},
+            onOpenBook = {}
+        )
     }
 }
 
@@ -201,9 +210,13 @@ private fun HomeScreenPreviewMedium() { HomeScreenPreview() }
 @Composable
 private fun HomeScreenPreviewLarge() { HomeScreenPreview() }
 
-private fun LazyGridScope.bookList(books: List<Book>) {
+@OptIn(ExperimentalMaterial3Api::class)
+private fun LazyGridScope.bookList(
+    books: List<Book>,
+    onClick: (id: Long) -> Unit
+) {
     items(books) { book ->
-        Card {
+        ElevatedCard(onClick = { onClick(book.id) }) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -219,7 +232,7 @@ private fun LazyGridScope.bookList(books: List<Book>) {
                     style = MaterialTheme.typography.labelMedium
                 )
                 Text(
-                    text = dateTimeFormatter().format(book.readDate.toJavaInstant()),
+                    text = book.readDate.format(),
                     style = MaterialTheme.typography.labelSmall
                 )
             }

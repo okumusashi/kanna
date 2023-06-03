@@ -29,4 +29,5 @@
     <string name="add_author">Add author</string>
     <string name="memo_optional">Memo (optional)</string>
     <string name="for_your_memo">For your memo.</string>
+    <string name="no_thought">No thought on this book.</string>
 </resources>

@@ -20,6 +20,8 @@ import android.text.format.DateFormat
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.os.ConfigurationCompat
+import kotlinx.datetime.Instant
+import kotlinx.datetime.toJavaInstant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -33,3 +35,7 @@ fun dateTimeFormatter(): DateTimeFormatter {
     val pattern = DateFormat.getBestDateTimePattern(locale, "MMMM d, YYYY")
     return DateTimeFormatter.ofPattern(pattern, locale).withZone(ZoneId.systemDefault())
 }
+
+@Composable
+fun Instant.format(): String =
+    dateTimeFormatter().format(this.toJavaInstant())

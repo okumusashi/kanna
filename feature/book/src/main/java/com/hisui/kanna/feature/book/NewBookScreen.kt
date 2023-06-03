@@ -62,6 +62,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -72,6 +73,7 @@ import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookReadStatus
 import com.hisui.kanna.core.model.NewBook
 import com.hisui.kanna.core.ui.component.CreateFormTopBar
+import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
 import com.hisui.kanna.core.ui.util.dateTimeFormatter
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -375,25 +377,41 @@ private fun BookRating(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         SectionHeader(title = stringResource(id = R.string.rating))
+        RatingStars(stars = value, onUpdate = onUpdate)
+    }
+}
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            repeat(5) { index ->
-                val coloured = value > index
-                val tint by animateColorAsState(
-                    targetValue = if (coloured) Color(0xFFFFDF00) else MaterialTheme.colorScheme.surfaceVariant
-                )
-                Icon(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable { onUpdate(index + 1) },
-                    imageVector = if (coloured) Icons.Filled.Grade else Icons.Filled.StarOutline,
-                    contentDescription = null,
-                    tint = tint
-                )
-            }
+@Preview @Composable
+private fun BookRatingPreview() {
+    PreviewColumnWrapper {
+        BookRating(value = 3, onUpdate = {})
+    }
+}
+
+@Composable
+internal fun RatingStars(
+    stars: Int,
+    onUpdate: (rating: Int) -> Unit,
+    spacedBy: Dp = 8.dp,
+    size: Dp = 48.dp
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(spacedBy)
+    ) {
+        repeat(5) { index ->
+            val coloured = stars > index
+            val tint by animateColorAsState(
+                targetValue = if (coloured) Color(0xFFFFDF00) else MaterialTheme.colorScheme.surfaceVariant
+            )
+            Icon(
+                modifier = Modifier
+                    .size(size)
+                    .clickable { onUpdate(index + 1) },
+                imageVector = if (coloured) Icons.Filled.Grade else Icons.Filled.StarOutline,
+                contentDescription = null,
+                tint = tint
+            )
         }
     }
 }

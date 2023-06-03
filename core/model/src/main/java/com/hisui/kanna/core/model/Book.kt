@@ -65,3 +65,30 @@ data class NewBook(
     val genreId: String,
     val statusId: Long
 )
+
+fun bookForPreview(
+    id: Long = 1,
+    title: String = "Nineteen Eighty-Four",
+    authorName: String = "George Orwell",
+    thought: String = "",
+    memo: String = "",
+    genre: String = "Novel",
+    rating: Int = 5,
+    status: Book.Status = Book.Status.HAVE_READ
+): Book =
+    Book(
+        id = id,
+        title = title,
+        author = Author(
+            id = "",
+            name = authorName,
+            memo = "",
+            isFavourite = false
+        ),
+        readDate = Instant.parse("2023-03-01T00:00:00Z"),
+        thought = thought,
+        memo = memo,
+        rating = rating,
+        genre = genre,
+        status = status
+    )

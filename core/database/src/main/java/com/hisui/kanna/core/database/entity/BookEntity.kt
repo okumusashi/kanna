@@ -35,7 +35,7 @@ import kotlinx.datetime.Instant
         ),
         ForeignKey(
             entity = GenreEntity::class,
-            parentColumns = ["name"],
+            parentColumns = ["genre"],
             childColumns = ["genre_id"],
             onDelete = ForeignKey.SET_NULL,
             onUpdate = ForeignKey.CASCADE

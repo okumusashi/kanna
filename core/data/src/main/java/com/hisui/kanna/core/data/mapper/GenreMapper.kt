@@ -21,7 +21,7 @@ import com.hisui.kanna.core.model.Genre
 
 internal fun Genre.asEntity(): GenreEntity =
     GenreEntity(
-        name = name,
+        genre = name,
         isFavourite = isFavourite
     )
 
@@ -30,6 +30,6 @@ internal fun asExternalModel(list: List<GenreEntity>): List<Genre> =
 
 internal fun GenreEntity.asExternalModel(): Genre =
     Genre(
-        name = name,
+        name = genre,
         isFavourite = isFavourite
     )

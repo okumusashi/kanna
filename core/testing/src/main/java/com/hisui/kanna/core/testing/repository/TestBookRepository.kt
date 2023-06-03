@@ -19,6 +19,7 @@ package com.hisui.kanna.core.testing.repository
 import com.hisui.kanna.core.data.repository.BookRepository
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookForQuote
 import com.hisui.kanna.core.model.BookSorter
 import com.hisui.kanna.core.model.NewBook
 import kotlinx.coroutines.flow.Flow
@@ -77,12 +78,15 @@ class TestBookRepository : BookRepository {
             books.getOrDefault(id, null)
         }
 
-    override fun getListStreamByQuery(q: String): Flow<List<Book>> =
+    override fun getListForQuoteStreamByQuery(q: String): Flow<List<BookForQuote>> =
         books.map { books ->
             books
                 .filterValues { it.title.contains(q) }
                 .values
                 .toList()
+                .map {
+                    BookForQuote(id = it.id, title = "${it.title} (${it.author.name})")
+                }
         }
 
     override suspend fun update(book: Book): Result<Unit> {

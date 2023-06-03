@@ -46,3 +46,12 @@ data class Book(
 enum class BookSorter {
     TITLE, READ_DATE
 }
+
+/**
+ * This is used for NewQuote to select the book.
+ *
+ * @param id is [Book.id]
+ * @param title is [Book.title] with [Author.name]
+ */
+data class BookForQuote(val id: Long, val title: String)
+

@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hisui.kanna.core.data.repository.QuoteRepository
 import com.hisui.kanna.core.domain.usecase.GetFilteredBooksStreamUseCase
-import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookForQuote
 import com.hisui.kanna.core.model.NewQuote
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -43,8 +43,8 @@ sealed interface NewQuoteUiState {
     data class AddQuote(
         val error: String?,
         val newQuote: NewQuote,
-        val selectedBook: Book?,
-        val bookCandidates: List<Book>
+        val selectedBook: BookForQuote?,
+        val bookCandidates: List<BookForQuote>
     ) : NewQuoteUiState
 }
 
@@ -57,10 +57,10 @@ private data class NewQuoteViewModelState(
         page = null,
         thought = ""
     ),
-    val selectedBook: Book? = null,
+    val selectedBook: BookForQuote? = null,
     // Note: Move below to another ViewModel if necessary
     val bookQuery: String = "",
-    val bookCandidates: List<Book> = emptyList()
+    val bookCandidates: List<BookForQuote> = emptyList()
 ) {
     fun toState(): NewQuoteUiState =
         when {
@@ -120,7 +120,7 @@ internal class NewQuoteViewModel @Inject constructor(
         viewModelState.update { it.copy(newQuote = quote) }
     }
 
-    fun selectBook(book: Book) {
+    fun selectBook(book: BookForQuote) {
         viewModelState.update { it.copy(selectedBook = book) }
     }
 

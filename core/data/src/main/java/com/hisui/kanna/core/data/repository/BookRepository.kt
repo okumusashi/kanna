@@ -17,6 +17,7 @@
 package com.hisui.kanna.core.data.repository
 
 import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookForQuote
 import com.hisui.kanna.core.model.BookSorter
 import com.hisui.kanna.core.model.NewBook
 import kotlinx.coroutines.flow.Flow
@@ -30,7 +31,7 @@ interface BookRepository {
 
     fun getStream(id: Long): Flow<Book?>
 
-    fun getListStreamByQuery(q: String): Flow<List<Book>>
+    fun getListForQuoteStreamByQuery(q: String): Flow<List<BookForQuote>>
 
     suspend fun update(book: Book): Result<Unit>
 }

@@ -22,6 +22,7 @@ import com.hisui.kanna.core.data.mapper.asEntity
 import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.database.dao.BookDao
 import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookForQuote
 import com.hisui.kanna.core.model.BookSorter
 import com.hisui.kanna.core.model.NewBook
 import kotlinx.coroutines.CoroutineDispatcher
@@ -46,16 +47,17 @@ class OfflineBookRepository @Inject constructor(
                 dao.getAllBooksAndAuthorsByTitle(isAsc = isAsc)
             BookSorter.READ_DATE ->
                 dao.getAllBooksAndAuthorsByReadDate(isAsc = isAsc)
-        }.map(::asExternalModel)
+        }.map { it.asExternalModel() }
 
     override fun countStream(): Flow<Int> = dao.countStream()
 
     override fun getStream(id: Long): Flow<Book?> =
         dao.getStream(id = id).map { it?.asExternalModel() }
 
-    override fun getListStreamByQuery(q: String): Flow<List<Book>> =
-        dao.getBooksAndAuthorsByQuery(q = q)
-            .map(::asExternalModel)
+    override fun getListForQuoteStreamByQuery(q: String): Flow<List<BookForQuote>> =
+        dao.getBookForQuoteStreamByQuery(q = q).map { list ->
+            list.map(::asExternalModel)
+        }
 
     override suspend fun update(book: Book): Result<Unit> {
         TODO("Not yet implemented")

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.domain.usecase
+package com.hisui.kanna.core.database.entity
 
-import com.hisui.kanna.core.data.repository.BookRepository
-import com.hisui.kanna.core.model.BookForQuote
-import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
-
-class GetFilteredBooksStreamUseCase @Inject constructor(
-    private val repository: BookRepository
-) {
-    operator fun invoke(q: String): Flow<List<BookForQuote>> =
-        repository.getListForQuoteStreamByQuery(q = q)
-}
+/**
+ * This entity is for the result of the query to get the book list for new quote.
+ *
+ * @param id is [BookEntity.id]
+ * @param title is [BookEntity.title] and [AuthorEntity.name]
+ */
+data class BookForQuoteEntity(
+    val id: Long,
+    val title: String
+)

@@ -22,6 +22,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
+import com.hisui.kanna.core.database.entity.BookForQuoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -59,14 +60,16 @@ interface BookDao {
     @Transaction
     @Query(
         """
-            SELECT * FROM books
+            SELECT
+                books.id,
+                books.title || ' (' || authors.id || ')' as title
+            FROM books
             INNER JOIN authors ON books.author_id = authors.id
-            INNER JOIN book_read_statuses ON books.status_id = book_read_statuses.id
             WHERE books.title LIKE '%' || :q || '%'
             OR authors.name LIKE '%' || :q || '%'
         """
     )
-    fun getBooksAndAuthorsByQuery(q: String): Flow<List<BookAndAuthorEntity>>
+    fun getBookForQuoteStreamByQuery(q: String): Flow<List<BookForQuoteEntity>>
 
     @Query("SELECT COUNT(1) FROM books")
     fun countStream(): Flow<Int>

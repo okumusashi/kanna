@@ -20,8 +20,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
@@ -83,7 +85,7 @@ internal fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(16.dp)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
         ) {
             Text(
                 modifier = Modifier
@@ -238,4 +240,5 @@ private fun LazyGridScope.bookList(
             }
         }
     }
+    item { Spacer(modifier = Modifier.height(96.dp)) }
 }

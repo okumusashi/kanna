@@ -27,7 +27,8 @@ data class Book(
     val rating: Int,
     val author: Author,
     val genre: String,
-    val status: Status
+    val status: Status,
+    val quotes: List<Quote>
 ) {
     enum class Status {
         HAVE_READ,
@@ -74,7 +75,8 @@ fun bookForPreview(
     memo: String = "",
     genre: String = "Novel",
     rating: Int = 5,
-    status: Book.Status = Book.Status.HAVE_READ
+    status: Book.Status = Book.Status.HAVE_READ,
+    quotes: List<Quote> = emptyList()
 ): Book =
     Book(
         id = id,
@@ -90,5 +92,6 @@ fun bookForPreview(
         memo = memo,
         rating = rating,
         genre = genre,
-        status = status
+        status = status,
+        quotes = quotes
     )

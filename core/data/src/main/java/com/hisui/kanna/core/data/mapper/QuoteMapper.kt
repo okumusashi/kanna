@@ -30,16 +30,19 @@ internal fun NewQuote.toEntity(): QuoteEntity =
     )
 
 internal fun Map<QuoteEntity, BookAndAuthorEntity>.asExternalModel(): List<Quote> =
-    map { (favouriteQuote, bookAndAuthor) ->
-        Quote(
-            id = favouriteQuote.id,
-            page = favouriteQuote.page,
-            quote = favouriteQuote.quote,
-            thought = favouriteQuote.thought,
-            createdAt = favouriteQuote.createdAt,
-            bookId = bookAndAuthor.book.id,
-            bookTitle = bookAndAuthor.book.title,
-            authorId = bookAndAuthor.author.id,
-            author = bookAndAuthor.author.name
-        )
+    map { (quote, bookAndAuthor) ->
+        quote.asExternalModel(bookAndAuthor = bookAndAuthor)
     }
+
+internal fun QuoteEntity.asExternalModel(bookAndAuthor: BookAndAuthorEntity): Quote =
+    Quote(
+        id = id,
+        page = page,
+        quote = quote,
+        thought = thought,
+        createdAt = createdAt,
+        bookId = bookAndAuthor.book.id,
+        bookTitle = bookAndAuthor.book.title,
+        authorId = bookAndAuthor.author.id,
+        author = bookAndAuthor.author.name
+    )

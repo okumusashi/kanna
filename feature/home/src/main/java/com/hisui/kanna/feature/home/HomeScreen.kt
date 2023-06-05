@@ -157,7 +157,8 @@ private fun HomeScreenPreview() {
                     memo = "",
                     rating = 5,
                     genre = "",
-                    status = Book.Status.HAVE_READ
+                    status = Book.Status.HAVE_READ,
+                    quotes = emptyList()
                 ),
                 Book(
                     id = 2,
@@ -173,7 +174,8 @@ private fun HomeScreenPreview() {
                     memo = "",
                     rating = 5,
                     genre = "",
-                    status = Book.Status.HAVE_READ
+                    status = Book.Status.HAVE_READ,
+                    quotes = emptyList()
                 ),
                 Book(
                     id = 3,
@@ -189,7 +191,8 @@ private fun HomeScreenPreview() {
                     memo = "",
                     rating = 5,
                     genre = "",
-                    status = Book.Status.HAVE_READ
+                    status = Book.Status.HAVE_READ,
+                    quotes = emptyList()
                 )
             )
         )

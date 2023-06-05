@@ -17,11 +17,13 @@
 package com.hisui.kanna.core.data.mapper
 
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
+import com.hisui.kanna.core.database.entity.BookAndAuthorEntityWithQuotes
 import com.hisui.kanna.core.database.entity.BookEntity
 import com.hisui.kanna.core.database.entity.BookForQuoteEntity
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookForQuote
 import com.hisui.kanna.core.model.NewBook
+import com.hisui.kanna.core.model.Quote
 
 internal fun NewBook.asEntity(): BookEntity =
     BookEntity(
@@ -36,9 +38,14 @@ internal fun NewBook.asEntity(): BookEntity =
     )
 
 internal fun List<BookAndAuthorEntity>.asExternalModel(): List<Book> =
-    this.map { it.asExternalModel() }
+    this.map { it.asExternalModel(quotes = emptyList()) }
 
-internal fun BookAndAuthorEntity.asExternalModel(): Book =
+internal fun BookAndAuthorEntityWithQuotes.asExternalModel(): Book =
+    bookAndAuthor.asExternalModel(
+        quotes = quotes.map { it.asExternalModel(bookAndAuthor = bookAndAuthor) }
+    )
+
+internal fun BookAndAuthorEntity.asExternalModel(quotes: List<Quote>): Book =
     Book(
         id = book.id,
         title = book.title,
@@ -48,7 +55,8 @@ internal fun BookAndAuthorEntity.asExternalModel(): Book =
         memo = book.memo ?: "",
         thought = book.thought,
         rating = book.rating,
-        status = Book.Status.from(status.status)
+        status = Book.Status.from(status.status),
+        quotes = quotes
     )
 
 internal fun asExternalModel(entity: BookForQuoteEntity): BookForQuote =

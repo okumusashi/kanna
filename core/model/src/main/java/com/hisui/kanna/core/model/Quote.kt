@@ -36,3 +36,19 @@ data class NewQuote(
     val page: Int?,
     val thought: String
 )
+
+fun quoteForPreview(
+    page: Int = 123,
+    quote: String = "The world is a book, and those who do not travel read only a page."
+): Quote =
+    Quote(
+        id = 1L,
+        page = page,
+        quote = quote,
+        thought = "I love this quote!",
+        createdAt = Instant.parse("2022-01-01T00:00:00Z"),
+        bookId = 1L,
+        bookTitle = "The World",
+        authorId = "John Doe",
+        author = "John Doe"
+    )

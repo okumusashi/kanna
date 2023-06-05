@@ -22,9 +22,14 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Divider
@@ -48,7 +53,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.Quote
 import com.hisui.kanna.core.model.bookForPreview
+import com.hisui.kanna.core.model.quoteForPreview
 import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
 import com.hisui.kanna.core.ui.util.format
 import kotlinx.datetime.Instant
@@ -77,20 +84,22 @@ internal fun BookScreen(
 }
 
 @Composable
-private fun BookContent(
-    book: Book
-) {
+private fun BookContent(book: Book) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(32.dp)
+            .padding(horizontal = 32.dp)
     ) {
-        Column(verticalArrangement = spacedBy(8.dp)) {
-            Title(title = book.title)
-            PropertiesSection(authorName = book.author.name, genre = book.genre, readDate = book.readDate)
-            EvaluationSection(thought = book.thought, rating = book.rating)
-            MemoSection(memo = book.memo)
+        LazyColumn(verticalArrangement = spacedBy(8.dp)) {
+            item { Spacer(modifier = Modifier.height(32.dp)) }
+            item { Title(title = book.title) }
+            item { PropertiesSection(authorName = book.author.name, genre = book.genre, readDate = book.readDate) }
+            item { EvaluationSection(thought = book.thought, rating = book.rating) }
+            item { MemoSection(memo = book.memo) }
+            quotesSection(quotes = book.quotes)
         }
+
+        Spacer(modifier = Modifier.height(96.dp))
 
         FloatingActionButton(
             modifier = Modifier.align(Alignment.BottomEnd),
@@ -111,7 +120,12 @@ private fun BookContentPreviewBase(noThought: Boolean = false) {
             BookContent(
                 book = bookForPreview(
                     thought = if (noThought) "" else "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                    memo = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam."
+                    memo = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.",
+                    quotes = listOf(
+                        quoteForPreview(page = 10),
+                        quoteForPreview(page = 20),
+                        quoteForPreview(page = 30)
+                    )
                 )
             )
         }
@@ -157,6 +171,7 @@ private fun PropertiesSection(
     Text(text = authorName, style = MaterialTheme.typography.titleMedium)
 
     Row(
+        modifier = Modifier.padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(8.dp)
     ) {
@@ -213,5 +228,36 @@ private fun MemoSection(memo: String) {
         BookContentDivider()
         Text(text = stringResource(id = R.string.memo), fontWeight = FontWeight.SemiBold)
         Text(text = memo)
+    }
+}
+
+private fun LazyListScope.quotesSection(quotes: List<Quote>) {
+    if (quotes.isEmpty()) {
+        return
+    }
+
+    item { BookContentDivider() }
+    item {
+        Text(
+            text = stringResource(id = R.string.quotes_from_this_book),
+            style = MaterialTheme.typography.titleMedium
+        )
+    }
+
+    items(quotes) { quote ->
+        Column(
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = quote.quote,
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = stringResource(id = R.string.page_of, quote.page),
+                style = MaterialTheme.typography.labelMedium
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }

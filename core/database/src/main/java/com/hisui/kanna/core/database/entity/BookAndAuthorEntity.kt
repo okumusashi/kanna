@@ -35,3 +35,14 @@ data class BookAndAuthorEntity(
     )
     val status: BookReadStatusEntity
 )
+
+data class BookAndAuthorEntityWithQuotes(
+    @Embedded
+    val bookAndAuthor: BookAndAuthorEntity,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "book_id"
+    )
+    val quotes: List<QuoteEntity>
+)

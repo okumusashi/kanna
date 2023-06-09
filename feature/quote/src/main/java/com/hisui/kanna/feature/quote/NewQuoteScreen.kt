@@ -160,6 +160,15 @@ private fun AddQuoteScreen(
             label = { Text(text = stringResource(id = R.string.page)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            value = newQuote.thought,
+            onValueChange = { onUpdateQuote(newQuote.copy(thought = it)) },
+            label = { Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.thought)) },
+            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
+        )
     }
 }
 

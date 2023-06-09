@@ -85,7 +85,7 @@ private fun QuoteScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp)
     ) {
         Text(
             modifier = Modifier
@@ -266,10 +266,14 @@ private fun ShowQuotesScreen(
             items(quotes) { quote ->
                 QuoteItem(quote = quote)
             }
+
+            item { Spacer(modifier = Modifier.height(96.dp)) }
         }
 
         AddQuoteFab(
-            modifier = Modifier.align(Alignment.BottomEnd),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 16.dp),
             onClick = onOpenNewQuoteScreen,
             expanded = !lazyListState.canScrollBackward || !lazyListState.canScrollForward
         )

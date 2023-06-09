@@ -284,7 +284,7 @@ internal fun NewBookScreen(
                     .height(200.dp),
                 value = newBook.thought,
                 onValueChange = { onUpdateBook(newBook.copy(thought = it)) },
-                label = { Text(text = stringResource(id = R.string.thought)) },
+                label = { Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.thought)) },
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
             )
 

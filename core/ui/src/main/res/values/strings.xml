@@ -24,11 +24,13 @@
     <!-- endregion -->
 
     <!-- region Book -->
-    <string name="book_title">book title</string>
-    <string name="author">author</string>
-    <string name="genre">genre</string>
-    <string name="add_books">add books</string>
+    <string name="book_title">Book title</string>
+    <string name="author">Author</string>
+    <string name="genre">Genre</string>
+    <string name="add_books">Add books</string>
     <!-- endregion -->
+
+    <string name="thought">Thought</string>
 
     <!-- region Form -->
     <string name="add_new">Add New</string>

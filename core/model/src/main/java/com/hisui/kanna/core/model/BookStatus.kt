@@ -18,5 +18,18 @@ package com.hisui.kanna.core.model
 
 data class BookReadStatus(
     val id: Long,
-    val status: Book.Status
+    val status: BookStatus
 )
+
+enum class BookStatus {
+    HAVE_READ,
+    READING_NOW,
+    READ_NEXT,
+    WANT_TO_READ
+    ;
+
+    companion object {
+        fun from(value: String): BookStatus =
+            values().find { it.name == value } ?: HAVE_READ
+    }
+}

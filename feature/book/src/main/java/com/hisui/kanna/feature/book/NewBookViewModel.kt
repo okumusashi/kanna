@@ -24,6 +24,7 @@ import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookReadStatus
 import com.hisui.kanna.core.model.NewBook
+import com.hisui.kanna.core.model.BookStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
@@ -44,7 +45,7 @@ internal data class NewBookUiState(
     val error: String?,
     val newBook: NewBook,
     val statuses: List<BookReadStatus>,
-    val selectedStatus: Book.Status,
+    val selectedStatus: BookStatus,
     val selectedAuthor: Author?,
     val selectedGenre: String?,
     val showDatePicker: Boolean
@@ -64,9 +65,9 @@ private data class NewBookViewModelState(
         statusId = 1
     ),
     val statuses: List<BookReadStatus> = emptyList(),
-    val selectedStatus: Book.Status = Book.Status.HAVE_READ,
     val selectedAuthor: Author? = null,
     val showDatePicker: Boolean = false
+    val selectedStatus: BookStatus = BookStatus.HAVE_READ,
 ) {
     fun toState(): NewBookUiState =
         NewBookUiState(

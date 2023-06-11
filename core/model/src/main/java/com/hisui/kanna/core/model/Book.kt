@@ -27,22 +27,9 @@ data class Book(
     val rating: Int,
     val author: Author,
     val genre: String,
-    val status: Status,
+    val status: BookReadStatus,
     val quotes: List<Quote>
-) {
-    enum class Status {
-        HAVE_READ,
-        READING_NOW,
-        READ_NEXT,
-        WANT_TO_READ
-        ;
-
-        companion object {
-            fun from(value: String): Status =
-                values().find { it.name == value } ?: HAVE_READ
-        }
-    }
-}
+)
 
 enum class BookSorter {
     TITLE, READ_DATE
@@ -75,7 +62,7 @@ fun bookForPreview(
     memo: String = "",
     genre: String = "Novel",
     rating: Int = 5,
-    status: Book.Status = Book.Status.HAVE_READ,
+    status: BookStatus = BookStatus.HAVE_READ,
     quotes: List<Quote> = emptyList()
 ): Book =
     Book(
@@ -92,6 +79,6 @@ fun bookForPreview(
         memo = memo,
         rating = rating,
         genre = genre,
-        status = status,
+        status = BookReadStatus(id = BookStatus.values().indexOf(status).toLong() + 1, status = status),
         quotes = quotes
     )

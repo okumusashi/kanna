@@ -20,9 +20,12 @@ import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntityWithQuotes
 import com.hisui.kanna.core.database.entity.BookEntity
 import com.hisui.kanna.core.database.entity.BookForQuoteEntity
+import com.hisui.kanna.core.database.entity.BookReadStatusEntity
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookForQuote
 import com.hisui.kanna.core.model.NewBook
+import com.hisui.kanna.core.model.BookReadStatus
+import com.hisui.kanna.core.model.BookStatus
 import com.hisui.kanna.core.model.Quote
 
 internal fun NewBook.asEntity(): BookEntity =
@@ -55,9 +58,12 @@ internal fun BookAndAuthorEntity.asExternalModel(quotes: List<Quote>): Book =
         memo = book.memo ?: "",
         thought = book.thought,
         rating = book.rating,
-        status = Book.Status.from(status.status),
+        status = status.asExternalModel(),
         quotes = quotes
     )
+
+private fun BookReadStatusEntity.asExternalModel(): BookReadStatus =
+    BookReadStatus(id = id, status = BookStatus.from(status))
 
 internal fun asExternalModel(entity: BookForQuoteEntity): BookForQuote =
     BookForQuote(id = entity.id, title = entity.title)

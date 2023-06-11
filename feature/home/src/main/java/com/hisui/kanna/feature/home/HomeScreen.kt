@@ -53,6 +53,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookReadStatus
+import com.hisui.kanna.core.model.BookStatus
 import com.hisui.kanna.core.ui.util.format
 import kotlinx.datetime.Instant
 
@@ -157,7 +159,7 @@ private fun HomeScreenPreview() {
                     memo = "",
                     rating = 5,
                     genre = "",
-                    status = Book.Status.HAVE_READ,
+                    status = BookReadStatus(id = 1, BookStatus.HAVE_READ),
                     quotes = emptyList()
                 ),
                 Book(
@@ -174,7 +176,7 @@ private fun HomeScreenPreview() {
                     memo = "",
                     rating = 5,
                     genre = "",
-                    status = Book.Status.HAVE_READ,
+                    status = BookReadStatus(id = 1, BookStatus.HAVE_READ),
                     quotes = emptyList()
                 ),
                 Book(
@@ -191,7 +193,7 @@ private fun HomeScreenPreview() {
                     memo = "",
                     rating = 5,
                     genre = "",
-                    status = Book.Status.HAVE_READ,
+                    status = BookReadStatus(id = 1, BookStatus.HAVE_READ),
                     quotes = emptyList()
                 )
             )

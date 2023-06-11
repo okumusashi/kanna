@@ -17,11 +17,11 @@
 package com.hisui.kanna.core.data.mapper
 
 import com.hisui.kanna.core.database.entity.BookReadStatusEntity
-import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookReadStatus
+import com.hisui.kanna.core.model.BookStatus
 
 internal fun asExternalModel(entity: BookReadStatusEntity): BookReadStatus =
     BookReadStatus(
         id = entity.id,
-        status = Book.Status.from(entity.status)
+        status = BookStatus.from(entity.status)
     )

@@ -17,13 +17,13 @@
 package com.hisui.kanna.core.testing.repository
 
 import com.hisui.kanna.core.data.repository.BookReadStatusRepository
-import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookReadStatus
+import com.hisui.kanna.core.model.BookStatus
 
 class TestBookReadStatusRepository : BookReadStatusRepository {
 
     private val _list: MutableList<BookReadStatus> =
-        Book.Status.values().mapIndexed { i, status ->
+        BookStatus.values().mapIndexed { i, status ->
             BookReadStatus(
                 id = i.toLong() + 1,
                 status = status

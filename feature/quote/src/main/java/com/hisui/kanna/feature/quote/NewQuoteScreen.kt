@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.model.BookForQuote
 import com.hisui.kanna.core.model.NewQuote
-import com.hisui.kanna.core.ui.component.CreateFormTopBar
+import com.hisui.kanna.core.ui.component.KannaTopBar
 
 @Composable
 internal fun NewQuoteRoute(
@@ -90,10 +90,11 @@ internal fun NewQuoteScreen(
             .fillMaxWidth()
             .fillMaxHeight(if (isCompact) 1f else 0.65f),
         topBar = {
-            CreateFormTopBar(
+            KannaTopBar(
                 title = stringResource(id = R.string.add_quote),
+                submitButtonTitle = stringResource(id = com.hisui.kanna.core.ui.R.string.create),
                 onClickNavigationIcon = onExit,
-                onCreate = {
+                onSubmit = {
                     if (uiState is NewQuoteUiState.AddQuote) {
                         onCreate(uiState.newQuote)
                     }

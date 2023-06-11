@@ -23,13 +23,26 @@ import com.hisui.kanna.core.database.entity.BookForQuoteEntity
 import com.hisui.kanna.core.database.entity.BookReadStatusEntity
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookForQuote
-import com.hisui.kanna.core.model.NewBook
+import com.hisui.kanna.core.model.BookForm
 import com.hisui.kanna.core.model.BookReadStatus
 import com.hisui.kanna.core.model.BookStatus
 import com.hisui.kanna.core.model.Quote
 
-internal fun NewBook.asEntity(): BookEntity =
+internal fun BookForm.asEntity(): BookEntity =
     BookEntity(
+        title = title,
+        readDate = readDate,
+        memo = memo,
+        thought = thought,
+        rating = rating,
+        authorId = authorId,
+        genreId = genreId,
+        statusId = statusId
+    )
+
+internal fun BookForm.asEntity(id: Long): BookEntity =
+    BookEntity(
+        id = id,
         title = title,
         readDate = readDate,
         memo = memo,

@@ -18,7 +18,7 @@ package com.hisui.kanna.feature.book
 
 import com.google.common.truth.Truth.assertThat
 import com.hisui.kanna.core.domain.usecase.GetAllStatusUseCase
-import com.hisui.kanna.core.model.NewBook
+import com.hisui.kanna.core.model.BookForm
 import com.hisui.kanna.core.testing.MainDispatcherExtension
 import com.hisui.kanna.core.testing.repository.TestBookReadStatusRepository
 import com.hisui.kanna.core.testing.repository.TestBookRepository
@@ -75,7 +75,7 @@ class NewBookViewModelTest {
 
         @Test
         fun `WHEN - repository#save succeeds, THEN - it should send Created event`() {
-            val newBook = NewBook(
+            val newBook = BookForm(
                 title = "title",
                 readDate = Instant.parse("2022-01-01T00:00:00Z"),
                 authorId = "author",

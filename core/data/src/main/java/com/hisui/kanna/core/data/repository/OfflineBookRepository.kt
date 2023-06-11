@@ -23,8 +23,8 @@ import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.database.dao.BookDao
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.BookForQuote
+import com.hisui.kanna.core.model.BookForm
 import com.hisui.kanna.core.model.BookSorter
-import com.hisui.kanna.core.model.NewBook
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -35,7 +35,7 @@ class OfflineBookRepository @Inject constructor(
     private val dao: BookDao,
     @Dispatcher(KannaDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 ) : BookRepository {
-    override suspend fun save(book: NewBook): Result<Unit> =
+    override suspend fun save(book: BookForm): Result<Unit> =
         withContext(ioDispatcher) {
             dao.insert(book.asEntity())
             Result.success(Unit)

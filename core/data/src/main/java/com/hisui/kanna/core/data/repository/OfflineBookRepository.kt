@@ -59,7 +59,9 @@ class OfflineBookRepository @Inject constructor(
             list.map(::asExternalModel)
         }
 
-    override suspend fun update(book: Book): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun update(id: Long, book: BookForm): Result<Unit> =
+        withContext(ioDispatcher) {
+            dao.update(book.asEntity(id = id))
+            Result.success(Unit)
+        }
 }

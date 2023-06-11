@@ -20,6 +20,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntityWithQuotes
 import com.hisui.kanna.core.database.entity.BookEntity
@@ -74,4 +75,7 @@ interface BookDao {
     @Transaction
     @Query("SELECT * FROM books WHERE books.id = :id")
     fun getStreamWithQuotes(id: Long): Flow<BookAndAuthorEntityWithQuotes?>
+
+    @Update
+    fun update(book: BookEntity)
 }

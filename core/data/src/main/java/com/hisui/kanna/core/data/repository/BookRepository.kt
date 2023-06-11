@@ -33,5 +33,5 @@ interface BookRepository {
 
     fun getListForQuoteStreamByQuery(q: String): Flow<List<BookForQuote>>
 
-    suspend fun update(book: Book): Result<Unit>
+    suspend fun update(id: Long, book: BookForm): Result<Unit>
 }

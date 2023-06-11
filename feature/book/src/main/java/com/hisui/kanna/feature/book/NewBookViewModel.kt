@@ -21,9 +21,8 @@ import androidx.lifecycle.viewModelScope
 import com.hisui.kanna.core.data.repository.BookRepository
 import com.hisui.kanna.core.domain.usecase.GetAllStatusUseCase
 import com.hisui.kanna.core.model.Author
-import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookForm
 import com.hisui.kanna.core.model.BookReadStatus
-import com.hisui.kanna.core.model.NewBook
 import com.hisui.kanna.core.model.BookStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -43,18 +42,17 @@ import javax.inject.Inject
 internal data class NewBookUiState(
     val loading: Boolean,
     val error: String?,
-    val newBook: NewBook,
+    val newBook: BookForm,
     val statuses: List<BookReadStatus>,
     val selectedStatus: BookStatus,
     val selectedAuthor: Author?,
-    val selectedGenre: String?,
-    val showDatePicker: Boolean
+    val selectedGenre: String?
 )
 
 private data class NewBookViewModelState(
     val loading: Boolean = false,
     val error: String? = null,
-    val newBook: NewBook = NewBook(
+    val newBook: BookForm = BookForm(
         title = "",
         readDate = Clock.System.now(),
         memo = "",
@@ -65,9 +63,8 @@ private data class NewBookViewModelState(
         statusId = 1
     ),
     val statuses: List<BookReadStatus> = emptyList(),
-    val selectedAuthor: Author? = null,
-    val showDatePicker: Boolean = false
     val selectedStatus: BookStatus = BookStatus.HAVE_READ,
+    val selectedAuthor: Author? = null
 ) {
     fun toState(): NewBookUiState =
         NewBookUiState(
@@ -77,8 +74,7 @@ private data class NewBookViewModelState(
             statuses = statuses,
             selectedStatus = selectedStatus,
             selectedAuthor = selectedAuthor,
-            selectedGenre = newBook.genreId,
-            showDatePicker = showDatePicker
+            selectedGenre = newBook.genreId
         )
 }
 
@@ -111,16 +107,13 @@ internal class NewBookViewModel @Inject constructor(
         }
     }
 
-    fun updateBook(book: NewBook) {
+    fun updateBook(book: BookForm) {
         _state.update {
-            it.copy(
-                newBook = book,
-                showDatePicker = false
-            )
+            it.copy(newBook = book)
         }
     }
 
-    fun createBook(book: NewBook) {
+    fun createBook(book: BookForm) {
         viewModelScope.launch {
             val result = bookRepository.save(book = book)
             if (result.isSuccess) {
@@ -129,14 +122,6 @@ internal class NewBookViewModel @Inject constructor(
                 _state.update { it.copy(error = result.exceptionOrNull()?.message) }
             }
         }
-    }
-
-    fun showDatePicker() {
-        _state.update { it.copy(showDatePicker = true) }
-    }
-
-    fun dismissDatePicker() {
-        _state.update { it.copy(showDatePicker = false) }
     }
 
     fun selectStatus(readStatus: BookReadStatus) {

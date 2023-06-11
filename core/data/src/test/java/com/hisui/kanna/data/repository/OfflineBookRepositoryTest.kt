@@ -79,7 +79,7 @@ class OfflineBookRepositoryTest {
                             .first()
                     ).containsExactlyElementsIn(
                         dao.getAllBooksAndAuthorsByTitle(isAsc = isAsc)
-                            .map(::asExternalModel)
+                            .map { it.asExternalModel() }
                             .first()
                     ).inOrder()
                 }
@@ -111,7 +111,7 @@ class OfflineBookRepositoryTest {
                             .first()
                     ).containsExactlyElementsIn(
                         dao.getAllBooksAndAuthorsByTitle(isAsc = isAsc)
-                            .map(::asExternalModel)
+                            .map { it.asExternalModel() }
                             .first()
                     ).inOrder()
                 }

@@ -25,7 +25,7 @@ internal fun testBookEntity(
     readDate: Instant = Instant.parse("2022-01-01T01:00:00Z")
 ) =
     BookEntity(
-        _id = id,
+        id = id,
         title = title,
         authorId = "author",
         genreId = "genre",

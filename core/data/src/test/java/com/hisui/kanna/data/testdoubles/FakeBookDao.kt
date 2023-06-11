@@ -19,17 +19,22 @@ package com.hisui.kanna.data.testdoubles
 import com.hisui.kanna.core.database.dao.BookDao
 import com.hisui.kanna.core.database.entity.AuthorEntity
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
+import com.hisui.kanna.core.database.entity.BookAndAuthorEntityWithQuotes
 import com.hisui.kanna.core.database.entity.BookEntity
+import com.hisui.kanna.core.database.entity.BookForQuoteEntity
 import com.hisui.kanna.core.database.entity.BookReadStatusEntity
+import com.hisui.kanna.core.database.entity.QuoteEntity
 import com.hisui.kanna.core.model.BookStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
 class FakeBookDao : BookDao {
 
     private val books = MutableStateFlow<Map<Long, BookEntity>>(emptyMap())
+    private val quotes = MutableStateFlow<Map<Long, QuoteEntity>>(emptyMap())
 
     override suspend fun insert(vararg books: BookEntity) {
         val newBooks = books.map { it.id to it }
@@ -62,14 +67,40 @@ class FakeBookDao : BookDao {
                 .map(::toBookAndAuthorEntity)
         }
 
-    override fun countStream(): Flow<Int> = books.map { it.size }
+    override fun getBookForQuoteStreamByQuery(q: String): Flow<List<BookForQuoteEntity>> =
+        getAllBooksAndAuthorsByReadDate(isAsc = true) // order doesn't matter
+            .map { entities ->
+                entities
+                    .filter { it.book.title.contains(q) || it.author.name.contains(q) }
+                    .map { BookForQuoteEntity(id = it.book.id, title = it.book.title) }
+            }
 
-    override fun getBooksAndAuthorsByQuery(q: String): Flow<List<BookAndAuthorEntity>> =
-        books.map { books ->
-            books.values
-                .filter { it.title.contains(q) }
-                .map(::toBookAndAuthorEntity)
+    override fun countStream(): Flow<Int> = books.map { it.size }
+    override fun getStreamWithQuotes(id: Long): Flow<BookAndAuthorEntityWithQuotes?> =
+        books.combine(quotes) { books, quotes ->
+            books[id]?.let(::toBookAndAuthorEntity)?.let { bookAndAuthor ->
+                quotes
+                    .filter { it.value.bookId == id }
+                    .values
+                    .toList()
+                    .let {
+                        BookAndAuthorEntityWithQuotes(bookAndAuthor = bookAndAuthor, quotes = it)
+                    }
+            }
         }
+
+    fun addQuotes(vararg quotes: QuoteEntity) {
+        val newQuotes = quotes.map { it.id to it }
+        this.quotes.update { it + newQuotes }
+    }
+
+    override fun update(book: BookEntity) {
+        books.update { bookMap ->
+            bookMap
+                .toMutableMap()
+                .apply { set(book.id, book) }
+        }
+    }
 }
 
 private fun toBookAndAuthorEntity(book: BookEntity): BookAndAuthorEntity =

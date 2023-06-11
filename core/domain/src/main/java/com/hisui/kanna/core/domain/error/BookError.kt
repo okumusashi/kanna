@@ -20,4 +20,5 @@ import com.hisui.kanna.core.KannaError
 
 sealed interface BookError : KannaError {
     object NotFound : BookError
+    object UpdateFailed : BookError
 }

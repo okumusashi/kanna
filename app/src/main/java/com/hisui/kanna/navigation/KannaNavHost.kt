@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.hisui.kanna.feature.book.navigation.bookScreen
 import com.hisui.kanna.feature.book.navigation.navigateToBook
+import com.hisui.kanna.feature.book.navigation.navigateToEditBook
 import com.hisui.kanna.feature.book.navigation.navigateToNewBook
 import com.hisui.kanna.feature.book.navigation.newBookScreen
 import com.hisui.kanna.feature.home.navigation.homeNavigationRoute
@@ -58,7 +59,10 @@ fun KannaNavHost(
 
         bookScreen(
             isWidthCompact = isWidthCompact,
-            isHeightCompact = isHeightCompact
+            isHeightCompact = isHeightCompact,
+            popBackStack = navController::popBackStack,
+            onOpenBook = navController::navigateToBook,
+            onOpenEditBook = navController::navigateToEditBook
         )
     }
 }

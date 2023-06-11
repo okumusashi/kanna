@@ -16,6 +16,11 @@
 
 package com.hisui.kanna.feature.book
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -30,6 +35,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Divider
@@ -43,6 +49,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -58,24 +65,33 @@ import com.hisui.kanna.core.model.bookForPreview
 import com.hisui.kanna.core.model.quoteForPreview
 import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
 import com.hisui.kanna.core.ui.util.format
+import com.hisui.kanna.feature.book.component.RatingStars
 import kotlinx.datetime.Instant
 
 @Composable
 internal fun BookRoute(
-    viewModel: BookViewModel = hiltViewModel()
+    viewModel: BookViewModel = hiltViewModel(),
+    onOpenEdit: (id: Long) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    BookScreen(uiState = uiState)
+    BookScreen(
+        uiState = uiState,
+        onOpenEdit = onOpenEdit
+    )
 }
 
 @Composable
 internal fun BookScreen(
-    uiState: BookUiState
+    uiState: BookUiState,
+    onOpenEdit: (id: Long) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         when (uiState) {
             is BookUiState.Success ->
-                BookContent(uiState.book)
+                BookContent(
+                    book = uiState.book,
+                    onOpenEdit = { onOpenEdit(uiState.book.id) }
+                )
 
             is BookUiState.Loading -> {}
             is BookUiState.Error -> {}
@@ -84,13 +100,20 @@ internal fun BookScreen(
 }
 
 @Composable
-private fun BookContent(book: Book) {
+private fun BookContent(
+    book: Book,
+    onOpenEdit: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 32.dp)
     ) {
-        LazyColumn(verticalArrangement = spacedBy(8.dp)) {
+        val scrollState = rememberLazyListState()
+        LazyColumn(
+            state = scrollState,
+            verticalArrangement = spacedBy(8.dp)
+        ) {
             item { Spacer(modifier = Modifier.height(32.dp)) }
             item { Title(title = book.title) }
             item { PropertiesSection(authorName = book.author.name, genre = book.genre, readDate = book.readDate) }
@@ -101,14 +124,25 @@ private fun BookContent(book: Book) {
 
         Spacer(modifier = Modifier.height(96.dp))
 
-        FloatingActionButton(
-            modifier = Modifier.align(Alignment.BottomEnd),
-            onClick = { /*TODO*/ }
+        val density = LocalDensity.current
+        AnimatedVisibility(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 16.dp),
+            visible = !scrollState.canScrollForward || !scrollState.canScrollBackward,
+            enter = slideInVertically {
+                with(density) { 96.dp.roundToPx() }
+            } + fadeIn(),
+            exit = slideOutVertically() {
+                with(density) { 96.dp.roundToPx() }
+            } + fadeOut()
         ) {
-            Icon(
-                imageVector = Icons.Default.Edit,
-                contentDescription = "Edit book"
-            )
+            FloatingActionButton(onClick = onOpenEdit) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit book"
+                )
+            }
         }
     }
 }
@@ -126,7 +160,8 @@ private fun BookContentPreviewBase(noThought: Boolean = false) {
                         quoteForPreview(page = 20),
                         quoteForPreview(page = 30)
                     )
-                )
+                ),
+                onOpenEdit = {}
             )
         }
     }

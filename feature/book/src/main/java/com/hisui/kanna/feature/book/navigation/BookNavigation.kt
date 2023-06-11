@@ -24,6 +24,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.hisui.kanna.feature.book.BookRoute
+import com.hisui.kanna.feature.book.EditBookRoute
 
 internal const val bookIdArg = "bookId"
 
@@ -39,14 +40,36 @@ fun NavController.navigateToBook(bookId: Long) {
     }
 }
 
+fun NavController.navigateToEditBook(bookId: Long) {
+    val encodedId = Uri.decode(bookId.toString())
+    navigate("book/$encodedId/edit") {
+        launchSingleTop = true
+    }
+}
+
 fun NavGraphBuilder.bookScreen(
     isWidthCompact: Boolean,
-    isHeightCompact: Boolean
+    isHeightCompact: Boolean,
+    popBackStack: () -> Unit,
+    onOpenBook: (id: Long) -> Unit,
+    onOpenEditBook: (id: Long) -> Unit
 ) {
     composable(
         route = "book/{$bookIdArg}",
         arguments = listOf(navArgument(bookIdArg) { type = NavType.LongType })
     ) {
-        BookRoute()
+        BookRoute(onOpenEdit = onOpenEditBook)
+    }
+
+    composable(
+        route = "book/{$bookIdArg}/edit",
+        arguments = listOf(navArgument(bookIdArg) { type = NavType.LongType })
+    ) {
+        EditBookRoute(
+            isWidthCompact = isWidthCompact,
+            isHeightCompact = isHeightCompact,
+            popBackStack = popBackStack,
+            openBook = onOpenBook
+        )
     }
 }

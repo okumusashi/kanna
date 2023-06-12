@@ -49,8 +49,8 @@ interface BookDao {
         """
             SELECT * FROM books
             ORDER BY
-                CASE WHEN :isAsc = 1 THEN books.title END ASC,
-                CASE WHEN :isAsc = 0 THEN books.title END DESC;
+                CASE WHEN :isAsc = 1 THEN books.read_date END ASC,
+                CASE WHEN :isAsc = 0 THEN books.read_date END DESC;
         """
     )
     fun getAllBooksAndAuthorsByReadDate(isAsc: Boolean): Flow<List<BookAndAuthorEntity>>

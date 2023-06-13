@@ -17,13 +17,13 @@
 package com.hisui.kanna.core.domain.usecase
 
 import com.hisui.kanna.core.data.repository.BookRepository
-import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookForQuote
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetFilteredBooksStreamUseCase @Inject constructor(
     private val repository: BookRepository
 ) {
-    operator fun invoke(q: String): Flow<List<Book>> =
-        repository.getListStreamByQuery(q = q)
+    operator fun invoke(q: String): Flow<List<BookForQuote>> =
+        repository.getListForQuoteStreamByQuery(q = q)
 }

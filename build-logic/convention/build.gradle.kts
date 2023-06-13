@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
+
 /*
  * Copyright 2022 Lynn Sakashita
  *

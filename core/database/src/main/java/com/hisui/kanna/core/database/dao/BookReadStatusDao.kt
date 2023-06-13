@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.model
+package com.hisui.kanna.core.database.dao
 
-import kotlinx.datetime.Instant
+import androidx.room.Dao
+import androidx.room.Query
+import com.hisui.kanna.core.database.entity.BookReadStatusEntity
 
-data class NewBook(
-    val title: String,
-    val readDate: Instant,
-    val memo: String?,
-    val thought: String,
-    val rating: Int,
-    val authorId: String,
-    val genreId: String
-)
+@Dao
+interface BookReadStatusDao {
+    @Query("SELECT * FROM book_read_statuses ORDER BY id ASC")
+    suspend fun getAll(): List<BookReadStatusEntity>
+}

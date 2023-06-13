@@ -83,6 +83,8 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
 
+    implementation(libs.timber)
+
     testImplementation(libs.junit4)
     testImplementation(libs.junit5)
 

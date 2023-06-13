@@ -32,7 +32,11 @@ class HomeScreenTest {
     fun when_loading_then_should_show_loading_indicator() {
         composeTestRule.setContent {
             BoxWithConstraints {
-                HomeScreen(homeUiState = HomeUiState.Loading, onNewBookFabClick = {})
+                HomeScreen(
+                    homeUiState = HomeUiState.Loading,
+                    onNewBookFabClick = {},
+                    onOpenBook = {}
+                )
             }
         }
 

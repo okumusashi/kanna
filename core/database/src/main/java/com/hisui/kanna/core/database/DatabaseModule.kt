@@ -18,6 +18,8 @@ package com.hisui.kanna.core.database
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,9 +34,20 @@ object DatabaseModule {
     @Singleton
     fun providesKannaDatabase(
         @ApplicationContext context: Context
-    ): KannaDatabase = Room.databaseBuilder(
-        context = context,
-        klass = KannaDatabase::class.java,
-        name = "kanna-database"
-    ).build()
+    ): KannaDatabase {
+        val database = Room.databaseBuilder(
+            context = context,
+            klass = KannaDatabase::class.java,
+            name = "kanna-database"
+        )
+
+        return database
+            .addCallback(object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+                    db.execSQL(PRE_POPULATE_QUERY)
+                }
+            })
+            .build()
+    }
 }

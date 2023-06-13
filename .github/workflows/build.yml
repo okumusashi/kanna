@@ -9,8 +9,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+    runs-on: [self-hosted, android]
+    timeout-minutes: 60
 
     steps:
       - name: Checkout
@@ -36,6 +36,10 @@ jobs:
       - name: Test
         id: unit_test
         run: ./gradlew testDebugUnitTest
+
+      - name: Android Test
+        id: android_test
+        run: ./gradlew connectedCheck
 
       - name: Slack success report
         uses: 8398a7/action-slack@v3

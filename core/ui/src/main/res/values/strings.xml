@@ -15,21 +15,23 @@
   -->
 <resources>
     <!-- region General terms -->
-    <string name="save">save</string>
-    <string name="create">create</string>
-    <string name="close">close</string>
-    <string name="ok">ok</string>
-    <string name="cancel">cancel</string>
-    <string name="name">name</string>
+    <string name="save">Save</string>
+    <string name="create">Create</string>
+    <string name="update">Update</string>
+    <string name="close">Close</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
     <!-- endregion -->
 
     <!-- region Book -->
-    <string name="book_title">book title</string>
-    <string name="book_by_author">%1$s (%2$s)</string>
-    <string name="author">author</string>
-    <string name="genre">genre</string>
-    <string name="add_books">add books</string>
+    <string name="book_title">Book title</string>
+    <string name="author">Author</string>
+    <string name="genre">Genre</string>
+    <string name="add_books">Add books</string>
     <!-- endregion -->
+
+    <string name="thought">Thought</string>
 
     <!-- region Form -->
     <string name="add_new">Add New</string>

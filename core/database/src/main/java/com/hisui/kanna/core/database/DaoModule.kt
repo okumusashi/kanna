@@ -18,8 +18,9 @@ package com.hisui.kanna.core.database
 
 import com.hisui.kanna.core.database.dao.AuthorDao
 import com.hisui.kanna.core.database.dao.BookDao
-import com.hisui.kanna.core.database.dao.FavouriteQuoteDao
+import com.hisui.kanna.core.database.dao.BookReadStatusDao
 import com.hisui.kanna.core.database.dao.GenreDao
+import com.hisui.kanna.core.database.dao.QuoteDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +37,11 @@ object DaoModule {
 
     @Provides
     @Singleton
+    fun provideBookReadStatusDao(database: KannaDatabase): BookReadStatusDao =
+        database.bookReadStatusDao()
+
+    @Provides
+    @Singleton
     fun providesAuthorDao(database: KannaDatabase): AuthorDao =
         database.authorDao()
 
@@ -46,6 +52,6 @@ object DaoModule {
 
     @Provides
     @Singleton
-    fun providesFavouriteQuoteDao(database: KannaDatabase): FavouriteQuoteDao =
+    fun providesFavouriteQuoteDao(database: KannaDatabase): QuoteDao =
         database.favouriteQuoteDao()
 }

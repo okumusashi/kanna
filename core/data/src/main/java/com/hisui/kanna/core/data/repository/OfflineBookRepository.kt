@@ -22,8 +22,9 @@ import com.hisui.kanna.core.data.mapper.asEntity
 import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.database.dao.BookDao
 import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookForQuote
+import com.hisui.kanna.core.model.BookForm
 import com.hisui.kanna.core.model.BookSorter
-import com.hisui.kanna.core.model.NewBook
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -34,7 +35,7 @@ class OfflineBookRepository @Inject constructor(
     private val dao: BookDao,
     @Dispatcher(KannaDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 ) : BookRepository {
-    override suspend fun save(book: NewBook): Result<Unit> =
+    override suspend fun save(book: BookForm): Result<Unit> =
         withContext(ioDispatcher) {
             dao.insert(book.asEntity())
             Result.success(Unit)
@@ -46,19 +47,21 @@ class OfflineBookRepository @Inject constructor(
                 dao.getAllBooksAndAuthorsByTitle(isAsc = isAsc)
             BookSorter.READ_DATE ->
                 dao.getAllBooksAndAuthorsByReadDate(isAsc = isAsc)
-        }.map(::asExternalModel)
+        }.map { it.asExternalModel() }
 
     override fun countStream(): Flow<Int> = dao.countStream()
 
-    override fun getStream(id: Long): Flow<Book?> {
-        TODO("Not yet implemented")
-    }
+    override fun getStream(id: Long): Flow<Book?> =
+        dao.getStreamWithQuotes(id = id).map { it?.asExternalModel() }
 
-    override fun getListStreamByQuery(q: String): Flow<List<Book>> =
-        dao.getBooksAndAuthorsByQuery(q = q)
-            .map(::asExternalModel)
+    override fun getListForQuoteStreamByQuery(q: String): Flow<List<BookForQuote>> =
+        dao.getBookForQuoteStreamByQuery(q = q).map { list ->
+            list.map(::asExternalModel)
+        }
 
-    override suspend fun update(book: Book): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun update(id: Long, book: BookForm): Result<Unit> =
+        withContext(ioDispatcher) {
+            dao.update(book.asEntity(id = id))
+            Result.success(Unit)
+        }
 }

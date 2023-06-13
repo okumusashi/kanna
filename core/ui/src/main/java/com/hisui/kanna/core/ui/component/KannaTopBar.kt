@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,10 +33,11 @@ import com.hisui.kanna.core.ui.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateFormTopBar(
+fun KannaTopBar(
     title: String,
+    submitButtonTitle: String,
     onClickNavigationIcon: () -> Unit,
-    onCreate: () -> Unit,
+    onSubmit: () -> Unit,
     enabled: Boolean = true
 ) {
     TopAppBar(
@@ -52,10 +53,10 @@ fun CreateFormTopBar(
         actions = {
             Button(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                onClick = onCreate,
+                onClick = onSubmit,
                 enabled = enabled
             ) {
-                Text(stringResource(id = R.string.create))
+                Text(submitButtonTitle)
             }
         }
     )

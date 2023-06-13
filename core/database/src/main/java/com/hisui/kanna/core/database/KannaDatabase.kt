@@ -21,19 +21,23 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.hisui.kanna.core.database.dao.AuthorDao
 import com.hisui.kanna.core.database.dao.BookDao
-import com.hisui.kanna.core.database.dao.FavouriteQuoteDao
+import com.hisui.kanna.core.database.dao.BookReadStatusDao
 import com.hisui.kanna.core.database.dao.GenreDao
+import com.hisui.kanna.core.database.dao.QuoteDao
 import com.hisui.kanna.core.database.entity.AuthorEntity
 import com.hisui.kanna.core.database.entity.BookEntity
-import com.hisui.kanna.core.database.entity.FavouriteQuoteEntity
+import com.hisui.kanna.core.database.entity.BookReadStatusEntity
 import com.hisui.kanna.core.database.entity.GenreEntity
+import com.hisui.kanna.core.database.entity.QuoteEntity
+import com.hisui.kanna.core.model.BookStatus
 
 @Database(
     entities = [
         BookEntity::class,
+        BookReadStatusEntity::class,
         AuthorEntity::class,
         GenreEntity::class,
-        FavouriteQuoteEntity::class
+        QuoteEntity::class
     ],
     version = 1,
     exportSchema = true
@@ -41,7 +45,19 @@ import com.hisui.kanna.core.database.entity.GenreEntity
 @TypeConverters(InstantTypeConverter::class)
 abstract class KannaDatabase : RoomDatabase() {
     abstract fun bookDao(): BookDao
+    abstract fun bookReadStatusDao(): BookReadStatusDao
     abstract fun authorDao(): AuthorDao
     abstract fun genreDao(): GenreDao
-    abstract fun favouriteQuoteDao(): FavouriteQuoteDao
+    abstract fun favouriteQuoteDao(): QuoteDao
 }
+
+internal val PRE_POPULATE_QUERY: String =
+    """
+        INSERT INTO
+            book_read_statuses (id, status)
+        VALUES
+            (1, '${BookStatus.HAVE_READ.name}'),
+            (2, '${BookStatus.READING_NOW.name}'),
+            (3, '${BookStatus.READ_NEXT.name}'),
+            (4, '${BookStatus.WANT_TO_READ.name}');
+    """.trimIndent()

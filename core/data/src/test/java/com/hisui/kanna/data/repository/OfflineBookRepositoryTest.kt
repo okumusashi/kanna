@@ -23,6 +23,7 @@ import com.hisui.kanna.core.database.dao.BookDao
 import com.hisui.kanna.core.model.BookSorter
 import com.hisui.kanna.data.testBookEntity
 import com.hisui.kanna.data.testdoubles.FakeBookDao
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -33,6 +34,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class OfflineBookRepositoryTest {
 
     private lateinit var dao: BookDao
@@ -77,7 +79,7 @@ class OfflineBookRepositoryTest {
                             .first()
                     ).containsExactlyElementsIn(
                         dao.getAllBooksAndAuthorsByTitle(isAsc = isAsc)
-                            .map(::asExternalModel)
+                            .map { it.asExternalModel() }
                             .first()
                     ).inOrder()
                 }
@@ -109,7 +111,7 @@ class OfflineBookRepositoryTest {
                             .first()
                     ).containsExactlyElementsIn(
                         dao.getAllBooksAndAuthorsByTitle(isAsc = isAsc)
-                            .map(::asExternalModel)
+                            .map { it.asExternalModel() }
                             .first()
                     ).inOrder()
                 }

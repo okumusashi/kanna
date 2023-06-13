@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.model
+package com.hisui.kanna.core.domain.usecase
 
-data class NewQuote(
-    val quote: String,
-    val bookId: Long,
-    val page: Int?,
-    val thought: String
-)
+import com.hisui.kanna.core.data.repository.BookReadStatusRepository
+import com.hisui.kanna.core.model.BookReadStatus
+import javax.inject.Inject
+
+class GetAllStatusUseCase @Inject constructor(
+    private val repository: BookReadStatusRepository
+) {
+    suspend operator fun invoke(): List<BookReadStatus> = repository.getAll()
+}

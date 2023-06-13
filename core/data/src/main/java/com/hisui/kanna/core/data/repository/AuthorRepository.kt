@@ -17,10 +17,10 @@
 package com.hisui.kanna.core.data.repository
 
 import com.hisui.kanna.core.model.Author
-import com.hisui.kanna.core.model.AuthorInput
+import com.hisui.kanna.core.model.NewAuthor
 import kotlinx.coroutines.flow.Flow
 
 interface AuthorRepository {
     fun getAllStream(): Flow<List<Author>>
-    suspend fun save(author: AuthorInput): Result<Author>
+    suspend fun save(author: NewAuthor): Result<Author>
 }

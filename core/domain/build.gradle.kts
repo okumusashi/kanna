@@ -24,9 +24,15 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
     implementation(project(":core:data"))
     implementation(project(":core:model"))
+
     implementation(libs.hilt.android)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.timber)
+
+    testImplementation(project(":core:testing"))
 
     kapt(libs.hilt.compiler)
 }

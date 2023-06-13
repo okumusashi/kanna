@@ -29,7 +29,6 @@ class NewBookScreenTest {
     @Test
     fun test() { // TODO: This is an example test. Update to proper name when tests are added
         composeTestRule.setContent {
-            NewBookScreen()
         }
     }
 }

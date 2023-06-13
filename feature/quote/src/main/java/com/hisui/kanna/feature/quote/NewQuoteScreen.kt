@@ -43,9 +43,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hisui.kanna.core.model.Book
+import com.hisui.kanna.core.model.BookForQuote
 import com.hisui.kanna.core.model.NewQuote
-import com.hisui.kanna.core.ui.component.CreateFormTopBar
+import com.hisui.kanna.core.ui.component.KannaTopBar
 
 @Composable
 internal fun NewQuoteRoute(
@@ -80,7 +80,7 @@ internal fun NewQuoteScreen(
     isCompact: Boolean,
     uiState: NewQuoteUiState,
     onUpdateQuote: (NewQuote) -> Unit,
-    onSelectBook: (Book) -> Unit,
+    onSelectBook: (BookForQuote) -> Unit,
     onUpdateBookFilter: (q: String) -> Unit,
     onCreate: (NewQuote) -> Unit,
     onExit: () -> Unit
@@ -90,10 +90,11 @@ internal fun NewQuoteScreen(
             .fillMaxWidth()
             .fillMaxHeight(if (isCompact) 1f else 0.65f),
         topBar = {
-            CreateFormTopBar(
+            KannaTopBar(
                 title = stringResource(id = R.string.add_quote),
+                submitButtonTitle = stringResource(id = com.hisui.kanna.core.ui.R.string.create),
                 onClickNavigationIcon = onExit,
-                onCreate = {
+                onSubmit = {
                     if (uiState is NewQuoteUiState.AddQuote) {
                         onCreate(uiState.newQuote)
                     }
@@ -125,10 +126,10 @@ internal fun NewQuoteScreen(
 private fun AddQuoteScreen(
     modifier: Modifier = Modifier,
     newQuote: NewQuote,
-    bookCandidates: List<Book>,
+    bookCandidates: List<BookForQuote>,
     onUpdateQuote: (NewQuote) -> Unit,
     onUpdateBookFilter: (q: String) -> Unit,
-    onSelectBook: (Book) -> Unit
+    onSelectBook: (BookForQuote) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -160,6 +161,15 @@ private fun AddQuoteScreen(
             label = { Text(text = stringResource(id = R.string.page)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            value = newQuote.thought,
+            onValueChange = { onUpdateQuote(newQuote.copy(thought = it)) },
+            label = { Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.thought)) },
+            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
+        )
     }
 }
 
@@ -167,9 +177,9 @@ private fun AddQuoteScreen(
 @Composable
 private fun BookSelection(
     modifier: Modifier = Modifier,
-    filteredBooks: List<Book>,
+    filteredBooks: List<BookForQuote>,
     onUpdateFilter: (q: String) -> Unit,
-    onSelect: (Book) -> Unit
+    onSelect: (BookForQuote) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var title by remember { mutableStateOf("") }
@@ -207,12 +217,11 @@ private fun BookSelection(
                     return@ExposedDropdownMenu
                 }
                 .forEach { item ->
-                    val bookTitle = stringResource(id = com.hisui.kanna.core.ui.R.string.book_by_author, item.title, item.author.name)
                     DropdownMenuItem(
-                        text = { Text(bookTitle) },
+                        text = { Text(item.title) },
                         onClick = {
                             onSelect(item)
-                            title = bookTitle
+                            title = item.title
                             expanded = false
                         }
                     )

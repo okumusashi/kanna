@@ -27,6 +27,6 @@ interface GenreDao {
     @Insert
     suspend fun insert(genre: GenreEntity)
 
-    @Query("SELECT * FROM genres ORDER BY name ASC")
+    @Query("SELECT * FROM genres ORDER BY genre ASC")
     fun getAllStream(): Flow<List<GenreEntity>>
 }

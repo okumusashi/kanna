@@ -16,11 +16,6 @@
 
 package com.hisui.kanna.feature.book
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -36,10 +31,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,7 +39,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -57,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hisui.kanna.core.designsystem.component.FloatingEditButton
 import com.hisui.kanna.core.designsystem.component.KannaDivider
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Book
@@ -124,26 +115,13 @@ private fun BookContent(
 
         Spacer(modifier = Modifier.height(96.dp))
 
-        val density = LocalDensity.current
-        AnimatedVisibility(
+        FloatingEditButton(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(bottom = 16.dp),
             visible = !scrollState.canScrollForward || !scrollState.canScrollBackward,
-            enter = slideInVertically {
-                with(density) { 96.dp.roundToPx() }
-            } + fadeIn(),
-            exit = slideOutVertically() {
-                with(density) { 96.dp.roundToPx() }
-            } + fadeOut()
-        ) {
-            FloatingActionButton(onClick = onOpenEdit) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit book"
-                )
-            }
-        }
+            onClick = onOpenEdit
+        )
     }
 }
 

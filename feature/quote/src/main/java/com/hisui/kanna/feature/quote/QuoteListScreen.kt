@@ -63,13 +63,13 @@ import com.hisui.kanna.core.model.Quote
 import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
 
 @Composable
-internal fun QuoteScreen(
-    viewModel: QuoteViewModel = hiltViewModel(),
+internal fun QuoteListRoute(
+    viewModel: QuoteListViewModel = hiltViewModel(),
     onOpenNewQuoteScreen: () -> Unit,
     onOpenNewBookScreen: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    QuoteScreen(
+    QuoteListScreen(
         uiState = uiState,
         onOpenNewQuoteScreen = onOpenNewQuoteScreen,
         onOpenNewBookScreen = onOpenNewBookScreen
@@ -77,8 +77,8 @@ internal fun QuoteScreen(
 }
 
 @Composable
-private fun QuoteScreen(
-    uiState: QuoteUiState,
+private fun QuoteListScreen(
+    uiState: QuoteListUiState,
     onOpenNewQuoteScreen: () -> Unit,
     onOpenNewBookScreen: () -> Unit
 ) {
@@ -98,17 +98,17 @@ private fun QuoteScreen(
 
         Box {
             when (uiState) {
-                QuoteUiState.Loading -> {
+                QuoteListUiState.Loading -> {
                     // TODO: Add indicator
                 }
 
-                QuoteUiState.NoBook ->
+                QuoteListUiState.NoBook ->
                     NoBookScreen(onOpenNewBookScreen = onOpenNewBookScreen)
 
-                QuoteUiState.NoQuote ->
+                QuoteListUiState.NoQuote ->
                     NoQuoteScreen(onOpenNewQuoteScreen = onOpenNewQuoteScreen)
 
-                is QuoteUiState.ShowQuotes ->
+                is QuoteListUiState.ShowQuotes ->
                     ShowQuotesScreen(
                         quotes = uiState.quotes,
                         onOpenNewQuoteScreen = onOpenNewQuoteScreen
@@ -126,8 +126,8 @@ private fun QuoteScreenPreview() {
         .sortedByDescending { it.createdAt }
 
     PreviewColumnWrapper {
-        QuoteScreen(
-            uiState = QuoteUiState.ShowQuotes(quotes = quotes),
+        QuoteListScreen(
+            uiState = QuoteListUiState.ShowQuotes(quotes = quotes),
             onOpenNewQuoteScreen = {},
             onOpenNewBookScreen = {}
         )
@@ -149,8 +149,8 @@ private fun QuoteScreenCompactLarge() { QuoteScreenPreview() }
 @Composable
 private fun NoBookScreenPreview() {
     PreviewColumnWrapper {
-        QuoteScreen(
-            uiState = QuoteUiState.NoBook,
+        QuoteListScreen(
+            uiState = QuoteListUiState.NoBook,
             onOpenNewQuoteScreen = {},
             onOpenNewBookScreen = {}
         )
@@ -242,8 +242,8 @@ private fun NoQuoteScreen(
 @Composable
 private fun NoQuoteScreenPreview() {
     PreviewColumnWrapper {
-        QuoteScreen(
-            uiState = QuoteUiState.NoQuote,
+        QuoteListScreen(
+            uiState = QuoteListUiState.NoQuote,
             onOpenNewQuoteScreen = {},
             onOpenNewBookScreen = {}
         )

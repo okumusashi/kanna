@@ -24,47 +24,46 @@ import com.hisui.kanna.core.model.Quote
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed interface QuoteUiState {
-    object Loading : QuoteUiState
-    object NoBook : QuoteUiState
-    object NoQuote : QuoteUiState
-    data class ShowQuotes(val quotes: List<Quote>) : QuoteUiState
+sealed interface QuoteListUiState {
+    object Loading : QuoteListUiState
+    object NoBook : QuoteListUiState
+    object NoQuote : QuoteListUiState
+    data class ShowQuotes(val quotes: List<Quote>) : QuoteListUiState
 }
 
-private data class QuoteViewModelState(
+private data class QuoteListViewModelState(
     val quotes: List<Quote> = emptyList(),
     val hasBook: Boolean = true,
     val loading: Boolean = true
 ) {
-    fun toUiState(): QuoteUiState =
+    fun toUiState(): QuoteListUiState =
         when {
-            loading -> QuoteUiState.Loading
-            !hasBook -> QuoteUiState.NoBook
-            quotes.isEmpty() -> QuoteUiState.NoQuote
-            else -> QuoteUiState.ShowQuotes(quotes = quotes)
+            loading -> QuoteListUiState.Loading
+            !hasBook -> QuoteListUiState.NoBook
+            quotes.isEmpty() -> QuoteListUiState.NoQuote
+            else -> QuoteListUiState.ShowQuotes(quotes = quotes)
         }
 }
 
 @HiltViewModel
-class QuoteViewModel @Inject constructor(
+class QuoteListViewModel @Inject constructor(
     repository: QuoteRepository,
     countBooksStreamUseCase: CountBooksStreamUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(QuoteViewModelState())
+    private val _uiState = MutableStateFlow(QuoteListViewModelState())
     val uiState = _uiState
         .map { it.toUiState() }
         .stateIn(
             viewModelScope,
             SharingStarted.Eagerly,
-            QuoteUiState.Loading
+            QuoteListUiState.Loading
         )
 
     init {

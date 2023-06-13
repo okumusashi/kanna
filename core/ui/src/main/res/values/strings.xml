@@ -25,13 +25,21 @@
     <!-- endregion -->
 
     <!-- region Book -->
+    <string name="book">book</string>
     <string name="book_title">Book title</string>
     <string name="author">Author</string>
     <string name="genre">Genre</string>
     <string name="add_books">Add books</string>
     <!-- endregion -->
 
+    <!-- region Quote -->
+    <string name="quote">quote</string>
+    <!-- endregion -->
+
+    <!-- region common fields -->
     <string name="thought">Thought</string>
+    <string name="no_thought">No thought on this %1$s.</string>
+    <!-- endregion -->
 
     <!-- region Form -->
     <string name="add_new">Add New</string>

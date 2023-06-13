@@ -212,7 +212,10 @@ private fun EvaluationSection(thought: String, rating: Int) {
 
         if (thought.isBlank()) {
             Text(
-                text = stringResource(id = R.string.no_thought),
+                text = stringResource(
+                    id = com.hisui.kanna.core.ui.R.string.no_thought,
+                    stringResource(id = com.hisui.kanna.core.ui.R.string.book)
+                ),
                 fontStyle = FontStyle.Italic,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -230,7 +233,10 @@ private fun MemoSection(memo: String) {
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         KannaDivider()
-        Text(text = stringResource(id = R.string.memo), fontWeight = FontWeight.SemiBold)
+        Text(
+            text = stringResource(id = R.string.memo),
+            fontWeight = FontWeight.SemiBold
+        )
         Text(text = memo)
     }
 }

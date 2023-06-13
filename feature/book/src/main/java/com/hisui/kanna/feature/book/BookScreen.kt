@@ -56,7 +56,6 @@ import com.hisui.kanna.core.model.bookForPreview
 import com.hisui.kanna.core.model.quoteForPreview
 import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
 import com.hisui.kanna.core.ui.util.format
-import com.hisui.kanna.feature.book.component.RatingStars
 import kotlinx.datetime.Instant
 
 @Composable

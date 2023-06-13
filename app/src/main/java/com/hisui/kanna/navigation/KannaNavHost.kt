@@ -47,8 +47,7 @@ fun KannaNavHost(
             navController = navController,
             isWidthCompact = isWidthCompact,
             isHeightCompact = isHeightCompact,
-            onOpenNewBookScreen = navController::navigateToNewBook,
-            popBackStack = navController::popBackStack
+            onOpenNewBookScreen = navController::navigateToNewBook
         )
 
         newBookScreen(

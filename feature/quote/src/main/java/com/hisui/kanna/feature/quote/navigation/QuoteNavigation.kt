@@ -16,28 +16,53 @@
 
 package com.hisui.kanna.feature.quote.navigation
 
+import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.hisui.kanna.feature.quote.NewQuoteRoute
 import com.hisui.kanna.feature.quote.QuoteListRoute
+import com.hisui.kanna.feature.quote.QuoteRoute
 
 const val quoteRoute = "quote_route"
 const val quoteNavigationRoute = "quotes"
 const val newQuoteNavigationRoute = "quote/new"
 
+internal const val quoteIdArg = "quoteId"
+
+internal class QuoteArgs(val quoteId: Long) {
+    constructor(savedStateHandle: SavedStateHandle) :
+        this(quoteId = checkNotNull(savedStateHandle[quoteIdArg]))
+}
+
 fun NavController.navigateToQuoteList(options: NavOptions?) {
     navigate(quoteNavigationRoute, options)
+}
+
+fun NavController.navigateToQuote(quoteId: Long) {
+    val encodeId = Uri.encode(quoteId.toString())
+    navigate("quote/$encodeId") {
+        launchSingleTop = true
+    }
+}
+
+fun NavController.navigateToEditQuote(quoteId: Long) {
+    val encodeId = Uri.encode(quoteId.toString())
+    navigate("quote/$encodeId/edit") {
+        launchSingleTop = true
+    }
 }
 
 fun NavGraphBuilder.quoteListScreen(
     navController: NavController,
     isWidthCompact: Boolean,
     isHeightCompact: Boolean,
-    onOpenNewBookScreen: () -> Unit,
-    popBackStack: () -> Unit
+    onOpenNewBookScreen: () -> Unit
 ) {
     navigation(
         route = quoteRoute,
@@ -45,6 +70,7 @@ fun NavGraphBuilder.quoteListScreen(
     ) {
         composable(route = quoteNavigationRoute) {
             QuoteListRoute(
+                onOpenQuote = navController::navigateToQuote,
                 onOpenNewQuoteScreen = { navController.navigate(newQuoteNavigationRoute) },
                 onOpenNewBookScreen = onOpenNewBookScreen
             )
@@ -54,8 +80,21 @@ fun NavGraphBuilder.quoteListScreen(
             NewQuoteRoute(
                 isWidthCompact = isWidthCompact,
                 isHeightCompact = isHeightCompact,
-                popBackStack = popBackStack
+                popBackStack = navController::popBackStack
             )
+        }
+
+        composable(
+            route = "quote/{$quoteIdArg}",
+            arguments = listOf(navArgument(quoteIdArg) { type = NavType.LongType })
+        ) {
+            QuoteRoute(onOpenEdit = navController::navigateToEditQuote)
+        }
+
+        composable(
+            route = "quote/{$quoteIdArg}/edit",
+            arguments = listOf(navArgument(quoteIdArg) { type = NavType.LongType })
+        ) {
         }
     }
 }

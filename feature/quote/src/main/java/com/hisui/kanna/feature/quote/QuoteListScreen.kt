@@ -47,7 +47,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,12 +64,14 @@ import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
 @Composable
 internal fun QuoteListRoute(
     viewModel: QuoteListViewModel = hiltViewModel(),
+    onOpenQuote: (id: Long) -> Unit,
     onOpenNewQuoteScreen: () -> Unit,
     onOpenNewBookScreen: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     QuoteListScreen(
         uiState = uiState,
+        onOpenQuote = onOpenQuote,
         onOpenNewQuoteScreen = onOpenNewQuoteScreen,
         onOpenNewBookScreen = onOpenNewBookScreen
     )
@@ -79,6 +80,7 @@ internal fun QuoteListRoute(
 @Composable
 private fun QuoteListScreen(
     uiState: QuoteListUiState,
+    onOpenQuote: (id: Long) -> Unit,
     onOpenNewQuoteScreen: () -> Unit,
     onOpenNewBookScreen: () -> Unit
 ) {
@@ -111,6 +113,7 @@ private fun QuoteListScreen(
                 is QuoteListUiState.ShowQuotes ->
                     ShowQuotesScreen(
                         quotes = uiState.quotes,
+                        onOpenQuote = onOpenQuote,
                         onOpenNewQuoteScreen = onOpenNewQuoteScreen
                     )
             }
@@ -128,6 +131,7 @@ private fun QuoteScreenPreview() {
     PreviewColumnWrapper {
         QuoteListScreen(
             uiState = QuoteListUiState.ShowQuotes(quotes = quotes),
+            onOpenQuote = {},
             onOpenNewQuoteScreen = {},
             onOpenNewBookScreen = {}
         )
@@ -151,6 +155,7 @@ private fun NoBookScreenPreview() {
     PreviewColumnWrapper {
         QuoteListScreen(
             uiState = QuoteListUiState.NoBook,
+            onOpenQuote = {},
             onOpenNewQuoteScreen = {},
             onOpenNewBookScreen = {}
         )
@@ -244,6 +249,7 @@ private fun NoQuoteScreenPreview() {
     PreviewColumnWrapper {
         QuoteListScreen(
             uiState = QuoteListUiState.NoQuote,
+            onOpenQuote = {},
             onOpenNewQuoteScreen = {},
             onOpenNewBookScreen = {}
         )
@@ -254,6 +260,7 @@ private fun NoQuoteScreenPreview() {
 private fun ShowQuotesScreen(
     modifier: Modifier = Modifier,
     quotes: List<Quote>,
+    onOpenQuote: (id: Long) -> Unit,
     onOpenNewQuoteScreen: () -> Unit
 ) {
     val lazyListState = rememberLazyListState()
@@ -264,7 +271,10 @@ private fun ShowQuotesScreen(
             state = lazyListState
         ) {
             items(quotes) { quote ->
-                QuoteItem(quote = quote)
+                QuoteItem(
+                    quote = quote,
+                    onOpen = { onOpenQuote(quote.id) }
+                )
             }
 
             item { Spacer(modifier = Modifier.height(96.dp)) }
@@ -298,19 +308,22 @@ private fun AddQuoteFab(
 }
 
 @Composable
-private fun QuoteItem(quote: Quote) {
+private fun QuoteItem(
+    quote: Quote,
+    onOpen: () -> Unit
+) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable { onOpen() }
                 .padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = quote.quote,
+                text = "\"${quote.quote}\"",
                 color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.titleMedium,
-                fontStyle = FontStyle.Italic
+                style = MaterialTheme.typography.titleMedium
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -353,7 +366,10 @@ private fun QuoteItemPreview() {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            QuoteItem(quote = previewQuote())
+            QuoteItem(
+                quote = previewQuote(),
+                onOpen = {}
+            )
         }
     }
 }

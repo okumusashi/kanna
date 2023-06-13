@@ -44,4 +44,14 @@ class OfflineQuoteRepository @Inject constructor(
         dao.getAll().map { quotes ->
             quotes.asExternalModel()
         }
+
+    override fun getStream(id: Long): Flow<Quote?> =
+        dao.getStream(id = id).map {
+            if (it.isEmpty()) {
+                return@map null
+            }
+            it.entries.first().let { (quote, bookAndAuthor) ->
+                quote.asExternalModel(bookAndAuthor = bookAndAuthor)
+            }
+        }
 }

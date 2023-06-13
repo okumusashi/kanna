@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.data.repository
+package com.hisui.kanna.core.domain.error
 
-import com.hisui.kanna.core.model.NewQuote
-import com.hisui.kanna.core.model.Quote
-import kotlinx.coroutines.flow.Flow
+import com.hisui.kanna.core.KannaError
 
-interface QuoteRepository {
-    suspend fun save(quote: NewQuote): Result<Unit>
-    fun getAllStream(): Flow<List<Quote>>
-    fun getStream(id: Long): Flow<Quote?>
+sealed interface QuoteError : KannaError {
+    object NotFound : QuoteError
 }

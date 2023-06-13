@@ -38,4 +38,14 @@ interface QuoteDao {
         """
     )
     fun getAll(): Flow<Map<QuoteEntity, BookAndAuthorEntity>>
+
+    @Transaction
+    @Query(
+        """
+            SELECT * FROM quotes
+            INNER JOIN books ON quotes.book_id = books.id
+            WHERE quotes.id = :id
+        """
+    )
+    fun getStream(id: Long): Flow<Map<QuoteEntity, BookAndAuthorEntity>>
 }

@@ -16,36 +16,21 @@
 
 package com.hisui.kanna.feature.quote
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.BookForQuote
 import com.hisui.kanna.core.model.QuoteForm
-import com.hisui.kanna.core.ui.component.KannaTopBar
 
 @Composable
 internal fun NewQuoteRoute(
@@ -85,28 +70,22 @@ internal fun NewQuoteScreen(
     onCreate: (QuoteForm) -> Unit,
     onExit: () -> Unit
 ) {
-    Scaffold(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(if (isCompact) 1f else 0.65f),
-        topBar = {
-            KannaTopBar(
-                title = stringResource(id = R.string.add_quote),
-                submitButtonTitle = stringResource(id = com.hisui.kanna.core.ui.R.string.create),
-                onClickNavigationIcon = onExit,
-                onSubmit = {
-                    if (uiState is NewQuoteUiState.AddQuote) {
-                        onCreate(uiState.quoteForm)
-                    }
-                },
-                enabled = uiState is NewQuoteUiState.AddQuote
-            )
-        }
+    QuoteFormBase(
+        isCompact = isCompact,
+        title = stringResource(id = R.string.add_quote),
+        submitButtonTitle = stringResource(id = com.hisui.kanna.core.ui.R.string.create),
+        onSubmit = {
+            if (uiState is NewQuoteUiState.AddQuote) {
+                onCreate(uiState.quoteForm)
+            }
+        },
+        submittable = uiState is NewQuoteUiState.AddQuote,
+        onExit = onExit
     ) { paddingValues ->
         when (uiState) {
             NewQuoteUiState.Loading -> {}
             is NewQuoteUiState.AddQuote -> {
-                AddQuoteScreen(
+                QuoteFormContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(paddingValues)
@@ -123,109 +102,33 @@ internal fun NewQuoteScreen(
 }
 
 @Composable
-private fun AddQuoteScreen(
-    modifier: Modifier = Modifier,
-    quoteForm: QuoteForm,
-    bookCandidates: List<BookForQuote>,
-    onUpdateQuote: (QuoteForm) -> Unit,
-    onUpdateBookFilter: (q: String) -> Unit,
-    onSelectBook: (BookForQuote) -> Unit
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            value = quoteForm.quote,
-            onValueChange = { onUpdateQuote(quoteForm.copy(quote = it)) },
-            label = { Text(text = stringResource(id = R.string.quote)) },
-            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
-        )
-
-        BookSelection(
-            filteredBooks = bookCandidates,
-            onUpdateFilter = onUpdateBookFilter,
-            onSelect = { book ->
-                onSelectBook(book)
-                onUpdateQuote(quoteForm.copy(bookId = book.id))
-            }
-        )
-
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = quoteForm.page?.toString() ?: "",
-            onValueChange = { onUpdateQuote(quoteForm.copy(page = it.toIntOrNull())) },
-            label = { Text(text = stringResource(id = R.string.page)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            value = quoteForm.thought,
-            onValueChange = { onUpdateQuote(quoteForm.copy(thought = it)) },
-            label = { Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.thought)) },
-            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
+private fun NewQuoteScreenPreviewBase(isCompact: Boolean) {
+    KannaTheme {
+        NewQuoteScreen(
+            isCompact = isCompact,
+            uiState = NewQuoteUiState.AddQuote(
+                error = null,
+                quoteForm = QuoteForm(quote = "", thought = "", bookId = 1L, page = 1),
+                selectedBook = null,
+                bookCandidates = emptyList()
+            ),
+            onUpdateQuote = {},
+            onSelectBook = {},
+            onUpdateBookFilter = {},
+            onCreate = {},
+            onExit = {}
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Preview(device = Devices.PIXEL_4)
 @Composable
-private fun BookSelection(
-    modifier: Modifier = Modifier,
-    filteredBooks: List<BookForQuote>,
-    onUpdateFilter: (q: String) -> Unit,
-    onSelect: (BookForQuote) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-    var title by remember { mutableStateOf("") }
+private fun NewQuoteScreenPhonePreview() { NewQuoteScreenPreviewBase(isCompact = true) }
 
-    ExposedDropdownMenuBox(
-        modifier = modifier,
-        expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
-    ) {
-        OutlinedTextField(
-            modifier = Modifier.menuAnchor(),
-            value = title,
-            onValueChange = {
-                onUpdateFilter(it)
-                title = it
-            },
-            label = { Text(stringResource(id = com.hisui.kanna.core.ui.R.string.book_title)) }
-        )
+@Preview(device = Devices.TABLET)
+@Composable
+private fun NewQuoteScreenTabletPreview() { NewQuoteScreenPreviewBase(isCompact = false) }
 
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            filteredBooks
-                .ifEmpty {
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = stringResource(id = R.string.type_to_search),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        },
-                        onClick = { }
-                    )
-                    return@ExposedDropdownMenu
-                }
-                .forEach { item ->
-                    DropdownMenuItem(
-                        text = { Text(item.title) },
-                        onClick = {
-                            onSelect(item)
-                            title = item.title
-                            expanded = false
-                        }
-                    )
-                }
-        }
-    }
-}
+@Preview(device = Devices.DESKTOP)
+@Composable
+private fun NewQuoteScreenDesktopPreview() { NewQuoteScreenPreviewBase(isCompact = false) }

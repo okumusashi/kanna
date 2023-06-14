@@ -43,8 +43,7 @@ sealed interface NewQuoteUiState {
     data class AddQuote(
         val error: String?,
         val quoteForm: QuoteForm,
-        val selectedBook: BookForQuote?,
-        val bookCandidates: List<BookForQuote>
+        val selectedBook: BookForQuote?
     ) : NewQuoteUiState
 }
 
@@ -57,10 +56,7 @@ private data class NewQuoteViewModelState(
         page = null,
         thought = ""
     ),
-    val selectedBook: BookForQuote? = null,
-    // Note: Move below to another ViewModel if necessary
-    val bookQuery: String = "",
-    val bookCandidates: List<BookForQuote> = emptyList()
+    val selectedBook: BookForQuote? = null
 ) {
     fun toState(): NewQuoteUiState =
         when {
@@ -69,8 +65,7 @@ private data class NewQuoteViewModelState(
                 NewQuoteUiState.AddQuote(
                     error = error,
                     quoteForm = quoteForm,
-                    selectedBook = selectedBook,
-                    bookCandidates = bookCandidates
+                    selectedBook = selectedBook
                 )
             }
         }
@@ -101,19 +96,6 @@ internal class NewQuoteViewModel @Inject constructor(
     init {
         // TODO
         viewModelState.update { it.copy(loading = false) }
-    }
-
-    // Note: Move to another ViewModel if necessary
-    fun filterBooks(q: String) {
-        if (q.isBlank()) {
-            viewModelState.update { it.copy(bookCandidates = emptyList()) }
-        }
-
-        viewModelScope.launch {
-            getFilteredBooksStreamUseCase(q = q).collect { books ->
-                viewModelState.update { it.copy(bookCandidates = books) }
-            }
-        }
     }
 
     fun updateQuote(quote: QuoteForm) {

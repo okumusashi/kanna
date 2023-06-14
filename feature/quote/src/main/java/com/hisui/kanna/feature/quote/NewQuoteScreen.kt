@@ -54,7 +54,6 @@ internal fun NewQuoteRoute(
         uiState = uiState,
         onUpdateQuote = viewModel::updateQuote,
         onSelectBook = viewModel::selectBook,
-        onUpdateBookFilter = viewModel::filterBooks,
         onCreate = viewModel::create,
         onExit = popBackStack
     )
@@ -66,7 +65,6 @@ internal fun NewQuoteScreen(
     uiState: NewQuoteUiState,
     onUpdateQuote: (QuoteForm) -> Unit,
     onSelectBook: (BookForQuote) -> Unit,
-    onUpdateBookFilter: (q: String) -> Unit,
     onCreate: (QuoteForm) -> Unit,
     onExit: () -> Unit
 ) {
@@ -91,9 +89,7 @@ internal fun NewQuoteScreen(
                         .padding(paddingValues)
                         .padding(16.dp),
                     quoteForm = uiState.quoteForm,
-                    bookCandidates = uiState.bookCandidates,
                     onUpdateQuote = onUpdateQuote,
-                    onUpdateBookFilter = onUpdateBookFilter,
                     onSelectBook = onSelectBook
                 )
             }
@@ -109,12 +105,10 @@ private fun NewQuoteScreenPreviewBase(isCompact: Boolean) {
             uiState = NewQuoteUiState.AddQuote(
                 error = null,
                 quoteForm = QuoteForm(quote = "", thought = "", bookId = 1L, page = 1),
-                selectedBook = null,
-                bookCandidates = emptyList()
+                selectedBook = null
             ),
             onUpdateQuote = {},
             onSelectBook = {},
-            onUpdateBookFilter = {},
             onCreate = {},
             onExit = {}
         )

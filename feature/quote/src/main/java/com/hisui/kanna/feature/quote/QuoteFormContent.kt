@@ -25,18 +25,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -84,9 +76,7 @@ internal fun QuoteFormBase(
 internal fun QuoteFormContent(
     modifier: Modifier = Modifier,
     quoteForm: QuoteForm,
-    bookCandidates: List<BookForQuote>,
     onUpdateQuote: (QuoteForm) -> Unit,
-    onUpdateBookFilter: (q: String) -> Unit,
     onSelectBook: (BookForQuote) -> Unit
 ) {
     LazyColumn(
@@ -107,8 +97,6 @@ internal fun QuoteFormContent(
 
         item {
             BookSelection(
-                filteredBooks = bookCandidates,
-                onUpdateFilter = onUpdateBookFilter,
                 onSelect = { book ->
                     onSelectBook(book)
                     onUpdateQuote(quoteForm.copy(bookId = book.id))
@@ -140,63 +128,6 @@ internal fun QuoteFormContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun BookSelection(
-    modifier: Modifier = Modifier,
-    filteredBooks: List<BookForQuote>,
-    onUpdateFilter: (q: String) -> Unit,
-    onSelect: (BookForQuote) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-    var title by remember { mutableStateOf("") }
-
-    ExposedDropdownMenuBox(
-        modifier = modifier,
-        expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
-    ) {
-        OutlinedTextField(
-            modifier = Modifier.menuAnchor(),
-            value = title,
-            onValueChange = {
-                onUpdateFilter(it)
-                title = it
-            },
-            label = { Text(stringResource(id = com.hisui.kanna.core.ui.R.string.book_title)) }
-        )
-
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            filteredBooks
-                .ifEmpty {
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = stringResource(id = R.string.type_to_search),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        },
-                        onClick = { }
-                    )
-                    return@ExposedDropdownMenu
-                }
-                .forEach { item ->
-                    DropdownMenuItem(
-                        text = { Text(item.title) },
-                        onClick = {
-                            onSelect(item)
-                            title = item.title
-                            expanded = false
-                        }
-                    )
-                }
-        }
-    }
-}
-
 @Preview
 @Composable
 private fun QuoteFormContentPreview() {
@@ -204,9 +135,7 @@ private fun QuoteFormContentPreview() {
         QuoteFormContent(
             modifier = Modifier.padding(32.dp),
             quoteForm = QuoteForm(quote = "", thought = "", bookId = 1L, page = 1),
-            bookCandidates = emptyList(),
             onUpdateQuote = {},
-            onUpdateBookFilter = {},
             onSelectBook = {}
         )
     }

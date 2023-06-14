@@ -21,7 +21,7 @@ import androidx.lifecycle.viewModelScope
 import com.hisui.kanna.core.data.repository.QuoteRepository
 import com.hisui.kanna.core.domain.usecase.GetFilteredBooksStreamUseCase
 import com.hisui.kanna.core.model.BookForQuote
-import com.hisui.kanna.core.model.NewQuote
+import com.hisui.kanna.core.model.QuoteForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
@@ -42,7 +42,7 @@ sealed interface NewQuoteUiState {
 
     data class AddQuote(
         val error: String?,
-        val newQuote: NewQuote,
+        val quoteForm: QuoteForm,
         val selectedBook: BookForQuote?,
         val bookCandidates: List<BookForQuote>
     ) : NewQuoteUiState
@@ -51,7 +51,7 @@ sealed interface NewQuoteUiState {
 private data class NewQuoteViewModelState(
     val loading: Boolean = true,
     val error: String? = null,
-    val newQuote: NewQuote = NewQuote(
+    val quoteForm: QuoteForm = QuoteForm(
         quote = "",
         bookId = 0,
         page = null,
@@ -68,7 +68,7 @@ private data class NewQuoteViewModelState(
             else -> {
                 NewQuoteUiState.AddQuote(
                     error = error,
-                    newQuote = newQuote,
+                    quoteForm = quoteForm,
                     selectedBook = selectedBook,
                     bookCandidates = bookCandidates
                 )
@@ -116,17 +116,17 @@ internal class NewQuoteViewModel @Inject constructor(
         }
     }
 
-    fun updateQuote(quote: NewQuote) {
-        viewModelState.update { it.copy(newQuote = quote) }
+    fun updateQuote(quote: QuoteForm) {
+        viewModelState.update { it.copy(quoteForm = quote) }
     }
 
     fun selectBook(book: BookForQuote) {
         viewModelState.update { it.copy(selectedBook = book) }
     }
 
-    fun create(newQuote: NewQuote) {
+    fun create(quoteForm: QuoteForm) {
         viewModelScope.launch {
-            val result = repository.save(quote = newQuote)
+            val result = repository.save(quote = quoteForm)
             if (result.isSuccess) {
                 _event.send(NewQuoteEvent.Created)
             }

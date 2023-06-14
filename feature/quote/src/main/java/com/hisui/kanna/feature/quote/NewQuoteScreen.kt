@@ -44,7 +44,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.model.BookForQuote
-import com.hisui.kanna.core.model.NewQuote
+import com.hisui.kanna.core.model.QuoteForm
 import com.hisui.kanna.core.ui.component.KannaTopBar
 
 @Composable
@@ -79,10 +79,10 @@ internal fun NewQuoteRoute(
 internal fun NewQuoteScreen(
     isCompact: Boolean,
     uiState: NewQuoteUiState,
-    onUpdateQuote: (NewQuote) -> Unit,
+    onUpdateQuote: (QuoteForm) -> Unit,
     onSelectBook: (BookForQuote) -> Unit,
     onUpdateBookFilter: (q: String) -> Unit,
-    onCreate: (NewQuote) -> Unit,
+    onCreate: (QuoteForm) -> Unit,
     onExit: () -> Unit
 ) {
     Scaffold(
@@ -96,7 +96,7 @@ internal fun NewQuoteScreen(
                 onClickNavigationIcon = onExit,
                 onSubmit = {
                     if (uiState is NewQuoteUiState.AddQuote) {
-                        onCreate(uiState.newQuote)
+                        onCreate(uiState.quoteForm)
                     }
                 },
                 enabled = uiState is NewQuoteUiState.AddQuote
@@ -111,7 +111,7 @@ internal fun NewQuoteScreen(
                         .fillMaxWidth()
                         .padding(paddingValues)
                         .padding(16.dp),
-                    newQuote = uiState.newQuote,
+                    quoteForm = uiState.quoteForm,
                     bookCandidates = uiState.bookCandidates,
                     onUpdateQuote = onUpdateQuote,
                     onUpdateBookFilter = onUpdateBookFilter,
@@ -125,9 +125,9 @@ internal fun NewQuoteScreen(
 @Composable
 private fun AddQuoteScreen(
     modifier: Modifier = Modifier,
-    newQuote: NewQuote,
+    quoteForm: QuoteForm,
     bookCandidates: List<BookForQuote>,
-    onUpdateQuote: (NewQuote) -> Unit,
+    onUpdateQuote: (QuoteForm) -> Unit,
     onUpdateBookFilter: (q: String) -> Unit,
     onSelectBook: (BookForQuote) -> Unit
 ) {
@@ -139,8 +139,8 @@ private fun AddQuoteScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp),
-            value = newQuote.quote,
-            onValueChange = { onUpdateQuote(newQuote.copy(quote = it)) },
+            value = quoteForm.quote,
+            onValueChange = { onUpdateQuote(quoteForm.copy(quote = it)) },
             label = { Text(text = stringResource(id = R.string.quote)) },
             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
         )
@@ -150,14 +150,14 @@ private fun AddQuoteScreen(
             onUpdateFilter = onUpdateBookFilter,
             onSelect = { book ->
                 onSelectBook(book)
-                onUpdateQuote(newQuote.copy(bookId = book.id))
+                onUpdateQuote(quoteForm.copy(bookId = book.id))
             }
         )
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = newQuote.page?.toString() ?: "",
-            onValueChange = { onUpdateQuote(newQuote.copy(page = it.toIntOrNull())) },
+            value = quoteForm.page?.toString() ?: "",
+            onValueChange = { onUpdateQuote(quoteForm.copy(page = it.toIntOrNull())) },
             label = { Text(text = stringResource(id = R.string.page)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
@@ -165,8 +165,8 @@ private fun AddQuoteScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp),
-            value = newQuote.thought,
-            onValueChange = { onUpdateQuote(newQuote.copy(thought = it)) },
+            value = quoteForm.thought,
+            onValueChange = { onUpdateQuote(quoteForm.copy(thought = it)) },
             label = { Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.thought)) },
             keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
         )

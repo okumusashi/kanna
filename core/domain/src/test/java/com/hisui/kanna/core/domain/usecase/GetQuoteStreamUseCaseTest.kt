@@ -19,7 +19,7 @@ package com.hisui.kanna.core.domain.usecase
 import com.google.common.truth.Truth.assertThat
 import com.hisui.kanna.core.Result
 import com.hisui.kanna.core.domain.error.QuoteError
-import com.hisui.kanna.core.model.NewQuote
+import com.hisui.kanna.core.model.QuoteForm
 import com.hisui.kanna.core.testing.data.defaultBook
 import com.hisui.kanna.core.testing.repository.TestQuoteRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -61,7 +61,7 @@ class GetQuoteStreamUseCaseTest {
             val book = defaultBook.copy(id = id)
             repository.addBook(book = book)
 
-            val quote = NewQuote(
+            val quote = QuoteForm(
                 page = 1,
                 quote = "quote",
                 thought = "thought",

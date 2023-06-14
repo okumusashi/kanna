@@ -18,10 +18,10 @@ package com.hisui.kanna.core.data.mapper
 
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.QuoteEntity
-import com.hisui.kanna.core.model.NewQuote
 import com.hisui.kanna.core.model.Quote
+import com.hisui.kanna.core.model.QuoteForm
 
-internal fun NewQuote.toEntity(): QuoteEntity =
+internal fun QuoteForm.toEntity(): QuoteEntity =
     QuoteEntity(
         bookId = bookId,
         page = page ?: 0,

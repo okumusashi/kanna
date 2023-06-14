@@ -18,8 +18,8 @@ package com.hisui.kanna.core.testing.repository
 
 import com.hisui.kanna.core.data.repository.QuoteRepository
 import com.hisui.kanna.core.model.Book
-import com.hisui.kanna.core.model.NewQuote
 import com.hisui.kanna.core.model.Quote
+import com.hisui.kanna.core.model.QuoteForm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -32,7 +32,7 @@ class TestQuoteRepository : QuoteRepository {
 
     private val books = mutableMapOf<Long, Book>()
 
-    override suspend fun save(quote: NewQuote): Result<Unit> {
+    override suspend fun save(quote: QuoteForm): Result<Unit> {
         quotes.update { state ->
             val id = state.keys.maxOrNull()?.plus(1) ?: 1
             quote.asQuote(
@@ -53,7 +53,7 @@ class TestQuoteRepository : QuoteRepository {
         books[book.id] = book
     }
 
-    private fun NewQuote.asQuote(id: Long, book: Book): Quote =
+    private fun QuoteForm.asQuote(id: Long, book: Book): Quote =
         Quote(
             id = id,
             page = page ?: 0,

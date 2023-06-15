@@ -9,8 +9,42 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, android]
-    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Build
+        id: build
+        run: ./gradlew assemble
+
+      - name: Slack failure report
+        uses: 8398a7/action-slack@v3
+        if: always() && failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTIONS_SLACK_WEBHOOK }}
+        with:
+          mention: 'here'
+          if_mention: 'always'
+          status: 'failure'
+          fields: repo,pullRequest,author,commit,took
+          text: ':x: Build failed.'
+
+  lint:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -29,13 +63,69 @@ jobs:
         id: ktlint
         run: ./gradlew ktlintCheck
 
-      - name: Build
-        id: build
-        run: ./gradlew assemble
+      - name: Slack failure report
+        uses: 8398a7/action-slack@v3
+        if: always() && failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTIONS_SLACK_WEBHOOK }}
+        with:
+          mention: 'here'
+          if_mention: 'always'
+          status: 'failure'
+          fields: repo,pullRequest,author,commit,took
+          text: ':x: lint failed.'
 
-      - name: Test
+  unit_testing:
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: testing
         id: unit_test
         run: ./gradlew testDebugUnitTest
+
+      - name: Slack failure report
+        uses: 8398a7/action-slack@v3
+        if: always() && failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTIONS_SLACK_WEBHOOK }}
+        with:
+          mention: 'here'
+          if_mention: 'always'
+          status: 'failure'
+          fields: repo,pullRequest,author,commit,took
+          text: ':x: unit testing failed.'
+
+  android_testing:
+    needs: lint
+    runs-on: [self-hosted, android]
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
       - name: Android Test
         id: android_test
@@ -60,4 +150,4 @@ jobs:
           if_mention: 'always'
           status: 'failure'
           fields: repo,pullRequest,author,commit,took
-          text: ':x: Build failed.'
+          text: ':x: Android testing failed.'

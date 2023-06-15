@@ -35,6 +35,7 @@ import com.hisui.kanna.core.model.BookForQuote
 
 @Composable
 internal fun BookSelection(
+    initial: String? = null,
     viewModel: BookSelectionViewModel = hiltViewModel(),
     onSelect: (BookForQuote) -> Unit
 ) {
@@ -42,7 +43,8 @@ internal fun BookSelection(
     BookSelection(
         filteredBooks = filteredBooksState,
         onUpdateFilter = viewModel::filterBooks,
-        onSelect = onSelect
+        onSelect = onSelect,
+        initial = initial ?: ""
     )
 }
 
@@ -50,12 +52,13 @@ internal fun BookSelection(
 @Composable
 private fun BookSelection(
     modifier: Modifier = Modifier,
+    initial: String,
     filteredBooks: List<BookForQuote>,
     onUpdateFilter: (q: String) -> Unit,
     onSelect: (BookForQuote) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var title by remember { mutableStateOf("") }
+    var title by remember(initial) { mutableStateOf(initial) }
 
     ExposedDropdownMenuBox(
         modifier = modifier,

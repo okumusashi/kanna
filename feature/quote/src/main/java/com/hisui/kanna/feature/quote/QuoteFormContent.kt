@@ -76,6 +76,7 @@ internal fun QuoteFormBase(
 internal fun QuoteFormContent(
     modifier: Modifier = Modifier,
     quoteForm: QuoteForm,
+    selectedBookTitle: String? = null,
     onUpdateQuote: (QuoteForm) -> Unit,
     onSelectBook: (BookForQuote) -> Unit
 ) {
@@ -97,6 +98,7 @@ internal fun QuoteFormContent(
 
         item {
             BookSelection(
+                initial = selectedBookTitle,
                 onSelect = { book ->
                     onSelectBook(book)
                     onUpdateQuote(quoteForm.copy(bookId = book.id))

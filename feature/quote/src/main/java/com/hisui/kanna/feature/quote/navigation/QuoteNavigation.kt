@@ -25,6 +25,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.hisui.kanna.feature.quote.EditQuoteRoute
 import com.hisui.kanna.feature.quote.NewQuoteRoute
 import com.hisui.kanna.feature.quote.QuoteListRoute
 import com.hisui.kanna.feature.quote.QuoteRoute
@@ -95,6 +96,12 @@ fun NavGraphBuilder.quoteListScreen(
             route = "quote/{$quoteIdArg}/edit",
             arguments = listOf(navArgument(quoteIdArg) { type = NavType.LongType })
         ) {
+            EditQuoteRoute(
+                isWidthCompact = isWidthCompact,
+                isHeightCompact = isHeightCompact,
+                onOpenQuote = navController::navigateToQuote,
+                onExit = navController::popBackStack
+            )
         }
     }
 }

@@ -26,6 +26,7 @@ import com.hisui.kanna.core.model.BookSorter
 import com.hisui.kanna.core.model.BookStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -69,6 +70,12 @@ class TestBookRepository : BookRepository {
         books.map { books ->
             books.getOrDefault(id, null)
         }
+
+    override suspend fun getForQuote(id: Long): BookForQuote =
+        books.first()
+            .values
+            .find { it.id == id }!!
+            .let { BookForQuote(id = id, title = "${it.title} (${it.author.name})") }
 
     override fun getListForQuoteStreamByQuery(q: String): Flow<List<BookForQuote>> =
         books.map { books ->

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,83 +33,83 @@ import com.hisui.kanna.core.model.BookForQuote
 import com.hisui.kanna.core.model.QuoteForm
 
 @Composable
-internal fun NewQuoteRoute(
-    viewModel: NewQuoteViewModel = hiltViewModel(),
+internal fun EditQuoteRoute(
+    viewModel: EditQuoteViewModel = hiltViewModel(),
     isWidthCompact: Boolean,
     isHeightCompact: Boolean,
-    popBackStack: () -> Unit
+    onOpenQuote: (id: Long) -> Unit,
+    onExit: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         viewModel.event.collect { event ->
             when (event) {
-                NewQuoteEvent.Created -> popBackStack()
+                is EditQuoteEvent.Complete -> onOpenQuote(event.id)
             }
         }
     }
 
     val uiState by viewModel.uiState.collectAsState()
 
-    NewQuoteScreen(
+    EditQuoteScreen(
         isCompact = isHeightCompact || isWidthCompact,
         uiState = uiState,
         onUpdateQuote = viewModel::updateQuote,
         onSelectBook = viewModel::selectBook,
-        onCreate = viewModel::create,
-        onExit = popBackStack
+        onUpdate = viewModel::update,
+        onExit = onExit
     )
 }
 
 @Composable
-internal fun NewQuoteScreen(
+internal fun EditQuoteScreen(
     isCompact: Boolean,
-    uiState: NewQuoteUiState,
+    uiState: EditQuoteUiState,
     onUpdateQuote: (QuoteForm) -> Unit,
     onSelectBook: (BookForQuote) -> Unit,
-    onCreate: (QuoteForm) -> Unit,
+    onUpdate: (quote: QuoteForm) -> Unit,
     onExit: () -> Unit
 ) {
     QuoteFormBase(
         isCompact = isCompact,
-        title = stringResource(id = R.string.add_quote),
-        submitButtonTitle = stringResource(id = com.hisui.kanna.core.ui.R.string.create),
-        onSubmit = {
-            if (uiState is NewQuoteUiState.AddQuote) {
-                onCreate(uiState.quoteForm)
-            }
-        },
-        submittable = uiState is NewQuoteUiState.AddQuote,
+        title = stringResource(id = R.string.edit_quote),
+        submitButtonTitle = stringResource(id = com.hisui.kanna.core.ui.R.string.update),
+        onSubmit = { onUpdate(uiState.quoteForm) },
+        submittable = uiState.submittable,
         onExit = onExit
     ) { paddingValues ->
-        when (uiState) {
-            NewQuoteUiState.Loading -> {}
-            is NewQuoteUiState.AddQuote -> {
-                QuoteFormContent(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(paddingValues)
-                        .padding(16.dp),
-                    quoteForm = uiState.quoteForm,
-                    onUpdateQuote = onUpdateQuote,
-                    onSelectBook = onSelectBook
-                )
-            }
-        }
+        QuoteFormContent(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingValues)
+                .padding(16.dp),
+            quoteForm = uiState.quoteForm,
+            selectedBookTitle = uiState.selectedBook?.title,
+            onUpdateQuote = onUpdateQuote,
+            onSelectBook = onSelectBook
+        )
     }
 }
 
 @Composable
-private fun NewQuoteScreenPreviewBase(isCompact: Boolean) {
+private fun EditQuoteScreenPreviewBase(isCompact: Boolean) {
     KannaTheme {
-        NewQuoteScreen(
+        EditQuoteScreen(
             isCompact = isCompact,
-            uiState = NewQuoteUiState.AddQuote(
+            uiState = EditQuoteUiState(
+                loading = false,
                 error = null,
-                quoteForm = QuoteForm(quote = "", thought = "", bookId = 1L, page = 1),
-                selectedBook = null
+                quoteForm = QuoteForm(
+                    quote = "quote",
+                    bookId = 0L,
+                    page = 1,
+                    thought = "thought"
+                ),
+                selectedBook = null,
+                submittable = true
             ),
             onUpdateQuote = {},
             onSelectBook = {},
-            onCreate = {},
+            onUpdate = {},
             onExit = {}
         )
     }
@@ -117,12 +117,12 @@ private fun NewQuoteScreenPreviewBase(isCompact: Boolean) {
 
 @Preview(device = Devices.PIXEL_4)
 @Composable
-private fun NewQuoteScreenPhonePreview() { NewQuoteScreenPreviewBase(isCompact = true) }
+private fun EditQuoteScreenPhonePreview() { EditQuoteScreenPreviewBase(isCompact = true) }
 
 @Preview(device = Devices.TABLET)
 @Composable
-private fun NewQuoteScreenTabletPreview() { NewQuoteScreenPreviewBase(isCompact = false) }
+private fun EditQuoteScreenTablePreview() { EditQuoteScreenPreviewBase(isCompact = false) }
 
 @Preview(device = Devices.DESKTOP)
 @Composable
-private fun NewQuoteScreenDesktopPreview() { NewQuoteScreenPreviewBase(isCompact = false) }
+private fun EditQuoteScreenDesktopPreview() { EditQuoteScreenPreviewBase(isCompact = false) }

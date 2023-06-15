@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.core.data.repository
+package com.hisui.kanna.core.designsystem.component
 
-import com.hisui.kanna.core.model.Quote
-import com.hisui.kanna.core.model.QuoteForm
-import kotlinx.coroutines.flow.Flow
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
-interface QuoteRepository {
-    suspend fun save(quote: QuoteForm): Result<Unit>
-    fun getAllStream(): Flow<List<Quote>>
-    fun getStream(id: Long): Flow<Quote?>
-    suspend fun update(id: Long, quote: QuoteForm): Result<Unit>
+@Composable
+fun KannaDivider() {
+    Divider(
+        modifier = Modifier.padding(vertical = 8.dp),
+        thickness = 0.5f.dp,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
 }

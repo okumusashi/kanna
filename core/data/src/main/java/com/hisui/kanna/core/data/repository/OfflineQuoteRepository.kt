@@ -18,11 +18,12 @@ package com.hisui.kanna.core.data.repository
 
 import com.hisui.kanna.core.common.Dispatcher
 import com.hisui.kanna.core.common.KannaDispatchers
+import com.hisui.kanna.core.data.mapper.asEntity
 import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.data.mapper.toEntity
 import com.hisui.kanna.core.database.dao.QuoteDao
-import com.hisui.kanna.core.model.NewQuote
 import com.hisui.kanna.core.model.Quote
+import com.hisui.kanna.core.model.QuoteForm
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -33,7 +34,7 @@ class OfflineQuoteRepository @Inject constructor(
     private val dao: QuoteDao,
     @Dispatcher(KannaDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 ) : QuoteRepository {
-    override suspend fun save(quote: NewQuote): Result<Unit> {
+    override suspend fun save(quote: QuoteForm): Result<Unit> {
         withContext(ioDispatcher) {
             dao.insert(quote.toEntity())
         }
@@ -43,5 +44,21 @@ class OfflineQuoteRepository @Inject constructor(
     override fun getAllStream(): Flow<List<Quote>> =
         dao.getAll().map { quotes ->
             quotes.asExternalModel()
+        }
+
+    override fun getStream(id: Long): Flow<Quote?> =
+        dao.getStream(id = id).map {
+            if (it.isEmpty()) {
+                return@map null
+            }
+            it.entries.first().let { (quote, bookAndAuthor) ->
+                quote.asExternalModel(bookAndAuthor = bookAndAuthor)
+            }
+        }
+
+    override suspend fun update(id: Long, quote: QuoteForm): Result<Unit> =
+        withContext(ioDispatcher) {
+            dao.update(entity = quote.asEntity(id = id))
+            Result.success(Unit)
         }
 }

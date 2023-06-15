@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hisui.kanna.feature.book.component
+package com.hisui.kanna.feature.book
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -72,8 +72,6 @@ import com.hisui.kanna.core.ui.R
 import com.hisui.kanna.core.ui.component.KannaTopBar
 import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
 import com.hisui.kanna.core.ui.util.dateTimeFormatter
-import com.hisui.kanna.feature.book.AuthorSelection
-import com.hisui.kanna.feature.book.GenreSelection
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
 

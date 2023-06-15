@@ -69,6 +69,19 @@ interface BookDao {
     )
     fun getBookForQuoteStreamByQuery(q: String): Flow<List<BookForQuoteEntity>>
 
+    @Transaction
+    @Query(
+        """
+            SELECT
+                books.id,
+                books.title || ' (' || authors.id || ')' as title
+            FROM books
+            INNER JOIN authors ON books.author_id = authors.id
+            WHERE books.id = :id
+        """
+    )
+    suspend fun getForQuote(id: Long): BookForQuoteEntity
+
     @Query("SELECT COUNT(1) FROM books")
     fun countStream(): Flow<Int>
 

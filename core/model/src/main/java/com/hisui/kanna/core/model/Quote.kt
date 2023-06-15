@@ -30,7 +30,7 @@ data class Quote(
     val author: String
 )
 
-data class NewQuote(
+data class QuoteForm(
     val quote: String,
     val bookId: Long,
     val page: Int?,

@@ -28,7 +28,7 @@ import androidx.navigation.navOptions
 import com.hisui.kanna.core.ui.ext.isWidthCompact
 import com.hisui.kanna.core.ui.ext.isWidthExpanded
 import com.hisui.kanna.feature.home.navigation.navigateToHome
-import com.hisui.kanna.feature.quote.navigation.navigateToQuote
+import com.hisui.kanna.feature.quote.navigation.navigateToQuoteList
 import com.hisui.kanna.navigation.KannaNavItem
 
 @Composable
@@ -73,7 +73,7 @@ class KannaAppState(
         }
         when (destination) {
             KannaNavItem.HOME -> navController.navigateToHome(options = navOptions)
-            KannaNavItem.QUOTE -> navController.navigateToQuote(options = navOptions)
+            KannaNavItem.QUOTE -> navController.navigateToQuoteList(options = navOptions)
             else -> {}
         }
     }

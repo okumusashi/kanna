@@ -31,6 +31,8 @@ interface BookRepository {
 
     fun getStream(id: Long): Flow<Book?>
 
+    suspend fun getForQuote(id: Long): BookForQuote
+
     fun getListForQuoteStreamByQuery(q: String): Flow<List<BookForQuote>>
 
     suspend fun update(id: Long, book: BookForm): Result<Unit>

@@ -21,7 +21,7 @@ import androidx.lifecycle.viewModelScope
 import com.hisui.kanna.core.data.repository.QuoteRepository
 import com.hisui.kanna.core.domain.usecase.GetFilteredBooksStreamUseCase
 import com.hisui.kanna.core.model.BookForQuote
-import com.hisui.kanna.core.model.NewQuote
+import com.hisui.kanna.core.model.QuoteForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
@@ -42,25 +42,21 @@ sealed interface NewQuoteUiState {
 
     data class AddQuote(
         val error: String?,
-        val newQuote: NewQuote,
-        val selectedBook: BookForQuote?,
-        val bookCandidates: List<BookForQuote>
+        val quoteForm: QuoteForm,
+        val selectedBook: BookForQuote?
     ) : NewQuoteUiState
 }
 
 private data class NewQuoteViewModelState(
     val loading: Boolean = true,
     val error: String? = null,
-    val newQuote: NewQuote = NewQuote(
+    val quoteForm: QuoteForm = QuoteForm(
         quote = "",
         bookId = 0,
         page = null,
         thought = ""
     ),
-    val selectedBook: BookForQuote? = null,
-    // Note: Move below to another ViewModel if necessary
-    val bookQuery: String = "",
-    val bookCandidates: List<BookForQuote> = emptyList()
+    val selectedBook: BookForQuote? = null
 ) {
     fun toState(): NewQuoteUiState =
         when {
@@ -68,9 +64,8 @@ private data class NewQuoteViewModelState(
             else -> {
                 NewQuoteUiState.AddQuote(
                     error = error,
-                    newQuote = newQuote,
-                    selectedBook = selectedBook,
-                    bookCandidates = bookCandidates
+                    quoteForm = quoteForm,
+                    selectedBook = selectedBook
                 )
             }
         }
@@ -103,30 +98,17 @@ internal class NewQuoteViewModel @Inject constructor(
         viewModelState.update { it.copy(loading = false) }
     }
 
-    // Note: Move to another ViewModel if necessary
-    fun filterBooks(q: String) {
-        if (q.isBlank()) {
-            viewModelState.update { it.copy(bookCandidates = emptyList()) }
-        }
-
-        viewModelScope.launch {
-            getFilteredBooksStreamUseCase(q = q).collect { books ->
-                viewModelState.update { it.copy(bookCandidates = books) }
-            }
-        }
-    }
-
-    fun updateQuote(quote: NewQuote) {
-        viewModelState.update { it.copy(newQuote = quote) }
+    fun updateQuote(quote: QuoteForm) {
+        viewModelState.update { it.copy(quoteForm = quote) }
     }
 
     fun selectBook(book: BookForQuote) {
         viewModelState.update { it.copy(selectedBook = book) }
     }
 
-    fun create(newQuote: NewQuote) {
+    fun create(quoteForm: QuoteForm) {
         viewModelScope.launch {
-            val result = repository.save(quote = newQuote)
+            val result = repository.save(quote = quoteForm)
             if (result.isSuccess) {
                 _event.send(NewQuoteEvent.Created)
             }

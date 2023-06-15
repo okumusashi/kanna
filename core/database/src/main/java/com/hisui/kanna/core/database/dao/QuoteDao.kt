@@ -20,6 +20,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.hisui.kanna.core.database.entity.BookAndAuthorEntity
 import com.hisui.kanna.core.database.entity.QuoteEntity
 import kotlinx.coroutines.flow.Flow
@@ -38,4 +39,17 @@ interface QuoteDao {
         """
     )
     fun getAll(): Flow<Map<QuoteEntity, BookAndAuthorEntity>>
+
+    @Transaction
+    @Query(
+        """
+            SELECT * FROM quotes
+            INNER JOIN books ON quotes.book_id = books.id
+            WHERE quotes.id = :id
+        """
+    )
+    fun getStream(id: Long): Flow<Map<QuoteEntity, BookAndAuthorEntity>>
+
+    @Update
+    fun update(entity: QuoteEntity)
 }

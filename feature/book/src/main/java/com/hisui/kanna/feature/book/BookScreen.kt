@@ -16,11 +16,6 @@
 
 package com.hisui.kanna.feature.book
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -36,11 +31,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Divider
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,7 +39,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -58,6 +47,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hisui.kanna.core.designsystem.component.FloatingEditButton
+import com.hisui.kanna.core.designsystem.component.KannaDivider
 import com.hisui.kanna.core.designsystem.theme.KannaTheme
 import com.hisui.kanna.core.model.Book
 import com.hisui.kanna.core.model.Quote
@@ -65,7 +56,6 @@ import com.hisui.kanna.core.model.bookForPreview
 import com.hisui.kanna.core.model.quoteForPreview
 import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
 import com.hisui.kanna.core.ui.util.format
-import com.hisui.kanna.feature.book.component.RatingStars
 import kotlinx.datetime.Instant
 
 @Composable
@@ -124,26 +114,13 @@ private fun BookContent(
 
         Spacer(modifier = Modifier.height(96.dp))
 
-        val density = LocalDensity.current
-        AnimatedVisibility(
+        FloatingEditButton(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(bottom = 16.dp),
             visible = !scrollState.canScrollForward || !scrollState.canScrollBackward,
-            enter = slideInVertically {
-                with(density) { 96.dp.roundToPx() }
-            } + fadeIn(),
-            exit = slideOutVertically() {
-                with(density) { 96.dp.roundToPx() }
-            } + fadeOut()
-        ) {
-            FloatingActionButton(onClick = onOpenEdit) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit book"
-                )
-            }
-        }
+            onClick = onOpenEdit
+        )
     }
 }
 
@@ -184,15 +161,6 @@ private fun BookContentTablePreview() { BookContentPreviewBase() }
 private fun BookContentDesktopPreview() { BookContentPreviewBase() }
 
 @Composable
-private fun BookContentDivider() {
-    Divider(
-        modifier = Modifier.padding(vertical = 8.dp),
-        thickness = 0.5f.dp,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-}
-
-@Composable
 private fun Title(title: String) {
     Text(text = title, style = MaterialTheme.typography.headlineMedium)
 }
@@ -230,7 +198,7 @@ private fun PropertiesSection(
 @Composable
 private fun EvaluationSection(thought: String, rating: Int) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        BookContentDivider()
+        KannaDivider()
 
         Box(modifier = Modifier.offset(x = (-4).dp)) {
             RatingStars(
@@ -243,7 +211,10 @@ private fun EvaluationSection(thought: String, rating: Int) {
 
         if (thought.isBlank()) {
             Text(
-                text = stringResource(id = R.string.no_thought),
+                text = stringResource(
+                    id = com.hisui.kanna.core.ui.R.string.no_thought,
+                    stringResource(id = com.hisui.kanna.core.ui.R.string.book)
+                ),
                 fontStyle = FontStyle.Italic,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -260,8 +231,11 @@ private fun MemoSection(memo: String) {
     }
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        BookContentDivider()
-        Text(text = stringResource(id = R.string.memo), fontWeight = FontWeight.SemiBold)
+        KannaDivider()
+        Text(
+            text = stringResource(id = R.string.memo),
+            fontWeight = FontWeight.SemiBold
+        )
         Text(text = memo)
     }
 }
@@ -271,7 +245,7 @@ private fun LazyListScope.quotesSection(quotes: List<Quote>) {
         return
     }
 
-    item { BookContentDivider() }
+    item { KannaDivider() }
     item {
         Text(
             text = stringResource(id = R.string.quotes_from_this_book),

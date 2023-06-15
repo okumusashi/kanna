@@ -25,8 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.model.Author
 import com.hisui.kanna.core.model.BookForm
 import com.hisui.kanna.core.model.BookReadStatus
-import com.hisui.kanna.feature.book.component.BookFormContent
-import com.hisui.kanna.feature.book.component.BookFormDialog
 
 @Composable
 internal fun EditBookRoute(

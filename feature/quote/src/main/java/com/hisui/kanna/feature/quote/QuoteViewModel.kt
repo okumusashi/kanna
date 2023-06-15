@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Lynn Sakashita
+ * Copyright 2023 Lynn Sakashita
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,69 +16,48 @@
 
 package com.hisui.kanna.feature.quote
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hisui.kanna.core.data.repository.QuoteRepository
-import com.hisui.kanna.core.domain.usecase.CountBooksStreamUseCase
+import com.hisui.kanna.core.KannaError
+import com.hisui.kanna.core.Result
+import com.hisui.kanna.core.domain.usecase.GetQuoteStreamUseCase
 import com.hisui.kanna.core.model.Quote
+import com.hisui.kanna.feature.quote.navigation.QuoteArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-sealed interface QuoteUiState {
-    object Loading : QuoteUiState
-    object NoBook : QuoteUiState
-    object NoQuote : QuoteUiState
-    data class ShowQuotes(val quotes: List<Quote>) : QuoteUiState
-}
-
-private data class QuoteViewModelState(
-    val quotes: List<Quote> = emptyList(),
-    val hasBook: Boolean = true,
-    val loading: Boolean = true
-) {
-    fun toUiState(): QuoteUiState =
-        when {
-            loading -> QuoteUiState.Loading
-            !hasBook -> QuoteUiState.NoBook
-            quotes.isEmpty() -> QuoteUiState.NoQuote
-            else -> QuoteUiState.ShowQuotes(quotes = quotes)
-        }
-}
 
 @HiltViewModel
 class QuoteViewModel @Inject constructor(
-    repository: QuoteRepository,
-    countBooksStreamUseCase: CountBooksStreamUseCase
+    savedStateHandle: SavedStateHandle,
+    getQuoteStreamUseCase: GetQuoteStreamUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(QuoteViewModelState())
-    val uiState = _uiState
-        .map { it.toUiState() }
+    private val args = QuoteArgs(savedStateHandle)
+
+    private val _uiState = getQuoteStreamUseCase(id = args.quoteId)
+        .map { result ->
+            when (result) {
+                is Result.Success -> QuoteUiState.ShowQuote(quote = result.data)
+                is Result.Error -> QuoteUiState.Error(error = result.error)
+                is Result.Loading -> QuoteUiState.Loading
+            }
+        }
+
+    val uiState: StateFlow<QuoteUiState> = _uiState
         .stateIn(
             viewModelScope,
             SharingStarted.Eagerly,
             QuoteUiState.Loading
         )
+}
 
-    init {
-        viewModelScope.launch {
-            launch {
-                repository.getAllStream().collect { quotes ->
-                    _uiState.update { it.copy(loading = false, quotes = quotes) }
-                }
-            }
-            launch {
-                countBooksStreamUseCase().collect { count ->
-                    _uiState.update { it.copy(hasBook = count > 0) }
-                }
-            }
-        }
-    }
+sealed interface QuoteUiState {
+    data class ShowQuote(val quote: Quote) : QuoteUiState
+    data class Error(val error: KannaError) : QuoteUiState
+    object Loading : QuoteUiState
 }

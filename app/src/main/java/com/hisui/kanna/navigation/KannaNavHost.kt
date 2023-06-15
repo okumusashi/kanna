@@ -26,7 +26,7 @@ import com.hisui.kanna.feature.book.navigation.navigateToNewBook
 import com.hisui.kanna.feature.book.navigation.newBookScreen
 import com.hisui.kanna.feature.home.navigation.homeNavigationRoute
 import com.hisui.kanna.feature.home.navigation.homeScreen
-import com.hisui.kanna.feature.quote.navigation.quoteScreen
+import com.hisui.kanna.feature.quote.navigation.quoteListScreen
 
 @Composable
 fun KannaNavHost(
@@ -43,12 +43,11 @@ fun KannaNavHost(
             onOpenBook = navController::navigateToBook
         )
 
-        quoteScreen(
+        quoteListScreen(
             navController = navController,
             isWidthCompact = isWidthCompact,
             isHeightCompact = isHeightCompact,
-            onOpenNewBookScreen = navController::navigateToNewBook,
-            popBackStack = navController::popBackStack
+            onOpenNewBookScreen = navController::navigateToNewBook
         )
 
         newBookScreen(

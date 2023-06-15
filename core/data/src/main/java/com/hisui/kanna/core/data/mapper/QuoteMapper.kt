@@ -46,3 +46,12 @@ internal fun QuoteEntity.asExternalModel(bookAndAuthor: BookAndAuthorEntity): Qu
         authorId = bookAndAuthor.author.id,
         author = bookAndAuthor.author.name
     )
+
+internal fun QuoteForm.asEntity(id: Long): QuoteEntity =
+    QuoteEntity(
+        _id = id,
+        quote = quote,
+        page = page ?: 0,
+        bookId = bookId,
+        thought = thought
+    )

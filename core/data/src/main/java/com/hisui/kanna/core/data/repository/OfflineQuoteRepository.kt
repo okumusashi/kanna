@@ -18,6 +18,7 @@ package com.hisui.kanna.core.data.repository
 
 import com.hisui.kanna.core.common.Dispatcher
 import com.hisui.kanna.core.common.KannaDispatchers
+import com.hisui.kanna.core.data.mapper.asEntity
 import com.hisui.kanna.core.data.mapper.asExternalModel
 import com.hisui.kanna.core.data.mapper.toEntity
 import com.hisui.kanna.core.database.dao.QuoteDao
@@ -53,5 +54,11 @@ class OfflineQuoteRepository @Inject constructor(
             it.entries.first().let { (quote, bookAndAuthor) ->
                 quote.asExternalModel(bookAndAuthor = bookAndAuthor)
             }
+        }
+
+    override suspend fun update(id: Long, quote: QuoteForm): Result<Unit> =
+        withContext(ioDispatcher) {
+            dao.update(entity = quote.asEntity(id = id))
+            Result.success(Unit)
         }
 }

@@ -24,4 +24,5 @@ interface QuoteRepository {
     suspend fun save(quote: QuoteForm): Result<Unit>
     fun getAllStream(): Flow<List<Quote>>
     fun getStream(id: Long): Flow<Quote?>
+    suspend fun update(id: Long, quote: QuoteForm): Result<Unit>
 }

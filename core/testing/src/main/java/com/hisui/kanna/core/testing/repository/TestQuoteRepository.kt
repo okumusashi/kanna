@@ -48,6 +48,12 @@ class TestQuoteRepository : QuoteRepository {
     override fun getAllStream(): Flow<List<Quote>> = quotes.map { it.values.toList() }
 
     override fun getStream(id: Long): Flow<Quote?> = quotes.map { it[id] }
+    override suspend fun update(id: Long, quote: QuoteForm): Result<Unit> {
+        quotes.update {
+            it + mapOf(id to quote.asQuote(id = id, book = books[quote.bookId]!!))
+        }
+        return Result.success(Unit)
+    }
 
     fun addBook(book: Book) {
         books[book.id] = book

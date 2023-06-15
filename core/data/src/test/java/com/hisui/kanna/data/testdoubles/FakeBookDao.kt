@@ -28,6 +28,7 @@ import com.hisui.kanna.core.model.BookStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
@@ -73,6 +74,15 @@ class FakeBookDao : BookDao {
                 entities
                     .filter { it.book.title.contains(q) || it.author.name.contains(q) }
                     .map { BookForQuoteEntity(id = it.book.id, title = it.book.title) }
+            }
+
+    override suspend fun getForQuote(id: Long): BookForQuoteEntity =
+        books.first()
+            .values
+            .find { it.id == id }!!
+            .let {
+                val author = toBookAndAuthorEntity(it).author
+                BookForQuoteEntity(id = id, title = "${it.title} (${author.name})")
             }
 
     override fun countStream(): Flow<Int> = books.map { it.size }

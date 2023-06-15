@@ -47,6 +47,12 @@ class FakeQuoteDao : QuoteDao {
                 ?: emptyMap()
         }
 
+    override fun update(entity: QuoteEntity) {
+        quotes.update {
+            it + (entity.id to entity)
+        }
+    }
+
     fun addBookAndAuthor(bookAndAuthor: BookAndAuthorEntity) {
         booksAndAuthors[bookAndAuthor.book.id] = bookAndAuthor
     }

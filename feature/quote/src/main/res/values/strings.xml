@@ -24,4 +24,5 @@
     <string name="no_book_yet">There is no book for a quote yet.</string>
     <string name="lets_add_book">Add books so you can add some nice quotes from the them.</string>
     <string name="no_quote_yet">"No quote added yet. \nA sentence can change one's life… "</string>
+    <string name="edit_quote">Edit quote</string>
 </resources>

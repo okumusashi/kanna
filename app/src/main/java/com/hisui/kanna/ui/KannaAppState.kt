@@ -25,6 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.hisui.kanna.core.ui.ext.isHeightCompact
 import com.hisui.kanna.core.ui.ext.isWidthCompact
 import com.hisui.kanna.core.ui.ext.isWidthExpanded
 import com.hisui.kanna.feature.home.navigation.navigateToHome
@@ -56,6 +57,9 @@ class KannaAppState(
     val shouldShowBottomBar: Boolean get() = windowSizeClass.isWidthCompact
 
     val shouldShowNavRail: Boolean get() = !shouldShowBottomBar
+
+    val isCompactWindow: Boolean get() =
+        windowSizeClass.isWidthCompact || windowSizeClass.isHeightCompact
 
     fun navigateToTopLevelDestination(destination: KannaNavItem) {
         val navOptions = navOptions {

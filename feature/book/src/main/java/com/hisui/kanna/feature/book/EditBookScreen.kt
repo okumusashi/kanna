@@ -29,8 +29,7 @@ import com.hisui.kanna.core.model.BookReadStatus
 @Composable
 internal fun EditBookRoute(
     viewModel: EditBookViewModel = hiltViewModel(),
-    isWidthCompact: Boolean,
-    isHeightCompact: Boolean,
+    isCompact: Boolean,
     popBackStack: () -> Unit,
     openBook: (id: Long) -> Unit
 ) {
@@ -45,11 +44,11 @@ internal fun EditBookRoute(
     }
 
     BookFormDialog(
-        isWidthCompact = isWidthCompact,
+        isCompact = isCompact,
         onDismiss = popBackStack
     ) {
         EditBookScreen(
-            isCompact = isWidthCompact || isHeightCompact,
+            isCompact = isCompact,
             uiState = uiState,
             popBackStack = popBackStack,
             onUpdateBook = viewModel::updateBook,

@@ -31,8 +31,7 @@ import com.hisui.kanna.feature.quote.navigation.quoteListScreen
 @Composable
 fun KannaNavHost(
     navController: NavHostController,
-    isWidthCompact: Boolean,
-    isHeightCompact: Boolean
+    isCompact: Boolean
 ) {
     NavHost(
         navController = navController,
@@ -45,20 +44,17 @@ fun KannaNavHost(
 
         quoteListScreen(
             navController = navController,
-            isWidthCompact = isWidthCompact,
-            isHeightCompact = isHeightCompact,
+            isCompact = isCompact,
             onOpenNewBookScreen = navController::navigateToNewBook
         )
 
         newBookScreen(
-            isWidthCompact = isWidthCompact,
-            isHeightCompact = isHeightCompact,
+            isCompact = isCompact,
             popBackStack = navController::popBackStack
         )
 
         bookScreen(
-            isWidthCompact = isWidthCompact,
-            isHeightCompact = isHeightCompact,
+            isCompact = isCompact,
             popBackStack = navController::popBackStack,
             onOpenBook = navController::navigateToBook,
             onOpenEditBook = navController::navigateToEditBook

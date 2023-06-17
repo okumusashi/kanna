@@ -35,8 +35,7 @@ import com.hisui.kanna.core.model.QuoteForm
 @Composable
 internal fun NewQuoteRoute(
     viewModel: NewQuoteViewModel = hiltViewModel(),
-    isWidthCompact: Boolean,
-    isHeightCompact: Boolean,
+    isCompact: Boolean,
     popBackStack: () -> Unit
 ) {
     LaunchedEffect(Unit) {
@@ -50,7 +49,7 @@ internal fun NewQuoteRoute(
     val uiState by viewModel.uiState.collectAsState()
 
     NewQuoteScreen(
-        isCompact = isHeightCompact || isWidthCompact,
+        isCompact = isCompact,
         uiState = uiState,
         onUpdateQuote = viewModel::updateQuote,
         onSelectBook = viewModel::selectBook,

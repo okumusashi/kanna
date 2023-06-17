@@ -77,14 +77,14 @@ import kotlinx.datetime.toJavaInstant
 
 @Composable
 internal fun BookFormDialog(
-    isWidthCompact: Boolean,
+    isCompact: Boolean,
     onDismiss: () -> Unit,
     content: @Composable () -> Unit
 ) {
     Dialog(
         properties = DialogProperties(
             dismissOnClickOutside = false,
-            usePlatformDefaultWidth = !isWidthCompact
+            usePlatformDefaultWidth = !isCompact
         ),
         onDismissRequest = onDismiss
     ) {

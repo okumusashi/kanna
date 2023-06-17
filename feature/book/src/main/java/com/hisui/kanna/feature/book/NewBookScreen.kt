@@ -37,8 +37,7 @@ import kotlinx.datetime.Clock
 @Composable
 internal fun NewBookRoute(
     viewModel: NewBookViewModel = hiltViewModel(),
-    isWidthCompact: Boolean,
-    isHeightCompact: Boolean,
+    isCompact: Boolean,
     popBackStack: () -> Unit
 ) {
     LaunchedEffect(Unit) {
@@ -52,11 +51,11 @@ internal fun NewBookRoute(
     val uiState by viewModel.uiState.collectAsState()
 
     BookFormDialog(
-        isWidthCompact = isWidthCompact,
+        isCompact = isCompact,
         onDismiss = popBackStack
     ) {
         NewBookScreen(
-            isCompact = isWidthCompact || isHeightCompact,
+            isCompact = isCompact,
             uiState = uiState,
             popBackStack = popBackStack,
             onUpdateBook = viewModel::updateBook,
@@ -122,7 +121,7 @@ private fun NewBookScreenPreviewBase(isCompactScreen: Boolean) {
     KannaTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             BookFormDialog(
-                isWidthCompact = isCompactScreen,
+                isCompact = isCompactScreen,
                 onDismiss = {}
             ) {
                 BookFormContent(

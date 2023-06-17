@@ -61,8 +61,7 @@ fun NavController.navigateToEditQuote(quoteId: Long) {
 
 fun NavGraphBuilder.quoteListScreen(
     navController: NavController,
-    isWidthCompact: Boolean,
-    isHeightCompact: Boolean,
+    isCompact: Boolean,
     onOpenNewBookScreen: () -> Unit
 ) {
     navigation(
@@ -79,8 +78,7 @@ fun NavGraphBuilder.quoteListScreen(
 
         composable(route = newQuoteNavigationRoute) {
             NewQuoteRoute(
-                isWidthCompact = isWidthCompact,
-                isHeightCompact = isHeightCompact,
+                isCompact = isCompact,
                 popBackStack = navController::popBackStack
             )
         }
@@ -97,8 +95,7 @@ fun NavGraphBuilder.quoteListScreen(
             arguments = listOf(navArgument(quoteIdArg) { type = NavType.LongType })
         ) {
             EditQuoteRoute(
-                isWidthCompact = isWidthCompact,
-                isHeightCompact = isHeightCompact,
+                isCompact = isCompact,
                 onOpenQuote = navController::navigateToQuote,
                 onExit = navController::popBackStack
             )

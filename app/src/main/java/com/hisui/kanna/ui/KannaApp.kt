@@ -19,7 +19,6 @@ package com.hisui.kanna.ui
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -33,12 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import com.hisui.kanna.core.ui.ext.isHeightCompact
-import com.hisui.kanna.core.ui.ext.isWidthCompact
 import com.hisui.kanna.navigation.KannaNavHost
 import com.hisui.kanna.navigation.KannaNavItem
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KannaApp(
     windowSizeClass: WindowSizeClass,
@@ -70,8 +66,7 @@ fun KannaApp(
 
             KannaNavHost(
                 navController = appState.navController,
-                isWidthCompact = appState.windowSizeClass.isWidthCompact,
-                isHeightCompact = appState.windowSizeClass.isHeightCompact
+                isCompact = appState.isCompactWindow
             )
         }
     }

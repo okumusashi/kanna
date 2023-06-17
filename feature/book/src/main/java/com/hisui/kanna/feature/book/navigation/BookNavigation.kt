@@ -48,8 +48,7 @@ fun NavController.navigateToEditBook(bookId: Long) {
 }
 
 fun NavGraphBuilder.bookScreen(
-    isWidthCompact: Boolean,
-    isHeightCompact: Boolean,
+    isCompact: Boolean,
     popBackStack: () -> Unit,
     onOpenBook: (id: Long) -> Unit,
     onOpenEditBook: (id: Long) -> Unit
@@ -66,8 +65,7 @@ fun NavGraphBuilder.bookScreen(
         arguments = listOf(navArgument(bookIdArg) { type = NavType.LongType })
     ) {
         EditBookRoute(
-            isWidthCompact = isWidthCompact,
-            isHeightCompact = isHeightCompact,
+            isCompact = isCompact,
             popBackStack = popBackStack,
             openBook = onOpenBook
         )

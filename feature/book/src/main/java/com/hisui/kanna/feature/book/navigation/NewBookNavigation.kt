@@ -29,14 +29,12 @@ fun NavController.navigateToNewBook(options: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.newBookScreen(
-    isWidthCompact: Boolean,
-    isHeightCompact: Boolean,
+    isCompact: Boolean,
     popBackStack: () -> Unit
 ) {
     composable(route = newBookNavigationRoute) {
         NewBookRoute(
-            isWidthCompact = isWidthCompact,
-            isHeightCompact = isHeightCompact,
+            isCompact = isCompact,
             popBackStack = popBackStack
         )
     }

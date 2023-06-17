@@ -35,8 +35,7 @@ import com.hisui.kanna.core.model.QuoteForm
 @Composable
 internal fun EditQuoteRoute(
     viewModel: EditQuoteViewModel = hiltViewModel(),
-    isWidthCompact: Boolean,
-    isHeightCompact: Boolean,
+    isCompact: Boolean,
     onOpenQuote: (id: Long) -> Unit,
     onExit: () -> Unit
 ) {
@@ -51,7 +50,7 @@ internal fun EditQuoteRoute(
     val uiState by viewModel.uiState.collectAsState()
 
     EditQuoteScreen(
-        isCompact = isHeightCompact || isWidthCompact,
+        isCompact = isCompact,
         uiState = uiState,
         onUpdateQuote = viewModel::updateQuote,
         onSelectBook = viewModel::selectBook,

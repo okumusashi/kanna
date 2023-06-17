@@ -18,7 +18,7 @@ package com.hisui.kanna.feature.home
 
 import com.google.common.truth.Truth.assertThat
 import com.hisui.kanna.core.testing.MainDispatcherExtension
-import com.hisui.kanna.core.testing.data.asNewBook
+import com.hisui.kanna.core.testing.data.asForm
 import com.hisui.kanna.core.testing.data.defaultBook
 import com.hisui.kanna.core.testing.repository.TestBookRepository
 import kotlinx.coroutines.flow.first
@@ -48,7 +48,7 @@ class HomeViewModelTest {
     fun setup() {
         runTest {
             bookList
-                .map { it.asNewBook() }
+                .map { it.asForm() }
                 .forEach { bookRepository.save(it) }
         }
 

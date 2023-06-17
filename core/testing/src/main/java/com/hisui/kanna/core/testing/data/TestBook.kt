@@ -42,7 +42,7 @@ val defaultBook: Book =
         quotes = emptyList()
     )
 
-fun Book.asNewBook(): BookForm =
+fun Book.asForm(): BookForm =
     BookForm(
         title = title,
         readDate = readDate,

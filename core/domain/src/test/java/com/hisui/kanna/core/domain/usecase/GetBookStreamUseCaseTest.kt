@@ -20,7 +20,7 @@ import com.google.common.truth.Truth.assertThat
 import com.hisui.kanna.core.Result
 import com.hisui.kanna.core.domain.error.BookError
 import com.hisui.kanna.core.model.BookSorter
-import com.hisui.kanna.core.testing.data.asNewBook
+import com.hisui.kanna.core.testing.data.asForm
 import com.hisui.kanna.core.testing.data.defaultBook
 import com.hisui.kanna.core.testing.repository.TestBookRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -60,7 +60,7 @@ class GetBookStreamUseCaseTest {
         fun `WHEN - repository#getStream returns a book, THEN - it should success with the data`() {
             val book = defaultBook.copy(id = id)
             runTest {
-                repository.save(book = book.asNewBook())
+                repository.save(book = book.asForm())
             }
 
             runTest {

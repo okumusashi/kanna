@@ -98,7 +98,7 @@ internal fun QuoteFormContent(
 
         item {
             BookSelection(
-                initial = selectedBookTitle,
+                initial = selectedBookTitle ?: "",
                 onSelect = { book ->
                     onSelectBook(book)
                     onUpdateQuote(quoteForm.copy(bookId = book.id))

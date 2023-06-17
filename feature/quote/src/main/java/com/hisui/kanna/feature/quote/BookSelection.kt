@@ -16,71 +16,81 @@
 
 package com.hisui.kanna.feature.quote
 
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hisui.kanna.core.model.BookForQuote
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BookSelection(
-    initial: String? = null,
+    initial: String = "",
     viewModel: BookSelectionViewModel = hiltViewModel(),
     onSelect: (BookForQuote) -> Unit
 ) {
-    val filteredBooksState by viewModel.bookCandidates.collectAsState()
-    BookSelection(
-        filteredBooks = filteredBooksState,
-        onUpdateFilter = viewModel::filterBooks,
-        onSelect = onSelect,
-        initial = initial ?: ""
-    )
-}
+    val uiState by viewModel.uiState.collectAsState()
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun BookSelection(
-    modifier: Modifier = Modifier,
-    initial: String,
-    filteredBooks: List<BookForQuote>,
-    onUpdateFilter: (q: String) -> Unit,
-    onSelect: (BookForQuote) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-    var title by remember(initial) { mutableStateOf(initial) }
+    LaunchedEffect(initial) {
+        viewModel.selectBook(title = initial, selected = initial.isNotBlank())
+    }
+
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(viewModel.focusEvent) {
+        viewModel.focusEvent.collect {
+            focusRequester.requestFocus()
+        }
+    }
 
     ExposedDropdownMenuBox(
-        modifier = modifier,
-        expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
+        expanded = uiState.expanded,
+        onExpandedChange = { viewModel.changeDropdownExpanded() }
     ) {
         OutlinedTextField(
-            modifier = Modifier.menuAnchor(),
-            value = title,
-            onValueChange = {
-                onUpdateFilter(it)
-                title = it
+            modifier = Modifier
+                .menuAnchor()
+                .focusRequester(focusRequester),
+            value = uiState.title,
+            readOnly = uiState.bookSelected,
+            onValueChange = viewModel::filterBooks,
+            trailingIcon = {
+                if (uiState.bookSelected) {
+                    Icon(
+                        modifier = Modifier.clickable { viewModel.resetBook() },
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Clear"
+                    )
+                }
             },
             label = { Text(stringResource(id = com.hisui.kanna.core.ui.R.string.book_title)) }
         )
 
         ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
+            expanded = uiState.expanded,
+            onDismissRequest = viewModel::shrinkDropdown
         ) {
-            filteredBooks
+            uiState.bookCandidates
                 .ifEmpty {
+                    if (uiState.bookSelected) {
+                        return@ExposedDropdownMenu
+                    }
                     DropdownMenuItem(
                         text = {
                             Text(
@@ -97,8 +107,7 @@ private fun BookSelection(
                         text = { Text(item.title) },
                         onClick = {
                             onSelect(item)
-                            title = item.title
-                            expanded = false
+                            viewModel.selectBook(item.title)
                         }
                     )
                 }

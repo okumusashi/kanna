@@ -22,16 +22,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Grade
@@ -170,82 +170,99 @@ internal fun BookFormContent(
             )
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(paddingValues)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
+                .padding(16.dp),
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = book.title,
-                onValueChange = { onUpdateBook(book.copy(title = it)) },
-                label = { Text(text = stringResource(id = com.hisui.kanna.feature.book.R.string.title)) },
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
-            )
-
-            StatusSelection(
-                currentStatus = selectedStatus,
-                readStatuses = statuses,
-                onSelect = onSelectStatus
-            )
-
-            AnimatedVisibility(visible = selectedStatus == BookStatus.HAVE_READ) {
+            item {
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    leadingIcon = {
-                        Icon(
-                            modifier = Modifier.clickable { datePickerShown = true },
-                            imageVector = Icons.Filled.EditCalendar,
-                            contentDescription = "Calendar"
-                        )
-                    },
-                    value = dateTimeFormatter().format(book.readDate.toJavaInstant()),
-                    onValueChange = { },
-                    label = { Text(text = stringResource(id = com.hisui.kanna.feature.book.R.string.read_date)) },
-                    readOnly = true
+                    value = book.title,
+                    onValueChange = { onUpdateBook(book.copy(title = it)) },
+                    label = { Text(text = stringResource(id = com.hisui.kanna.feature.book.R.string.title)) },
+                    keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
                 )
             }
 
-            AuthorSelection(
-                selected = selectedAuthor,
-                onSelect = onSelectAuthor
-            )
+            item {
+                StatusSelection(
+                    currentStatus = selectedStatus,
+                    readStatuses = statuses,
+                    onSelect = onSelectStatus
+                )
+            }
 
-            GenreSelection(
-                selected = selectedGenre,
-                onSelect = onSelectGenre
-            )
+            item {
+                AnimatedVisibility(visible = selectedStatus == BookStatus.HAVE_READ) {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        leadingIcon = {
+                            Icon(
+                                modifier = Modifier.clickable { datePickerShown = true },
+                                imageVector = Icons.Filled.EditCalendar,
+                                contentDescription = "Calendar"
+                            )
+                        },
+                        value = dateTimeFormatter().format(book.readDate.toJavaInstant()),
+                        onValueChange = { },
+                        label = { Text(text = stringResource(id = com.hisui.kanna.feature.book.R.string.read_date)) },
+                        readOnly = true
+                    )
+                }
+            }
 
-            BookFormDivider()
+            item {
+                AuthorSelection(
+                    selected = selectedAuthor,
+                    onSelect = onSelectAuthor
+                )
+            }
 
-            BookRating(
-                value = book.rating,
-                onUpdate = { onUpdateBook(book.copy(rating = it)) }
-            )
+            item {
+                GenreSelection(
+                    selected = selectedGenre,
+                    onSelect = onSelectGenre
+                )
+            }
 
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                value = book.thought,
-                onValueChange = { onUpdateBook(book.copy(thought = it)) },
-                label = { Text(text = stringResource(id = R.string.thought)) },
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
-            )
+            item { BookFormDivider() }
 
-            BookFormDivider()
+            item {
+                BookRating(
+                    value = book.rating,
+                    onUpdate = { onUpdateBook(book.copy(rating = it)) }
+                )
+            }
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = book.memo ?: "",
-                onValueChange = { onUpdateBook(book.copy(memo = it)) },
-                label = { Text(text = stringResource(id = com.hisui.kanna.feature.book.R.string.memo)) },
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
-            )
+            item {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    value = book.thought,
+                    onValueChange = { onUpdateBook(book.copy(thought = it)) },
+                    label = { Text(text = stringResource(id = R.string.thought)) },
+                    keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
+                )
+            }
+
+            item { BookFormDivider() }
+
+            item {
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = book.memo ?: "",
+                    onValueChange = { onUpdateBook(book.copy(memo = it)) },
+                    label = { Text(text = stringResource(id = com.hisui.kanna.feature.book.R.string.memo)) },
+                    keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
+                )
+            }
+
+            item { Spacer(modifier = Modifier.height(64.dp)) }
         }
     }
 

@@ -19,6 +19,7 @@ package com.hisui.kanna.feature.quote
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -82,7 +83,7 @@ internal fun QuoteFormContent(
 ) {
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         item {
             OutlinedTextField(
@@ -127,6 +128,8 @@ internal fun QuoteFormContent(
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
             )
         }
+
+        item { Spacer(modifier = Modifier.height(64.dp)) }
     }
 }
 

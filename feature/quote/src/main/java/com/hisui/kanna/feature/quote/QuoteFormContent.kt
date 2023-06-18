@@ -123,7 +123,7 @@ internal fun QuoteFormContent(
     }
 
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         item {

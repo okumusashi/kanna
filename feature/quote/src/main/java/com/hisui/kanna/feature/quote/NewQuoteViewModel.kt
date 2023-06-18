@@ -27,28 +27,13 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed interface NewQuoteUiState {
-
-    object Loading : NewQuoteUiState
-
-    data class AddQuote(
-        val error: String?,
-        val quoteForm: QuoteForm,
-        val selectedBook: BookForQuote?,
-        val submittable: Boolean
-    ) : NewQuoteUiState
-}
-
-private data class NewQuoteViewModelState(
+data class NewQuoteUiState(
     val loading: Boolean = true,
     val error: String? = null,
     val quoteForm: QuoteForm = QuoteForm(
@@ -59,20 +44,7 @@ private data class NewQuoteViewModelState(
     ),
     val selectedBook: BookForQuote? = null,
     val submittable: Boolean = false
-) {
-    fun toState(): NewQuoteUiState =
-        when {
-            loading -> NewQuoteUiState.Loading
-            else -> {
-                NewQuoteUiState.AddQuote(
-                    error = error,
-                    quoteForm = quoteForm,
-                    selectedBook = selectedBook,
-                    submittable = submittable
-                )
-            }
-        }
-}
+)
 
 sealed interface NewQuoteEvent {
     object Created : NewQuoteEvent
@@ -84,33 +56,27 @@ internal class NewQuoteViewModel @Inject constructor(
     private val getFilteredBooksStreamUseCase: GetFilteredBooksStreamUseCase
 ) : ViewModel() {
 
-    private val viewModelState = MutableStateFlow(NewQuoteViewModelState())
-    val uiState: StateFlow<NewQuoteUiState> = viewModelState
-        .map { it.toState() }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = NewQuoteViewModelState().toState()
-        )
+    private val _uiState = MutableStateFlow(NewQuoteUiState())
+    val uiState: StateFlow<NewQuoteUiState> = _uiState
 
     private val _event = Channel<NewQuoteEvent>(BUFFERED)
     val event: Flow<NewQuoteEvent> = _event.receiveAsFlow()
 
     init {
         // TODO
-        viewModelState.update { it.copy(loading = false) }
+        _uiState.update { it.copy(loading = false) }
     }
 
     fun updateQuote(quote: QuoteForm) {
-        viewModelState.update { it.copy(quoteForm = quote) }
+        _uiState.update { it.copy(quoteForm = quote) }
     }
 
     fun selectBook(book: BookForQuote) {
-        viewModelState.update { it.copy(selectedBook = book) }
+        _uiState.update { it.copy(selectedBook = book) }
     }
 
     fun updateSubmittable(submittable: Boolean) {
-        viewModelState.update { it.copy(submittable = submittable) }
+        _uiState.update { it.copy(submittable = submittable) }
     }
 
     fun create(quoteForm: QuoteForm) {

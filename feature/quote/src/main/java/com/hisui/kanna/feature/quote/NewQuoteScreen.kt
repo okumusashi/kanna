@@ -73,29 +73,20 @@ internal fun NewQuoteScreen(
         isCompact = isCompact,
         title = stringResource(id = R.string.add_quote),
         submitButtonTitle = stringResource(id = com.hisui.kanna.core.ui.R.string.create),
-        onSubmit = {
-            if (uiState is NewQuoteUiState.AddQuote) {
-                onCreate(uiState.quoteForm)
-            }
-        },
-        submittable = uiState is NewQuoteUiState.AddQuote,
+        onSubmit = { onCreate(uiState.quoteForm) },
+        submittable = uiState.submittable,
         onExit = onExit
     ) { paddingValues ->
-        when (uiState) {
-            NewQuoteUiState.Loading -> {}
-            is NewQuoteUiState.AddQuote -> {
-                QuoteFormContent(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(paddingValues)
-                        .padding(16.dp),
-                    quoteForm = uiState.quoteForm,
-                    onUpdateQuote = onUpdateQuote,
-                    onSelectBook = onSelectBook,
-                    onSubmittableChange = onSubmittableChange
-                )
-            }
-        }
+        QuoteFormContent(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingValues)
+                .padding(16.dp),
+            quoteForm = uiState.quoteForm,
+            onUpdateQuote = onUpdateQuote,
+            onSelectBook = onSelectBook,
+            onSubmittableChange = onSubmittableChange
+        )
     }
 }
 
@@ -104,11 +95,8 @@ private fun NewQuoteScreenPreviewBase(isCompact: Boolean) {
     KannaTheme {
         NewQuoteScreen(
             isCompact = isCompact,
-            uiState = NewQuoteUiState.AddQuote(
-                error = null,
-                quoteForm = QuoteForm(quote = "", thought = "", bookId = 1L, page = 1),
-                selectedBook = null,
-                submittable = false
+            uiState = NewQuoteUiState(
+                quoteForm = QuoteForm(quote = "", thought = "", bookId = 1L, page = 1)
             ),
             onUpdateQuote = {},
             onSelectBook = {},

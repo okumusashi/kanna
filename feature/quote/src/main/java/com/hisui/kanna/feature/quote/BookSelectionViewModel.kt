@@ -56,6 +56,10 @@ private data class BookSelectionViewModelState(
     )
 }
 
+sealed interface BookSelectionEvent {
+    object ShouldFocus : BookSelectionEvent
+}
+
 @HiltViewModel
 internal class BookSelectionViewModel @Inject constructor(
     private val getFilteredBooksStreamUseCase: GetFilteredBooksStreamUseCase
@@ -70,8 +74,8 @@ internal class BookSelectionViewModel @Inject constructor(
             BookSelectionViewModelState().toUiState()
         )
 
-    private val _focusEvent = Channel<Unit>(BUFFERED)
-    val focusEvent: Flow<Unit> = _focusEvent.receiveAsFlow()
+    private val _focusEvent = Channel<BookSelectionEvent>(BUFFERED)
+    val event: Flow<BookSelectionEvent> = _focusEvent.receiveAsFlow()
 
     fun filterBooks(q: String) {
         if (q.isBlank()) {
@@ -110,7 +114,7 @@ internal class BookSelectionViewModel @Inject constructor(
              *  It might be a bug. Remove this [delay] when it's fixed.
              */
             delay(400)
-            _focusEvent.send(Unit)
+            _focusEvent.send(BookSelectionEvent.ShouldFocus)
         }
     }
 

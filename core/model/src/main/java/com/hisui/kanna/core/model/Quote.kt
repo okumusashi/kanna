@@ -37,6 +37,8 @@ data class QuoteForm(
     val thought: String
 )
 
+enum class QuoteField { QUOTE, BOOK, PAGE, THOUGHT }
+
 fun quoteForPreview(
     page: Int = 123,
     quote: String = "The world is a book, and those who do not travel read only a page."

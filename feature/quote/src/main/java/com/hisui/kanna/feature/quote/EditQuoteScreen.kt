@@ -55,6 +55,7 @@ internal fun EditQuoteRoute(
         onUpdateQuote = viewModel::updateQuote,
         onSelectBook = viewModel::selectBook,
         onUpdate = viewModel::update,
+        onSubmittableChange = viewModel::updateSubmittable,
         onExit = onExit
     )
 }
@@ -65,6 +66,7 @@ internal fun EditQuoteScreen(
     uiState: EditQuoteUiState,
     onUpdateQuote: (QuoteForm) -> Unit,
     onSelectBook: (BookForQuote) -> Unit,
+    onSubmittableChange: (Boolean) -> Unit,
     onUpdate: (quote: QuoteForm) -> Unit,
     onExit: () -> Unit
 ) {
@@ -84,7 +86,8 @@ internal fun EditQuoteScreen(
             quoteForm = uiState.quoteForm,
             selectedBookTitle = uiState.selectedBook?.title,
             onUpdateQuote = onUpdateQuote,
-            onSelectBook = onSelectBook
+            onSelectBook = onSelectBook,
+            onSubmittableChange = onSubmittableChange
         )
     }
 }
@@ -108,6 +111,7 @@ private fun EditQuoteScreenPreviewBase(isCompact: Boolean) {
             ),
             onUpdateQuote = {},
             onSelectBook = {},
+            onSubmittableChange = {},
             onUpdate = {},
             onExit = {}
         )

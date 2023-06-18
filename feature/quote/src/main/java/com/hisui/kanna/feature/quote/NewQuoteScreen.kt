@@ -53,6 +53,7 @@ internal fun NewQuoteRoute(
         uiState = uiState,
         onUpdateQuote = viewModel::updateQuote,
         onSelectBook = viewModel::selectBook,
+        onSubmittableChange = viewModel::updateSubmittable,
         onCreate = viewModel::create,
         onExit = popBackStack
     )
@@ -64,6 +65,7 @@ internal fun NewQuoteScreen(
     uiState: NewQuoteUiState,
     onUpdateQuote: (QuoteForm) -> Unit,
     onSelectBook: (BookForQuote) -> Unit,
+    onSubmittableChange: (Boolean) -> Unit,
     onCreate: (QuoteForm) -> Unit,
     onExit: () -> Unit
 ) {
@@ -89,7 +91,8 @@ internal fun NewQuoteScreen(
                         .padding(16.dp),
                     quoteForm = uiState.quoteForm,
                     onUpdateQuote = onUpdateQuote,
-                    onSelectBook = onSelectBook
+                    onSelectBook = onSelectBook,
+                    onSubmittableChange = onSubmittableChange
                 )
             }
         }
@@ -104,10 +107,12 @@ private fun NewQuoteScreenPreviewBase(isCompact: Boolean) {
             uiState = NewQuoteUiState.AddQuote(
                 error = null,
                 quoteForm = QuoteForm(quote = "", thought = "", bookId = 1L, page = 1),
-                selectedBook = null
+                selectedBook = null,
+                submittable = false
             ),
             onUpdateQuote = {},
             onSelectBook = {},
+            onSubmittableChange = {},
             onCreate = {},
             onExit = {}
         )

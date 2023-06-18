@@ -31,7 +31,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -42,8 +41,9 @@ import com.hisui.kanna.core.model.BookForQuote
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BookSelection(
-    initial: String = "",
+    modifier: Modifier = Modifier,
     viewModel: BookSelectionViewModel = hiltViewModel(),
+    initial: String = "",
     onSelect: (BookForQuote) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -53,13 +53,16 @@ internal fun BookSelection(
     }
 
     val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(viewModel.focusEvent) {
-        viewModel.focusEvent.collect {
-            focusRequester.requestFocus()
+    LaunchedEffect(viewModel.event) {
+        viewModel.event.collect { event ->
+            when (event) {
+                BookSelectionEvent.ShouldFocus -> focusRequester.requestFocus()
+            }
         }
     }
 
     ExposedDropdownMenuBox(
+        modifier = modifier,
         expanded = uiState.expanded,
         onExpandedChange = { viewModel.changeDropdownExpanded() }
     ) {
@@ -107,6 +110,7 @@ internal fun BookSelection(
                         text = { Text(item.title) },
                         onClick = {
                             onSelect(item)
+                            focusRequester.freeFocus()
                             viewModel.selectBook(item.title)
                         }
                     )

@@ -30,14 +30,21 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hisui.kanna.core.domain.error.QuoteError
 import com.hisui.kanna.core.model.BookForQuote
+import com.hisui.kanna.core.model.QuoteField
 import com.hisui.kanna.core.model.QuoteForm
 import com.hisui.kanna.core.ui.component.KannaTopBar
 import com.hisui.kanna.core.ui.preview.PreviewColumnWrapper
@@ -74,24 +81,79 @@ internal fun QuoteFormBase(
 }
 
 @Composable
+private fun QuoteError.Validation.message(field: QuoteField): String =
+    when (this) {
+        QuoteError.Validation.Required ->
+            stringResource(id = com.hisui.kanna.core.ui.R.string.required_field, field.title())
+    }
+
+@Composable
+private fun QuoteField.title(): String =
+    when (this) {
+        QuoteField.QUOTE -> stringResource(id = com.hisui.kanna.core.ui.R.string.quote)
+        QuoteField.BOOK -> stringResource(id = com.hisui.kanna.core.ui.R.string.book)
+        QuoteField.PAGE -> stringResource(id = R.string.page)
+        QuoteField.THOUGHT -> stringResource(id = com.hisui.kanna.core.ui.R.string.thought)
+    }
+
+@Composable
 internal fun QuoteFormContent(
     modifier: Modifier = Modifier,
+    viewModel: QuoteFormViewModel = viewModel(),
     quoteForm: QuoteForm,
     selectedBookTitle: String? = null,
     onUpdateQuote: (QuoteForm) -> Unit,
-    onSelectBook: (BookForQuote) -> Unit
+    onSelectBook: (BookForQuote) -> Unit,
+    onSubmittableChange: (Boolean) -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(quoteForm) {
+        viewModel.event.collect { event ->
+            when (event) {
+                is QuoteFormEvent.Validation -> {
+                    viewModel.validate(field = event.field, form = quoteForm)
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(uiState.submittable) {
+        onSubmittableChange(uiState.submittable)
+    }
+
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         item {
+            // Quote
+            val error = uiState.errors[QuoteField.QUOTE]
             OutlinedTextField(
                 modifier = Modifier
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            viewModel.focused(QuoteField.QUOTE)
+                        } else if (uiState.hasBeenFocused[QuoteField.QUOTE] == true) {
+                            viewModel.askValidation(QuoteField.QUOTE)
+                        }
+                    }
                     .fillMaxWidth()
                     .height(200.dp),
                 value = quoteForm.quote,
-                onValueChange = { onUpdateQuote(quoteForm.copy(quote = it)) },
+                onValueChange = {
+                    onUpdateQuote(quoteForm.copy(quote = it))
+                    viewModel.validateQuote(it)
+                },
+                isError = error != null,
+                supportingText = {
+                    when (error) {
+                        is QuoteError.Validation.Required ->
+                            Text(text = error.message(QuoteField.QUOTE))
+
+                        else -> { /**/ }
+                    }
+                },
                 label = { Text(text = stringResource(id = R.string.quote)) },
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
             )
@@ -99,6 +161,7 @@ internal fun QuoteFormContent(
 
         item {
             BookSelection(
+                modifier = Modifier.onFocusChanged { viewModel.focused(QuoteField.BOOK) },
                 initial = selectedBookTitle ?: "",
                 onSelect = { book ->
                     onSelectBook(book)
@@ -108,10 +171,33 @@ internal fun QuoteFormContent(
         }
 
         item {
+            // Page
+            val error = uiState.errors[QuoteField.PAGE]
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            viewModel.focused(QuoteField.PAGE)
+                        } else if (uiState.hasBeenFocused[QuoteField.PAGE] == true) {
+                            viewModel.askValidation(QuoteField.PAGE)
+                        }
+                    },
+                singleLine = true,
                 value = quoteForm.page?.toString() ?: "",
-                onValueChange = { onUpdateQuote(quoteForm.copy(page = it.toIntOrNull())) },
+                onValueChange = {
+                    onUpdateQuote(quoteForm.copy(page = it.toIntOrNull()))
+                    viewModel.validatePage(it.toIntOrNull())
+                },
+                isError = error != null,
+                supportingText = {
+                    when (error) {
+                        is QuoteError.Validation.Required ->
+                            Text(text = error.message(QuoteField.PAGE))
+
+                        else -> { /**/ }
+                    }
+                },
                 label = { Text(text = stringResource(id = R.string.page)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
@@ -121,10 +207,11 @@ internal fun QuoteFormContent(
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
+                    .height(200.dp)
+                    .onFocusChanged { viewModel.focused(QuoteField.THOUGHT) },
                 value = quoteForm.thought,
                 onValueChange = { onUpdateQuote(quoteForm.copy(thought = it)) },
-                label = { Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.thought)) },
+                label = { Text(text = stringResource(id = com.hisui.kanna.core.ui.R.string.thought) + stringResource(id = com.hisui.kanna.core.ui.R.string.optional)) },
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences)
             )
         }
@@ -141,7 +228,8 @@ private fun QuoteFormContentPreview() {
             modifier = Modifier.padding(32.dp),
             quoteForm = QuoteForm(quote = "", thought = "", bookId = 1L, page = 1),
             onUpdateQuote = {},
-            onSelectBook = {}
+            onSelectBook = {},
+            onSubmittableChange = {}
         )
     }
 }

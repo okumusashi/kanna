@@ -25,7 +25,7 @@
     <!-- endregion -->
 
     <!-- region Book -->
-    <string name="book">book</string>
+    <string name="book">Book</string>
     <string name="book_title">Book title</string>
     <string name="author">Author</string>
     <string name="genre">Genre</string>
@@ -43,5 +43,10 @@
 
     <!-- region Form -->
     <string name="add_new">Add New</string>
+    <string name="optional">\u0020(Optional)</string>
+    <!-- endregion -->
+
+    <!-- region Error messages -->
+    <string name="required_field">%1$s is required.</string>
     <!-- endregion -->
 </resources>

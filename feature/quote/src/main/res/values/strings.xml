@@ -16,10 +16,10 @@
 
 <resources>
     <string name="add_quote">Add quote</string>
-    <string name="quote">quote</string>
+    <string name="quote">Quote</string>
     <string name="quotes">Quotes</string>
     <string name="type_to_search">…Type to find a book by title</string>
-    <string name="page">page</string>
+    <string name="page">Page</string>
     <string name="page_of">p. %1$d</string>
     <string name="no_book_yet">There is no book for a quote yet.</string>
     <string name="lets_add_book">Add books so you can add some nice quotes from the them.</string>

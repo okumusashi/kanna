@@ -59,7 +59,8 @@ private data class EditQuoteViewModelState(
         bookId = 0,
         thought = ""
     ),
-    val selectedBook: BookForQuote? = null
+    val selectedBook: BookForQuote? = null,
+    val submittable: Boolean = false
 ) {
     fun toState(): EditQuoteUiState =
         EditQuoteUiState(
@@ -67,7 +68,7 @@ private data class EditQuoteViewModelState(
             error = error,
             quoteForm = quoteForm,
             selectedBook = selectedBook,
-            submittable = !loading && error == null
+            submittable = !loading && submittable
         )
 }
 
@@ -135,6 +136,10 @@ class EditQuoteViewModel @Inject constructor(
                 // TODO
             }
         }
+    }
+
+    fun updateSubmittable(submittable: Boolean) {
+        viewModelState.update { it.copy(submittable = submittable) }
     }
 }
 

@@ -43,7 +43,8 @@ sealed interface NewQuoteUiState {
     data class AddQuote(
         val error: String?,
         val quoteForm: QuoteForm,
-        val selectedBook: BookForQuote?
+        val selectedBook: BookForQuote?,
+        val submittable: Boolean
     ) : NewQuoteUiState
 }
 
@@ -56,7 +57,8 @@ private data class NewQuoteViewModelState(
         page = null,
         thought = ""
     ),
-    val selectedBook: BookForQuote? = null
+    val selectedBook: BookForQuote? = null,
+    val submittable: Boolean = false
 ) {
     fun toState(): NewQuoteUiState =
         when {
@@ -65,7 +67,8 @@ private data class NewQuoteViewModelState(
                 NewQuoteUiState.AddQuote(
                     error = error,
                     quoteForm = quoteForm,
-                    selectedBook = selectedBook
+                    selectedBook = selectedBook,
+                    submittable = submittable
                 )
             }
         }
@@ -104,6 +107,10 @@ internal class NewQuoteViewModel @Inject constructor(
 
     fun selectBook(book: BookForQuote) {
         viewModelState.update { it.copy(selectedBook = book) }
+    }
+
+    fun updateSubmittable(submittable: Boolean) {
+        viewModelState.update { it.copy(submittable = submittable) }
     }
 
     fun create(quoteForm: QuoteForm) {

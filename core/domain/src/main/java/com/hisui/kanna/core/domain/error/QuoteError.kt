@@ -20,4 +20,8 @@ import com.hisui.kanna.core.KannaError
 
 sealed interface QuoteError : KannaError {
     object NotFound : QuoteError
+
+    sealed interface Validation : QuoteError {
+        object Required : Validation
+    }
 }

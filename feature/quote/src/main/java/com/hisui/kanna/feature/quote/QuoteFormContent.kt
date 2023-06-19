@@ -127,35 +127,16 @@ internal fun QuoteFormContent(
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         item {
-            // Quote
-            val error = uiState.errors[QuoteField.QUOTE]
-            OutlinedTextField(
-                modifier = Modifier
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            viewModel.focused(QuoteField.QUOTE)
-                        } else if (uiState.hasBeenFocused[QuoteField.QUOTE] == true) {
-                            viewModel.askValidation(QuoteField.QUOTE)
-                        }
-                    }
-                    .fillMaxWidth()
-                    .height(200.dp),
-                value = quoteForm.quote,
+            QuoteSection(
+                quote = quoteForm.quote,
+                error = uiState.errors[QuoteField.QUOTE],
+                hasBeenFocused = uiState.hasBeenFocused[QuoteField.QUOTE] == true,
+                onFocus = { viewModel.focused(QuoteField.QUOTE) },
+                askValidation = { viewModel.askValidation(QuoteField.QUOTE) },
                 onValueChange = {
                     onUpdateQuote(quoteForm.copy(quote = it))
                     viewModel.validateQuote(it)
-                },
-                isError = error != null,
-                supportingText = {
-                    when (error) {
-                        is QuoteError.Validation.Required ->
-                            Text(text = error.message(QuoteField.QUOTE))
-
-                        else -> { /**/ }
-                    }
-                },
-                label = { Text(text = stringResource(id = R.string.quote)) },
-                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
+                }
             )
         }
 
@@ -171,39 +152,21 @@ internal fun QuoteFormContent(
         }
 
         item {
-            // Page
-            val error = uiState.errors[QuoteField.PAGE]
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            viewModel.focused(QuoteField.PAGE)
-                        } else if (uiState.hasBeenFocused[QuoteField.PAGE] == true) {
-                            viewModel.askValidation(QuoteField.PAGE)
-                        }
-                    },
-                singleLine = true,
-                value = quoteForm.page?.toString() ?: "",
+            PageSection(
+                page = quoteForm.page?.toString() ?: "",
+                error = uiState.errors[QuoteField.PAGE],
+                hasBeenFocused = uiState.hasBeenFocused[QuoteField.PAGE] == true,
+                onFocus = { viewModel.focused(QuoteField.PAGE) },
+                askValidation = { viewModel.askValidation(QuoteField.PAGE) },
                 onValueChange = {
                     onUpdateQuote(quoteForm.copy(page = it.toIntOrNull()))
                     viewModel.validatePage(it.toIntOrNull())
-                },
-                isError = error != null,
-                supportingText = {
-                    when (error) {
-                        is QuoteError.Validation.Required ->
-                            Text(text = error.message(QuoteField.PAGE))
-
-                        else -> { /**/ }
-                    }
-                },
-                label = { Text(text = stringResource(id = R.string.page)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                }
             )
         }
 
         item {
+            // Thought section
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -232,4 +195,76 @@ private fun QuoteFormContentPreview() {
             onSubmittableChange = {}
         )
     }
+}
+
+@Composable
+private fun QuoteSection(
+    quote: String,
+    error: QuoteError.Validation?,
+    hasBeenFocused: Boolean,
+    onFocus: () -> Unit,
+    askValidation: () -> Unit,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .onFocusChanged {
+                if (it.isFocused) {
+                    onFocus()
+                } else if (hasBeenFocused) {
+                    askValidation()
+                }
+            }
+            .fillMaxWidth()
+            .height(200.dp),
+        value = quote,
+        onValueChange = onValueChange,
+        isError = error != null,
+        supportingText = {
+            when (error) {
+                is QuoteError.Validation.Required ->
+                    Text(text = error.message(QuoteField.QUOTE))
+
+                else -> { /**/ }
+            }
+        },
+        label = { Text(text = stringResource(id = R.string.quote)) },
+        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
+    )
+}
+
+@Composable
+private fun PageSection(
+    page: String,
+    error: QuoteError.Validation?,
+    hasBeenFocused: Boolean,
+    onFocus: () -> Unit,
+    askValidation: () -> Unit,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .onFocusChanged {
+                if (it.isFocused) {
+                    onFocus()
+                } else if (hasBeenFocused) {
+                    askValidation()
+                }
+            },
+        singleLine = true,
+        value = page,
+        onValueChange = onValueChange,
+        isError = error != null,
+        supportingText = {
+            when (error) {
+                is QuoteError.Validation.Required ->
+                    Text(text = error.message(QuoteField.PAGE))
+
+                else -> { /**/ }
+            }
+        },
+        label = { Text(text = stringResource(id = R.string.page)) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+    )
 }

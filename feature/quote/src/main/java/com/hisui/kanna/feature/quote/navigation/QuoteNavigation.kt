@@ -31,7 +31,8 @@ import com.hisui.kanna.feature.quote.QuoteListRoute
 import com.hisui.kanna.feature.quote.QuoteRoute
 
 const val quoteRoute = "quote_route"
-const val quoteNavigationRoute = "quotes"
+const val quoteListNavigationRoute = "quotes"
+const val quoteNavigationRoute = "quote/{quoteId}"
 const val newQuoteNavigationRoute = "quote/new"
 
 internal const val quoteIdArg = "quoteId"
@@ -42,14 +43,28 @@ internal class QuoteArgs(val quoteId: Long) {
 }
 
 fun NavController.navigateToQuoteList(options: NavOptions?) {
-    navigate(quoteNavigationRoute, options)
+    navigate(quoteListNavigationRoute, options)
 }
 
-fun NavController.navigateToQuote(quoteId: Long) {
+fun NavController.navigateToQuote(
+    quoteId: Long,
+    popUpToRoute: String? = null
+) {
     val encodeId = Uri.encode(quoteId.toString())
-    navigate("quote/$encodeId") {
-        launchSingleTop = true
-    }
+    val route = "quote/$encodeId"
+    val options = NavOptions.Builder()
+        .apply {
+            if (popUpToRoute != null) {
+                setPopUpTo(route = popUpToRoute, inclusive = true)
+            }
+        }
+        .setLaunchSingleTop(true)
+        .build()
+
+    navigate(
+        route = route,
+        navOptions = options
+    )
 }
 
 fun NavController.navigateToEditQuote(quoteId: Long) {
@@ -66,9 +81,9 @@ fun NavGraphBuilder.quoteListScreen(
 ) {
     navigation(
         route = quoteRoute,
-        startDestination = quoteNavigationRoute
+        startDestination = quoteListNavigationRoute
     ) {
-        composable(route = quoteNavigationRoute) {
+        composable(route = quoteListNavigationRoute) {
             QuoteListRoute(
                 onOpenQuote = navController::navigateToQuote,
                 onOpenNewQuoteScreen = { navController.navigate(newQuoteNavigationRoute) },
@@ -96,7 +111,12 @@ fun NavGraphBuilder.quoteListScreen(
         ) {
             EditQuoteRoute(
                 isCompact = isCompact,
-                onOpenQuote = navController::navigateToQuote,
+                onOpenQuote = {
+                    navController.navigateToQuote(
+                        quoteId = it,
+                        popUpToRoute = quoteNavigationRoute
+                    )
+                },
                 onExit = navController::popBackStack
             )
         }

@@ -98,25 +98,23 @@ private fun QuoteListScreen(
             style = MaterialTheme.typography.headlineMedium
         )
 
-        Box {
-            when (uiState) {
-                QuoteListUiState.Loading -> {
-                    // TODO: Add indicator
-                }
-
-                QuoteListUiState.NoBook ->
-                    NoBookScreen(onOpenNewBookScreen = onOpenNewBookScreen)
-
-                QuoteListUiState.NoQuote ->
-                    NoQuoteScreen(onOpenNewQuoteScreen = onOpenNewQuoteScreen)
-
-                is QuoteListUiState.ShowQuotes ->
-                    ShowQuotesScreen(
-                        quotes = uiState.quotes,
-                        onOpenQuote = onOpenQuote,
-                        onOpenNewQuoteScreen = onOpenNewQuoteScreen
-                    )
+        when (uiState) {
+            QuoteListUiState.Loading -> {
+                // TODO: Add indicator
             }
+
+            QuoteListUiState.NoBook ->
+                NoBookScreen(onOpenNewBookScreen = onOpenNewBookScreen)
+
+            QuoteListUiState.NoQuote ->
+                NoQuoteScreen(onOpenNewQuoteScreen = onOpenNewQuoteScreen)
+
+            is QuoteListUiState.ShowQuotes ->
+                ShowQuotesScreen(
+                    quotes = uiState.quotes,
+                    onOpenQuote = onOpenQuote,
+                    onOpenNewQuoteScreen = onOpenNewQuoteScreen
+                )
         }
     }
 }
@@ -236,7 +234,9 @@ private fun NoQuoteScreen(
         }
 
         AddQuoteFab(
-            modifier = Modifier.align(Alignment.BottomEnd),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 16.dp),
             onClick = onOpenNewQuoteScreen,
             expanded = true
         )

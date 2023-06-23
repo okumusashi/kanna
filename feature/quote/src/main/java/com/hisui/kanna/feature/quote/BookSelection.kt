@@ -30,13 +30,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hisui.kanna.core.domain.error.QuoteError
 import com.hisui.kanna.core.model.BookForQuote
+import com.hisui.kanna.core.model.DEFAULT_BOOK_ID
+import com.hisui.kanna.core.model.QuoteField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,19 +51,23 @@ internal fun BookSelection(
     modifier: Modifier = Modifier,
     viewModel: BookSelectionViewModel = hiltViewModel(),
     initial: String = "",
+    error: QuoteError.Validation?,
+    onFocusChanged: (FocusState) -> Unit,
     onSelect: (BookForQuote) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var query by remember { mutableStateOf("") }
 
     LaunchedEffect(initial) {
         viewModel.selectBook(title = initial, selected = initial.isNotBlank())
     }
 
     val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(viewModel.event) {
+    LaunchedEffect(Unit) {
         viewModel.event.collect { event ->
             when (event) {
                 BookSelectionEvent.ShouldFocus -> focusRequester.requestFocus()
+                BookSelectionEvent.Reset -> onSelect(BookForQuote(id = DEFAULT_BOOK_ID, title = ""))
             }
         }
     }
@@ -69,10 +80,14 @@ internal fun BookSelection(
         OutlinedTextField(
             modifier = Modifier
                 .menuAnchor()
-                .focusRequester(focusRequester),
-            value = uiState.title,
+                .focusRequester(focusRequester)
+                .onFocusChanged(onFocusChanged),
+            value = uiState.title.ifBlank { query },
             readOnly = uiState.bookSelected,
-            onValueChange = viewModel::filterBooks,
+            onValueChange = {
+                query = it
+                viewModel.filterBooks(it)
+            },
             trailingIcon = {
                 if (uiState.bookSelected) {
                     Icon(
@@ -80,6 +95,15 @@ internal fun BookSelection(
                         imageVector = Icons.Filled.Close,
                         contentDescription = "Clear"
                     )
+                }
+            },
+            isError = error != null,
+            supportingText = {
+                when (error) {
+                    is QuoteError.Validation.Required ->
+                        Text(text = error.message(QuoteField.BOOK))
+
+                    else -> { /**/ }
                 }
             },
             label = { Text(stringResource(id = com.hisui.kanna.core.ui.R.string.book_title)) }
@@ -101,7 +125,7 @@ internal fun BookSelection(
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         },
-                        onClick = { }
+                        onClick = {}
                     )
                     return@ExposedDropdownMenu
                 }
@@ -109,6 +133,7 @@ internal fun BookSelection(
                     DropdownMenuItem(
                         text = { Text(item.title) },
                         onClick = {
+                            query = ""
                             onSelect(item)
                             focusRequester.freeFocus()
                             viewModel.selectBook(item.title)

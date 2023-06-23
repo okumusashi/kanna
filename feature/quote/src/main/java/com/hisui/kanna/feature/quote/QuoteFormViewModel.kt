@@ -19,6 +19,7 @@ package com.hisui.kanna.feature.quote
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hisui.kanna.core.domain.error.QuoteError
+import com.hisui.kanna.core.model.DEFAULT_BOOK_ID
 import com.hisui.kanna.core.model.QuoteField
 import com.hisui.kanna.core.model.QuoteForm
 import kotlinx.coroutines.channels.Channel
@@ -66,6 +67,7 @@ class QuoteFormViewModel : ViewModel() {
         when (field) {
             QuoteField.QUOTE -> validateQuote(form.quote)
             QuoteField.PAGE -> validatePage(form.page)
+            QuoteField.BOOK -> validateBook(form.bookId)
             else -> { /*TODO*/ }
         }
     }
@@ -102,6 +104,22 @@ class QuoteFormViewModel : ViewModel() {
                 null
             }.let {
                 state.copy(errors = state.errors + (QuoteField.PAGE to it))
+            }
+        }
+    }
+
+    fun validateBook(value: Long, skipFocusCheck: Boolean = false) {
+        _uiState.update { state ->
+            if (!skipFocusCheck && state.hasBeenFocused[QuoteField.BOOK] == false) {
+                return@update state
+            }
+
+            if (value == DEFAULT_BOOK_ID) {
+                QuoteError.Validation.Required
+            } else {
+                null
+            }.let {
+                state.copy(errors = state.errors + (QuoteField.BOOK to it))
             }
         }
     }

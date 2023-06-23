@@ -37,6 +37,8 @@ data class QuoteForm(
     val thought: String
 )
 
+const val DEFAULT_BOOK_ID = 0L
+
 enum class QuoteField { QUOTE, BOOK, PAGE, THOUGHT }
 
 fun quoteForPreview(

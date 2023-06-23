@@ -35,6 +35,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -81,7 +82,7 @@ internal fun QuoteFormBase(
 }
 
 @Composable
-private fun QuoteError.Validation.message(field: QuoteField): String =
+internal fun QuoteError.Validation.message(field: QuoteField): String =
     when (this) {
         QuoteError.Validation.Required ->
             stringResource(id = com.hisui.kanna.core.ui.R.string.required_field, field.title())
@@ -130,9 +131,13 @@ internal fun QuoteFormContent(
             QuoteSection(
                 quote = quoteForm.quote,
                 error = uiState.errors[QuoteField.QUOTE],
-                hasBeenFocused = uiState.hasBeenFocused[QuoteField.QUOTE] == true,
-                onFocus = { viewModel.focused(QuoteField.QUOTE) },
-                askValidation = { viewModel.askValidation(QuoteField.QUOTE) },
+                onFocusChanged = {
+                    if (it.isFocused) {
+                        viewModel.focused(QuoteField.QUOTE)
+                    } else if (uiState.hasBeenFocused[QuoteField.QUOTE] == true) {
+                        viewModel.askValidation(QuoteField.QUOTE)
+                    }
+                },
                 onValueChange = {
                     onUpdateQuote(quoteForm.copy(quote = it))
                     viewModel.validateQuote(it)
@@ -144,9 +149,18 @@ internal fun QuoteFormContent(
             BookSelection(
                 modifier = Modifier.onFocusChanged { viewModel.focused(QuoteField.BOOK) },
                 initial = selectedBookTitle ?: "",
+                error = uiState.errors[QuoteField.BOOK],
+                onFocusChanged = {
+                    if (it.isFocused) {
+                        viewModel.focused(QuoteField.BOOK)
+                    } else if (uiState.hasBeenFocused[QuoteField.BOOK] == true) {
+                        viewModel.askValidation(QuoteField.BOOK)
+                    }
+                },
                 onSelect = { book ->
                     onSelectBook(book)
                     onUpdateQuote(quoteForm.copy(bookId = book.id))
+                    viewModel.validateBook(value = book.id, skipFocusCheck = true)
                 }
             )
         }
@@ -155,9 +169,13 @@ internal fun QuoteFormContent(
             PageSection(
                 page = quoteForm.page?.toString() ?: "",
                 error = uiState.errors[QuoteField.PAGE],
-                hasBeenFocused = uiState.hasBeenFocused[QuoteField.PAGE] == true,
-                onFocus = { viewModel.focused(QuoteField.PAGE) },
-                askValidation = { viewModel.askValidation(QuoteField.PAGE) },
+                onFocusChanged = {
+                    if (it.isFocused) {
+                        viewModel.focused(QuoteField.PAGE)
+                    } else if (uiState.hasBeenFocused[QuoteField.PAGE] == true) {
+                        viewModel.askValidation(QuoteField.PAGE)
+                    }
+                },
                 onValueChange = {
                     onUpdateQuote(quoteForm.copy(page = it.toIntOrNull()))
                     viewModel.validatePage(it.toIntOrNull())
@@ -201,20 +219,12 @@ private fun QuoteFormContentPreview() {
 private fun QuoteSection(
     quote: String,
     error: QuoteError.Validation?,
-    hasBeenFocused: Boolean,
-    onFocus: () -> Unit,
-    askValidation: () -> Unit,
+    onFocusChanged: (FocusState) -> Unit,
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
         modifier = Modifier
-            .onFocusChanged {
-                if (it.isFocused) {
-                    onFocus()
-                } else if (hasBeenFocused) {
-                    askValidation()
-                }
-            }
+            .onFocusChanged(onFocusChanged)
             .fillMaxWidth()
             .height(200.dp),
         value = quote,
@@ -237,21 +247,13 @@ private fun QuoteSection(
 private fun PageSection(
     page: String,
     error: QuoteError.Validation?,
-    hasBeenFocused: Boolean,
-    onFocus: () -> Unit,
-    askValidation: () -> Unit,
+    onFocusChanged: (FocusState) -> Unit,
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .onFocusChanged {
-                if (it.isFocused) {
-                    onFocus()
-                } else if (hasBeenFocused) {
-                    askValidation()
-                }
-            },
+            .onFocusChanged(onFocusChanged),
         singleLine = true,
         value = page,
         onValueChange = onValueChange,

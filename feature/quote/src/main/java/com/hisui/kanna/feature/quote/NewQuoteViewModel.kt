@@ -21,6 +21,7 @@ import androidx.lifecycle.viewModelScope
 import com.hisui.kanna.core.data.repository.QuoteRepository
 import com.hisui.kanna.core.domain.usecase.GetFilteredBooksStreamUseCase
 import com.hisui.kanna.core.model.BookForQuote
+import com.hisui.kanna.core.model.DEFAULT_BOOK_ID
 import com.hisui.kanna.core.model.QuoteForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -38,7 +39,7 @@ data class NewQuoteUiState(
     val error: String? = null,
     val quoteForm: QuoteForm = QuoteForm(
         quote = "",
-        bookId = 0,
+        bookId = DEFAULT_BOOK_ID,
         page = null,
         thought = ""
     ),

@@ -58,6 +58,7 @@ private data class BookSelectionViewModelState(
 
 sealed interface BookSelectionEvent {
     object ShouldFocus : BookSelectionEvent
+    object Reset : BookSelectionEvent
 }
 
 @HiltViewModel
@@ -79,11 +80,9 @@ internal class BookSelectionViewModel @Inject constructor(
 
     fun filterBooks(q: String) {
         if (q.isBlank()) {
-            viewModelState.update { it.copy(bookCandidates = emptyList()) }
+            viewModelState.update { it.copy(title = "", bookCandidates = emptyList()) }
             return
         }
-
-        viewModelState.update { it.copy(title = q) }
 
         viewModelScope.launch {
             getFilteredBooksStreamUseCase(q = q).collect { books ->
@@ -107,13 +106,14 @@ internal class BookSelectionViewModel @Inject constructor(
                     bookCandidates = emptyList()
                 )
             }
+            _focusEvent.send(BookSelectionEvent.Reset)
 
             /**
              * FIXME:
              *  [androidx.compose.ui.focus.FocusRequester.requestFocus]  won't work without [delay].
              *  It might be a bug. Remove this [delay] when it's fixed.
              */
-            delay(400)
+            delay(600)
             _focusEvent.send(BookSelectionEvent.ShouldFocus)
         }
     }

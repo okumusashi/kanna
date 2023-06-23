@@ -59,7 +59,7 @@ class BookSelectionViewModelTest {
             private val q = ""
 
             @Test
-            fun `WHEN - bookCandidate is already set, THEN - it should empty the list`() {
+            fun `WHEN - bookCandidate is already set, THEN - it should empty the list and title should be empty`() {
                 runTest {
                     val title = "aa"
                     bookRepository.save(defaultBook.copy(title = title).asForm())
@@ -72,7 +72,10 @@ class BookSelectionViewModelTest {
                 runTest {
                     // THEN
                     viewModel.filterBooks(q = q)
-                    assertThat(viewModel.uiState.first().bookCandidates).isEmpty()
+
+                    val result = viewModel.uiState.first()
+                    assertThat(result.bookCandidates).isEmpty()
+                    assertThat(result.title).isEmpty()
                 }
             }
         }
@@ -94,7 +97,6 @@ class BookSelectionViewModelTest {
                     viewModel.filterBooks(q = q)
                     val uiState = viewModel.uiState.first()
                     assertThat(uiState.bookCandidates).isNotEmpty()
-                    assertThat(uiState.title).isEqualTo(q)
                 }
             }
         }

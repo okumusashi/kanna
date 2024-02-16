@@ -39,7 +39,7 @@ ktlintGradle = "11.4.0"
 
 lottie = "6.0.1"
 
-protobuf = "3.23.2"
+protobuf = "3.25.3"
 protobufPlugin = "0.9.3"
 
 retrofit = "2.9.0"

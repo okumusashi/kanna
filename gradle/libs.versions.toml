@@ -22,7 +22,7 @@ androidxTestExtJunit = "1.1.5"
 
 coil = "2.4.0"
 
-googleTruth = "1.1.4"
+googleTruth = "1.4.2"
 
 hilt = "2.46.1"
 
